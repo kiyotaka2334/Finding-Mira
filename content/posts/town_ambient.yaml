@@ -1,0 +1,261 @@
+# Finding Mira — Ozerny ambient noise pool (design §23: ~120 micro-items at
+# full scope; this file is the first authored tranche, ~45)
+# ---------------------------------------------------------------------------
+# Post schema: identical to mira_curated.yaml. Most items are pure noise —
+# the signal-to-noise bed the investigation sits in. Signal-bearing items are
+# marked with `mints:` or editor notes. 10 distinct recurring minor voices:
+#   @korzhik.ozerny      — the bakery. Relentless enthusiasm, comic-sans soul.
+#   @school2_ozerny      — school №2 official. Bureaucratic cheer.
+#   @dk_ozerny           — House of Culture. Event spam, dignified.
+#   @oleg_fisher_41      — Oleg. Grievance + fish.
+#   @marat_taxi          — the town's one taxi. Terse. Availability updates.
+#   @kolyan_bar          — the bar. Menu photos taken in the dark.
+#   @vera_dachnitsa      — retiree, garden militant, dahlia wars.
+#   @pavlik_and_sema     — man documenting his two dogs. Beloved.
+#   @galina_pirogi       — Galina (Mom's Galina). Baking + intel adjacency.
+#   @ozerny_weather_amateur — retired teacher with a barometer. Solemn.
+# ---------------------------------------------------------------------------
+
+posts:
+  # --- SIGNAL ---------------------------------------------------------------
+
+  - id: ta_korzhik_promo
+    network: prostor
+    author: "@korzhik.ozerny"
+    date: {day: -21, display: "Sep 23 (Y0)"}
+    time: "17:48"
+    photo: {ref: card_bakery_promo, hotspots: [window_reflection, square_clock]}
+    mints_on_hotspot: [korzhik_reflection]
+    text: "NEW WINDOW DISPLAY for our anniversary month!!! 🥐🎉 Come see (and yes the honey cake is BACK by popular demand, Lyudmila Petrovna, we heard you 😄)"
+    editor: "THE photo (design 8.4 + §4). Hotspot window_reflection: a woman in
+      the glass, market bag, caught mid-step — Mira, identifiable by coat and
+      posture, never by face. Hotspot square_clock fixes the time at 07:40 —
+      her morning route. The player geolocates her from it in Act 1; the promo's
+      public tag is how Artyom found the town. Same photo, both directions."
+
+  - id: ta_search_party_forms
+    network: prostor
+    author: "@dk_ozerny"
+    date: {day: 5, display: "Oct 18 (Y0)"}
+    time: "10:02"
+    mints: [search_party_forming]
+    text: "NOTICE: A volunteer coordination meeting regarding the search for M. Sokolova will be held at the House of Culture, Saturday 12:00. Coordination chat link in comments. All welcome. Dress for the weather."
+    editor: "Opens search_party_chat (8.6). Dan reads the open chat same-tick."
+
+  - id: ta_bus_timetable
+    network: prostor
+    author: "@ozerny_admin_page"
+    date: {day: -40, display: "Sep 4 (Y0)"}
+    time: "09:00"
+    text: "Reminder: from September 1 the intercity bus runs the WINTER schedule. Vetrogorsk direction: 06:50 and 14:10 daily. Northbound (Priozersk): 08:30 Tue/Thu/Sat only. Please plan accordingly."
+    editor: "Reference doc for several checks: the decoy 'northbound bus on the
+      4th' (dacha_location__decoy) is checkable against Tue/Thu/Sat; the
+      stranger_at_bus_station rumor gets its timetable context here."
+
+  - id: ta_marat_stranger
+    network: prostor
+    author: "@marat_taxi"
+    date: {day: 3, display: "Oct 16 (Y0)"}
+    time: "21:15"
+    text: "To whoever keeps calling from the hidden number asking about fares 'out past the dachas' — I don't quote prices to hidden numbers. Call like a person."
+    editor: "Signal dressed as grumbling: Artyom probing the dacha direction by
+      phone before coming in person (artyom_scouted_town corroboration)."
+
+  # --- NOISE: the bakery ------------------------------------------------------
+
+  - id: ta_korzhik_monday
+    network: prostor
+    author: "@korzhik.ozerny"
+    date: {day: -13, display: "Oct 1 (Y0)"}
+    time: "08:01"
+    text: "MONDAY MEANS: poppyseed rolls, both kinds of pirozhki, and the return of hot barberry tea!!! 🍵 First frost special: buy five rolls get the sixth FREE (tell the register 'six for the frost')"
+
+  - id: ta_korzhik_flour_drama
+    network: prostor
+    author: "@korzhik.ozerny"
+    date: {day: 1, display: "Oct 14 (Y0)"}
+    time: "07:22"
+    text: "The flour delivery is LATE so today's menu is: what you see 🤷 We apologize. The driver says 'road works.' The road disagrees."
+
+  - id: ta_galina_pirogi_rivalry
+    network: prostor
+    author: "@galina_pirogi"
+    date: {day: -8, display: "Oct 6 (Y0)"}
+    time: "14:30"
+    text: "Some people buy cabbage pirozhki at a SHOP when their neighbor makes them fresh Thursdays. Naming no names. The recipe is my grandmother's and the shop's is a warehouse's. That's all I'll say. See everyone at choir."
+
+  # --- NOISE: school and civic -------------------------------------------------
+
+  - id: ta_school_football
+    network: prostor
+    author: "@school2_ozerny"
+    date: {day: -3, display: "Oct 11 (Y0)"}
+    time: "16:44"
+    text: "CONGRATULATIONS to our 9th grade team — 3:2 over Priozersk School №1! Special mention: T. Ganiev, two assists. Regional round in November. The gym roof held. 🎉⚽"
+    editor: "Timur exists outside the case. The roof joke is a running civic wound."
+
+  - id: ta_school_parents_evening
+    network: prostor
+    author: "@school2_ozerny"
+    date: {day: 4, display: "Oct 17 (Y0)"}
+    time: "12:00"
+    text: "Parents' evening moved to THURSDAY due to the volunteer meeting Saturday. Grades 8–11. Coats to the cloakroom please, the radiators are on and we've had incidents."
+
+  - id: ta_dk_film_club
+    network: prostor
+    author: "@dk_ozerny"
+    date: {day: -6, display: "Oct 8 (Y0)"}
+    time: "11:30"
+    text: "FILM CLUB Friday 18:00 — a classic comedy, free entry, tea after. Note: the projector bulb is the old one, so the first ten minutes are 'atmospheric.' Bring a cushion, the chairs are honest about their age."
+
+  - id: ta_dk_choir
+    network: prostor
+    author: "@dk_ozerny"
+    date: {day: 8, display: "Oct 21 (Y0)"}
+    time: "09:15"
+    text: "Choir rehearsal Tuesday moved one hour LATER. Roza asks members to please review the second verses. All of them. You know who you are."
+
+  - id: ta_admin_leaves
+    network: prostor
+    author: "@ozerny_admin_page"
+    date: {day: 2, display: "Oct 15 (Y0)"}
+    time: "10:00"
+    text: "Leaf collection on the square: Wednesday. Residents are reminded that burning leaves inside town limits is prohibited, and reminded harder that we can all see the smoke, Viktor."
+
+  # --- NOISE: Oleg, the bar, the taxi -------------------------------------------
+
+  - id: ta_oleg_pike
+    network: prostor
+    author: "@oleg_fisher_41"
+    date: {day: -9, display: "Oct 5 (Y0)"}
+    time: "06:12"
+    photo: {ref: photo_oleg_pike, hotspots: []}
+    text: "4.2 kilos. Off the SECOND dock, for everyone who said the second dock was dead water. 'Dead water.' The fish disagrees. Details at Kolyan's tonight, first telling is free, repeat tellings cost a beer."
+
+  - id: ta_oleg_grievance
+    network: prostor
+    author: "@oleg_fisher_41"
+    date: {day: 6, display: "Oct 19 (Y0)"}
+    time: "13:40"
+    text: "Quoting the employment office: 'nothing this week, Oleg.' Quoting the employment office in March: 'nothing this week, Oleg.' At least the fish are consistent on purpose."
+
+  - id: ta_kolyan_menu
+    network: prostor
+    author: "@kolyan_bar"
+    date: {day: -2, display: "Oct 12 (Y0)"}
+    time: "18:55"
+    photo: {ref: photo_kolyan_solyanka, hotspots: []}
+    text: "tonight: solyanka. the good kind. photo doesn't do it justice because the lamp is out. trust the soup not the photo"
+
+  - id: ta_marat_availability
+    network: prostor
+    author: "@marat_taxi"
+    date: {day: -5, display: "Oct 9 (Y0)"}
+    time: "07:30"
+    text: "Working today until 20:00. Not working tomorrow. The car knows why."
+
+  # --- NOISE: gardens, dogs, weather ----------------------------------------------
+
+  - id: ta_vera_dahlias
+    network: prostor
+    author: "@vera_dachnitsa"
+    date: {day: -15, display: "Sep 29 (Y0)"}
+    time: "15:20"
+    photo: {ref: photo_vera_dahlias, hotspots: []}
+    text: "Dug the dahlias before the frost, UNLIKE SOME on my lane who will be posting sad photos in November asking 'what happened.' The frost happened. It happens every year. It is famous for happening."
+
+  - id: ta_vera_beryozka_note
+    network: prostor
+    author: "@vera_dachnitsa"
+    date: {day: 7, display: "Oct 20 (Y0)"}
+    time: "16:05"
+    text: "To the Beryozka board: the lane lamp by plots 30–40 has been out since AUGUST. Some of us check our plots in the dark season. Fix the lamp before someone breaks a leg and writes a longer post."
+    editor: "Noise that becomes signal only in hindsight: 'some of us check our
+      plots in the dark season' — the co-op isn't as empty in winter as the
+      town assumes. Supports the dacha deduction without pointing at it."
+
+  - id: ta_dogs_sema_election
+    network: prostor
+    author: "@pavlik_and_sema"
+    date: {day: -1, display: "Oct 13 (Y0)"}
+    time: "19:12"
+    photo: {ref: photo_sema_scarf, hotspots: []}
+    text: "Sema has been elected Mayor of the Square by a landslide (the landslide was me, dropping the sausages). His first decree: all sausages. His second decree: see first decree."
+
+  - id: ta_dogs_pavlik_boots
+    network: prostor
+    author: "@pavlik_and_sema"
+    date: {day: 6, display: "Oct 19 (Y0)"}
+    time: "08:50"
+    photo: {ref: photo_pavlik_boots, hotspots: []}
+    text: "Pavlik (the small one, yes we know, long story with the names) has refused the winter boots for the third year. We respect his journey. We do not respect the vet bill."
+
+  - id: ta_weather_frost
+    network: prostor
+    author: "@ozerny_weather_amateur"
+    date: {day: -4, display: "Oct 10 (Y0)"}
+    time: "06:00"
+    text: "Pressure falling since Thursday. First hard frost tonight or tomorrow, −3 to −5 by the water. Cover what you love. The barometer has been right 41 years and is not starting to lie now."
+    editor: "Dated day -4: the frost arrives the night Mira goes to ground.
+      Later, players notice the dacha needed the propane exactly then."
+
+  - id: ta_weather_ice
+    network: prostor
+    author: "@ozerny_weather_amateur"
+    date: {day: 9, display: "Oct 22 (Y0)"}
+    time: "06:00"
+    text: "Skim ice on the shallows this morning. Not walking ice. It will not be walking ice for six weeks minimum and the lake does not care how brave your children are. Six weeks."
+
+  # --- NOISE: assorted townsfolk ----------------------------------------------------
+
+  - id: ta_lost_cat
+    network: prostor
+    author: "@sveta_ozerny88"
+    date: {day: -7, display: "Oct 7 (Y0)"}
+    time: "20:33"
+    text: "MARQUIS IS MISSING AGAIN. Gray, enormous, no manners, answers to nothing. If he's in your shed he is NOT lost, he is freeloading, please just push him out at dusk and he'll come home. Do not feed him. He tells us we don't feed him. Look at him. Lies."
+
+  - id: ta_found_cat
+    network: prostor
+    author: "@sveta_ozerny88"
+    date: {day: -6, display: "Oct 8 (Y0)"}
+    time: "09:14"
+    text: "Marquis has returned. He smells of smoked fish. Nobody in this house smokes fish. We have questions but no jurisdiction. Thank you all."
+
+  - id: ta_garage_sale
+    network: prostor
+    author: "@denis_ozerny_master"
+    date: {day: 4, display: "Oct 17 (Y0)"}
+    time: "11:45"
+    text: "Clearing the garage: winter tires (two seasons), a cot, a working samovar, and a box labeled 'cables, misc' which at this point I am selling as a mystery. Saturday, Sadovaya 9. Prices are feelings, come argue."
+
+  - id: ta_pharmacy_hours
+    network: prostor
+    author: "@zarya_ozerny"
+    date: {day: 2, display: "Oct 15 (Y0)"}
+    time: "08:30"
+    text: "Zarya pharmacy: this week we work the usual hours (9–19, Sun 10–16). Flu season stock has arrived. Please bring prescriptions, not photographs of prescriptions, and especially not photographs of pills on a tablecloth. — R.A."
+    editor: "Rufat's register even in the official account. Also quietly confirms
+      the pharmacy is down one pharmacist and hasn't shortened hours: he's
+      covering her shifts himself, saying nothing (his §7 'quiet worry' texture)."
+
+  - id: ta_house_of_culture_repair
+    network: prostor
+    author: "@ozerny_admin_page"
+    date: {day: -30, display: "Sep 14 (Y0)"}
+    time: "10:00"
+    text: "The House of Culture roof repair is COMPLETE, two weeks ahead of schedule. The administration thanks residents for their patience and asks them to stop testing the acoustics of the new hall by shouting 'echo.' It does not echo. That was the point of the repair."
+
+  - id: ta_mushroom_report
+    network: prostor
+    author: "@grib_ozerny_petrovich"
+    date: {day: -16, display: "Sep 28 (Y0)"}
+    time: "17:25"
+    text: "Season report, final: the birch side of the lake gave nothing all September. The pine side gave EVERYTHING. I have said too much. Petrovich out."
+
+  - id: ta_knitting_circle
+    network: prostor
+    author: "@roza_ozerny_choir"
+    date: {day: 3, display: "Oct 16 (Y0)"}
+    time: "14:00"
+    text: "Knitting circle Wednesday at mine. We are making socks for the school's lost-and-found box because children lose ONE sock with a dedication that deserves support. Bring wool. Galina is bringing the good scissors and we all know it."

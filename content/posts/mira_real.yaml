@@ -1,0 +1,148 @@
+# Finding Mira — @k_moroz real, abandoned account (Svoi)
+# ---------------------------------------------------------------------------
+# Post schema: identical to mira_curated.yaml (see header there).
+# ---------------------------------------------------------------------------
+# VOICE: the same person with the performance off. Tired and precise, never
+# melodramatic. Lowercase starts, few photos, posts late at night (the curated
+# account is the morning person; this one is the 2am one — the split IS the
+# evidence). Design 8.8: same dates as key curated posts, opposite emotional
+# truth. The re-read-everything moment.
+#
+# MIRRORS (day offsets must match mira_curated.yaml exactly):
+#   mr_night_one        <-> mc_arrival_kettle   (day -1066)
+#   mr_two_years_report <-> mc_two_years        (day -336)
+#   mr_propane          <-> mc_korzhik_order    (day -60)   <- card_propane_receipt
+# Last activity day -10: not a post — a login. The dormant-account view that
+# spooked her (design §4). After that, the silence is the mirror.
+# ---------------------------------------------------------------------------
+
+profile:
+  handle: "@k_moroz"
+  network: svoi
+  display_name: "K."
+  bio: "—"
+  avatar: "default gray silhouette"
+  privacy: private_abandoned
+  last_seen: {day: -10, display: "Oct 4 (Y0)", note: "login, no post; the view on the dormant account. In the endgame this flips to 'online 2 min ago' (mints mira_online_recently)."}
+  editor: "Created years before Ozerny — this was Katya's private account, kept
+    through the name change because deleting it meant losing the only place she
+    was still herself. 41 followers, none local. Access is gated (Act 2,
+    scene second_account_readthrough; mints second_account_found)."
+
+posts:
+  - id: mr_night_one
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -1066, display: "Nov 12 (Y-3)"}
+    time: "02:14"
+    text: "new walls. i lay awake cataloguing the sounds so i'll know which ones belong. the kettle is the only thing here that knows my old name."
+    editor: "Mirror of mc_arrival_kettle ('It sounds different against these walls. Better, I think.'). Same kettle, same night, 18 hours apart."
+
+  - id: mr_locks
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -1058, display: "Nov 20 (Y-3)"}
+    time: "01:47"
+    text: "the landlady's lock is from 1971. ordered my own. she'll think it's rude. rude is survivable."
+
+  - id: mr_pharmacy_logic
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -1033, display: "Dec 15 (Y-3)"}
+    time: "23:52"
+    text: "took the pharmacy job. behind a counter you see everyone who comes in, and there's a back door through the stockroom. i checked before i signed. that's what signing means now."
+    editor: "Mirror of mc_first_week_pharmacy, which is all 'kind customers, quiet work.'"
+
+  - id: mr_no_photos
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -998, display: "Jan 19 (Y-2)"}
+    time: "02:31"
+    text: "posted a photo of my own elbow today. the new account is a woman i invented who has no face and loves jam. people like her. she's likable. i built her that way and i still resent how easy it was."
+    editor: "Mirror of mc_saturday_rule (the bun-and-mittens post)."
+
+  - id: mr_alarm_system
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -867, display: "May 30 (Y-2)"}
+    time: "00:58"
+    text: "the town is the alarm system. that's the discovery. eight thousand people who notice a strange car by lunchtime. in the city i had a peephole. here i have a species."
+
+  - id: mr_anniversary_math
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -701, display: "Nov 12 (Y-2)"}
+    time: "03:05"
+    text: "one year. 365 days of nothing happening. i keep a private tally of nothing-happening days like other people keep sobriety chips. tonight i couldn't sleep anyway. the body keeps its own files."
+    editor: "Mirror of mc_one_year (curated: a warm little toast to the town)."
+
+  - id: mr_aziza
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -593, display: "Feb 28 (Y-1)"}
+    time: "22:40"
+    text: "told A. almost-everything today. not the name, not the city. she didn't ask a single question i'd have had to lie to. you can build a friendship on the questions someone doesn't ask. maybe only on those."
+    editor: "Mirror of mc_february_market. The one person (Aziza) is never named beyond 'A.'"
+
+  - id: mr_dream_audit
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -478, display: "Jun 23 (Y-1)"}
+    time: "01:22"
+    text: "dreamt the old stairwell again. woke up and did the audit: door locked, phone off, curtains right. the audit takes ninety seconds. it used to take an hour. this is what they mean by healing, i think. shorter audits."
+    editor: "Mirror of mc_late_post_sunday (curated: a serene far-shore photo, 'late post from Sunday')."
+
+  - id: mr_two_years_report
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -336, display: "Nov 12 (Y-1)"}
+    time: "02:12"
+    text: "two years. report: i laughed at the market on tuesday without doing the scan first. noticed only after. that's the whole entry. that's everything."
+    editor: "Mirror of mc_two_years. Referenced by name in mira_curated.yaml."
+
+  - id: mr_second_phone
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -244, display: "Feb 12 (Y0)"}
+    time: "23:19"
+    text: "the button phone still works. one number in it. i charge it on the first of the month like watering a plant i hope never to need."
+    editor: "Corroborates mira_had_second_phone (Lyudmila's glimpse, spring of Y-1)."
+
+  - id: mr_dacha_find
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -160, display: "May 7 (Y0)"}
+    time: "00:44"
+    text: "R. mentioned his late aunt's place past the beryozka turn, standing empty, papers never sorted. i said 'someone should keep the damp out of it' in the exact voice of the woman who loves jam. he gave me the key like it was nothing. it is not nothing. everyone should have a room no paper connects them to."
+    editor: "The dacha's origin. 'R.' is a pharmacy coworker thread left deliberately thin — Rufat knows it only as 'her coworker's aunt's old place' (rufat_dacha_mention)."
+
+  - id: mr_propane
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -60, display: "Aug 15 (Y0)"}
+    time: "21:58"
+    text: "winterized the room no one knows about. two bottles, stamped receipt, cash. the man at the exchange called me 'miss' and didn't look up. perfect transaction. see you in never, hopefully."
+    photo: {ref: card_propane_receipt, hotspots: [beryozka_exchange_stamp, receipt_date]}
+    mints: [propane_receipt]
+    editor: "THE paper trail (design 8.8): the receipt photo. Hotspot beryozka_exchange_stamp
+      places the exchange; with rufat_dacha_mention + map_pin_dacha it deduces
+      dacha_location. Mirror of mc_korzhik_order ('ordered the anniversary cake —
+      the entire dream'). The starkest pair in the set."
+
+  - id: mr_reflection_noticed
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -19, display: "Sep 25 (Y0)"}
+    time: "01:36"
+    text: "the bakery tagged their new promo photo. i'm in the window. a smear of a person, you'd never — but i spent three years being no one in photographs and i know what i look like as an accident. asked them to retake it. they said the light was gone. the light was gone."
+    editor: "She saw the reflection (korzhik_reflection) three days after it went up.
+      The player geolocates her from it in Act 1; Artyom already had. She knew."
+
+  - id: mr_old_contact_ping
+    network: svoi
+    author: "@k_moroz"
+    date: {day: -12, display: "Oct 2 (Y0)"}
+    time: "02:51"
+    text: "lena from the old life got a message from a name she didn't know, asking if she 'kept in touch with katya.' she didn't answer. she told me because she's lena. ninety-second audit is back to an hour. checking the tally: 1,054 days of nothing. counting feels different when you're counting down."
+    editor: "The probing message (design §4). Last real post. Two days later, the
+      login of day -10 — someone viewed this dormant account, and she went to ground."

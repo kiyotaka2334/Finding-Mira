@@ -1,0 +1,101 @@
+# Finding Mira — Katya Zimina's old public posts (Vetrogorsk era)
+# ---------------------------------------------------------------------------
+# Post schema: identical to mira_curated.yaml (see header there).
+# Surfaced only via archive search of the real name (§18: the "Katya Zimina"
+# unlock). Collectively minted as mira_old_posts_public; with
+# dan_shared_memories_verbatim they conclude dan_is_scraping (§9).
+# ---------------------------------------------------------------------------
+# THE FIVE SCRAPED LINES (canon.md) appear here VERBATIM, exactly once each.
+# Dan's warm-tier anecdotes in content/dialogue/dan/blocks.yaml quote them
+# word-for-word — he was scraping, not remembering. The tell and the re-read
+# payoff are the same line (§14).
+# ---------------------------------------------------------------------------
+# VOICE: Katya before. Warmer, quicker, more jokes than Mira's curated feed —
+# the register the player only recognizes as "the same person, unafraid"
+# after reading all three feeds. Public account, real face, real tags.
+# ---------------------------------------------------------------------------
+
+profile:
+  handle: "@katya.zimina"
+  network: prostor
+  display_name: "Katya Zimina"
+  bio: "Vetrogorsk. Farmakor. I will identify your mystery pill from a blurry photo, stop asking."
+  status: "inactive — last post 3 years ago"
+  editor: "Face visible in older photos; this is where card_katya_staff_photo
+    and Timur's archive path terminate. Account went silent, never deleted —
+    deleting it would have confirmed to a watcher that she noticed him."
+
+posts:
+  - id: ka_pencil_shavings
+    network: prostor
+    author: "@katya.zimina"
+    date: {day: -1890, display: "Nov 8 (Y-5)"}
+    time: "08:12"
+    text: "Walking to work in the first real cold and I'll die on this hill: first snow always smells like pencil shavings to me. Nobody agrees. The pharmacy smells like menthol and betrayal, so I'm the expert here."
+    editor: "SCRAPED LINE 1. Dan retells it as a memory of walking with her 'to lectures.'"
+
+  - id: ka_cinnamon
+    network: prostor
+    author: "@katya.zimina"
+    date: {day: -1815, display: "Jan 22 (Y-4)"}
+    time: "19:40"
+    text: "Review of the new place on Kirova: the coffee is fine, the buns are cry-for-help sweet, and they put cinnamon on everything unrequested. As I have said before and will say at my funeral: cinnamon is a spice for people who don't trust themselves. Two stars, will return, I also don't trust myself."
+    editor: "SCRAPED LINE 2. Dan quotes it as 'her whole thing about cinnamon' at the café."
+
+  - id: ka_lake_cried
+    network: prostor
+    author: "@katya.zimina"
+    date: {day: -1725, display: "Jun 30 (Y-4)"}
+    time: "21:05"
+    photo: {ref: card_katya_lake_photo, hotspots: []}
+    text: "Annual pilgrimage to grandma's village water. City pools are chlorine and judgment. I only trust a lake that's seen me cry."
+    editor: "SCRAPED LINE 3. Dan deploys it about 'their' lake trips. There were no trips; there was one caption."
+
+  - id: ka_librarians
+    network: prostor
+    author: "@katya.zimina"
+    date: {day: -1610, display: "Oct 12 (Y-4)"}
+    time: "09:00"
+    text: "Five years at Farmakor today. When people ask what I do I say pharmacists are just librarians for the body — we know where everything's shelved, we shush people who shout, and we absolutely judge your checkout history. Cake in the break room at four."
+    photo: {ref: card_katya_staff_photo, hotspots: [caption_name_zimina]}
+    mints: [mira_old_posts_public]
+    editor: "SCRAPED LINE 4, and the work-anniversary post whose staff photo
+      (card_katya_staff_photo, caption hotspot) is Timur's archive-path endpoint.
+      Dan repeats the line as 'what she always said at parties.'"
+
+  - id: ka_bread_van
+    network: prostor
+    author: "@katya.zimina"
+    date: {day: -1510, display: "Jan 20 (Y-3)"}
+    time: "23:18"
+    text: "Long shift thought: someday I want a town small enough to hear the bread van. Vetrogorsk hears nothing. Vetrogorsk is a dial tone with trams."
+    editor: "SCRAPED LINE 5. Reads as whimsy; re-reads as the escape plan, posted
+      ten months before she executed it. Dan quotes it to the player as proof he
+      knew 'she'd end up somewhere like Ozerny' — the one time his scraping
+      touches something true, which is why it works."
+
+  - id: ka_mystery_pill
+    network: prostor
+    author: "@katya.zimina"
+    date: {day: -1770, display: "Mar 8 (Y-4)"}
+    time: "13:33"
+    text: "DMs today: four mystery pills, one 'is it bad to take these with beer' (yes, Pasha), and one marriage proposal contingent on me identifying a lozenge. Identified it. Declined the marriage. It was a lozenge."
+
+  - id: ka_farmakor_grumble
+    network: prostor
+    author: "@katya.zimina"
+    date: {day: -1585, display: "Nov 6 (Y-4)"}
+    time: "20:51"
+    text: "Inventory week. If one more journalist calls the warehouse line asking about 'the discrepancies' I am transferring them to the fax machine. We count boxes, we find boxes. Thrilling exposé. Film at eleven."
+    editor: "Her one brush with the Farmakor inventory scandal (the red-herring
+      keyword, §18) — establishes she was staff during it and uninvolved."
+
+  - id: ka_last_public
+    network: prostor
+    author: "@katya.zimina"
+    date: {day: -1145, display: "Dec 24 (Y-3)"}
+    time: "22:47"
+    text: "Turning comments off for a while. Nothing dramatic — winter, work, a person can want quiet. Happy new year to the normal ones among you."
+    editor: "The uneasy post from the stalking period (canon): stops short of
+      specifics, per design §22. 'The normal ones among you' is the entire
+      story, told sideways. Final post. Eleven months later, Ozerny."

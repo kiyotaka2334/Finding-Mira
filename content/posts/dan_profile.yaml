@@ -1,0 +1,148 @@
+# Finding Mira — @dan.volkov, the fabricated account (Prostor)
+# ---------------------------------------------------------------------------
+# Post schema: identical to mira_curated.yaml (see header there).
+# ---------------------------------------------------------------------------
+# THE FORENSICS (design §5 — every lie discoverable from Act 1):
+#   1. account_created day -243 (8 months) vs posts "dated" back ~2 years.
+#      Inspecting profile meta mints dan_account_is_8mo_old (card_dan_account_meta).
+#   2. Two composite photos "with Mira": photo_dan_mira_lake (hotspot
+#      shadow_mismatch — schema §2.1 worked example) and photo_dan_mira_cafe
+#      (hotspot reflection_absent). Either mints dan_photos_forged
+#      (card_composite_shadows).
+#   3. "Memory" captions paraphrase Katya's old posts closely; ONE is verbatim
+#      (dp_lake_montage quotes scraped line 3) — with mira_old_posts_public
+#      this is dan_shared_memories_verbatim -> dan_is_scraping (§9).
+#   4. Zero comments from real mutuals: every commenter is a follower-farm
+#      handle, no townspeople, no city friends who exist elsewhere.
+# VOICE: surface-plausible warm-guy minimalism. The account is a set: nothing
+# is wrong with any single post; everything is wrong with the account.
+# ---------------------------------------------------------------------------
+
+profile:
+  handle: "@dan.volkov"
+  network: prostor
+  display_name: "Dan Volkov"
+  bio: "Vetrogorsk → wherever the work is. Old friends are the good kind."
+  avatar: "man in sunglasses, three-quarter turn, backlit — verifiable of nothing"
+  account_created: {day: -243, display: "Feb 13 (Y0)"}
+  mints_on_inspection: [dan_account_is_8mo_old]
+  evidence: card_dan_account_meta
+  editor: "The created-date is one tap below the surface (Timur: 'the app doesnt
+    show created-date unless u know where to look' — timur_on_dan). Backdating
+    posts is possible on Prostor; backdating the account is not. That asymmetry
+    is the whole discovery."
+
+posts:
+  - id: dp_oldest_backdated
+    network: prostor
+    author: "@dan.volkov"
+    date: {day: -730, display: "Oct 14 (Y-2)", backdated: true}
+    time: "18:20"
+    text: "Cleaning out the drafts folder. Some friendships you don't post about, you just keep. M knows."
+    editor: "The oldest 'post' — dated 487 days before the account existed.
+      'M knows' does heavy lifting: intimate, unfalsifiable, nameless."
+
+  - id: dp_lake_montage
+    network: prostor
+    author: "@dan.volkov"
+    date: {day: -670, display: "Dec 13 (Y-2)", backdated: true}
+    time: "20:11"
+    photo: {ref: photo_dan_mira_lake, hotspots: [shadow_mismatch, horizon_seam]}
+    mints_on_hotspot: [dan_photos_forged]
+    text: "Found this from one of the lake summers. She always said 'I only trust a lake that's seen me cry.' Same, M. Same."
+    editor: "THE composite (schema §2.1 example). Her figure is lifted from
+      card_katya_lake_photo — sun on her from the left, on him from the right
+      (hotspot shadow_mismatch); the waterline doesn't continue behind her
+      shoulder (horizon_seam). Caption quotes scraped line 3 VERBATIM —
+      dan_shared_memories_verbatim anchors here."
+
+  - id: dp_cafe_composite
+    network: prostor
+    author: "@dan.volkov"
+    date: {day: -450, display: "Jul 21 (Y-1)", backdated: true}
+    time: "15:42"
+    photo: {ref: photo_dan_mira_cafe, hotspots: [reflection_absent]}
+    mints_on_hotspot: [dan_photos_forged]
+    text: "Coffee with the person who taught me that cinnamon is for people who don't trust themselves 😄 her words not mine"
+    editor: "Second composite. The café window reflects the street, the table,
+      him — and no one in her chair (hotspot reflection_absent). Caption
+      paraphrases scraped line 2 close-but-not-verbatim."
+
+  - id: dp_pharmacist_joke
+    network: prostor
+    author: "@dan.volkov"
+    date: {day: -380, display: "Sep 29 (Y-1)", backdated: true}
+    time: "12:05"
+    text: "My oldest friend describes her job as being a librarian for the body. Ten years and she's still the funniest person I know."
+    editor: "Paraphrase of scraped line 4. 'Ten years' — the friendship's claimed
+      age drifts across posts (ten years here, 'since college' in his DMs,
+      'we go back forever' at the vigil). Nobody who remembers needs a range."
+
+  - id: dp_generic_grid_1
+    network: prostor
+    author: "@dan.volkov"
+    date: {day: -320, display: "Nov 28 (Y-1)", backdated: true}
+    time: "19:30"
+    photo: {ref: photo_dan_gym_mirror, hotspots: []}
+    text: "Discipline is a place you visit daily."
+    editor: "Filler texture: stock-adjacent gym/car/coffee posts, evenly spaced,
+      no location data anywhere on the account. A life with no address."
+
+  - id: dp_generic_grid_2
+    network: prostor
+    author: "@dan.volkov"
+    date: {day: -270, display: "Jan 17 (Y0)", backdated: true}
+    time: "08:45"
+    text: "New year, same principle: show up for your people."
+    comments:
+      - {author: "@max_drive_777", text: "🔥🔥"}
+      - {author: "@lena.smmpro", text: "This! 👏"}
+    editor: "The comment section pattern: every engaged account is a farm handle.
+      Cross-checking any commenter finds the same two emoji on ten thousand posts."
+
+  - id: dp_first_real_post
+    network: prostor
+    author: "@dan.volkov"
+    date: {day: -240, display: "Feb 16 (Y0)"}
+    time: "21:59"
+    text: "Sometimes you realize you've let the important people drift. Fixing that this year."
+    editor: "The first post actually written when it says it was — three days
+      after account creation, eleven days after the bakery promo photo went up
+      (day -22... see town_ambient korzhik_promo at day -21 of Y0 wait — the
+      promo is ~3 weeks before day 1; his scouting predates it via the earlier
+      Y0 reflection find, design §4 keeps the exact vector at 'a bakery promo
+      shot'). Editor note kept honest: this is the pivot from set-dressing to
+      operation."
+
+  - id: dp_worried_pivot
+    network: prostor
+    author: "@dan.volkov"
+    date: {day: -6, display: "Oct 8 (Y0)"}
+    time: "23:34"
+    text: "If a friend goes quiet and something feels wrong, you don't wait for permission to care. Headed to keep a promise. More soon."
+    editor: "Posted BEFORE Mira stopped posting (her last post is day -4).
+      He announced the search two days before there was anything to search for.
+      The single most damning timestamp on the account, hidden in plain sight;
+      pairs with card_final_post_meta."
+
+  - id: dp_appeal
+    network: prostor
+    author: "@dan.volkov"
+    date: {day: 2, display: "Oct 15 (Y0)"}
+    time: "09:20"
+    photo: {ref: photo_dan_mira_lake, hotspots: [shadow_mismatch, horizon_seam]}
+    text: "This is Mira. Pharmacist, best person I know, hasn't been heard from since Friday. She has family who love her and can't reach her. Any information — my DMs are open, discretion assured. Please share. 🙏"
+    editor: "The public appeal the player is recruited under. 'Family who love
+      her' (dan_claims_family_asked) is checkable against mira_estranged_family.
+      'Discretion assured' recurs verbatim in Oleg's reward post — same author,
+      same tic (oleg_reward_wording)."
+
+  - id: dp_vigil_repost
+    network: prostor
+    author: "@dan.volkov"
+    date: {day: 9, display: "Oct 22 (Y0)"}
+    time: "20:44"
+    text: "This town. You raised someone worth this much love. Whatever happens — thank you, Ozerny."
+    editor: "Act 3, Dan-in-town: the charm offensive goes public-facing
+      (dan_cried_at_vigil, dan_donated_search_fund circulate around it).
+      Addressed to the town, engineered to be screenshotted BY the town."
