@@ -1,0 +1,953 @@
+# Finding Mira — Dan dialogue blocks (design §14, schema §2.4)
+# Tone tiers read suspicion by tier only (warm / clipped / auditing / cut).
+# Blocks provide tone_variants for every tier reachable under their `requires`.
+# Echo lines are NOT here — they are generated from echo_templates.yaml.
+# The five scraped anecdotes quote Katya's old public posts VERBATIM (canon.md);
+# the quote is both the charm and the tell.
+
+# ---------------------------------------------------------------- ACT 1 ----
+
+# Beat: the opening DM. The pitch — four days of silence, police won't act.
+- id: a1_opening_pitch
+  beat: act1
+  deep: true
+  requires:
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      Hi. You don't know me — I'm Dan, Mira's friend. Mira Sokolova, the
+      pharmacist at Zarya? It's been four days and her phone goes straight to
+      nothing. The police told me an adult is allowed to not answer her phone.
+      Her family asked me to look, and I'm in the city going quietly crazy,
+      and yours was the only Ozerny name I could find that felt like a person
+      and not a rumor. I'm sorry to land this on you. I didn't know who else
+      there even was.
+  responses:
+    - text: "How do you know Mira?"
+      events: [{flag: {id: pitch_heard}}]
+    - text: "Why me? We've never met."
+      events: [{flag: {id: pitch_heard}}]
+    - text: "Four days isn't long. People take trips."
+      events: [{flag: {id: pitch_heard}}]
+
+# Beat: "why you" — the recruitment logic, honest on re-read.
+- id: a1_why_you
+  beat: act1
+  requires:
+    flag: {id: pitch_heard}
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      Honestly? Because Ozerny doesn't talk to strangers, and from there I'd
+      be a stranger. You grew up in that town. People will tell you at the
+      bakery what they'd never tell a man calling from the city. I'm not
+      asking you to be a detective — just ask, look, listen. You know
+      everyone. That's the whole superpower.
+  responses:
+    - text: "That's fair. I can ask around."
+      events: [{flag: {id: favor_accepted}}]
+    - text: "I'm nobody's investigator, Dan."
+      events: []
+    - text: "I don't think I can help you."
+      events: [{refuse_ask: {}}]
+
+# Beat: the grieving-best-friend performance.
+- id: a1_grief_story
+  beat: act1
+  deep: true
+  requires:
+    flag: {id: pitch_heard}
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      We've been friends since college — she's the one who kept everyone fed
+      through exams and never once asked for anything back. Her mother can't
+      work the internet and her cousin keeps saying she "does this
+      sometimes." She doesn't. In fifteen years she has never gone quiet on
+      me. Her feed just stopped mid-week, like a song cut off. I keep
+      replaying what I might have missed.
+  responses:
+    - text: "You two sound close."
+      events: []
+    - text: "When did you last actually speak?"
+      events: []
+    - text: "I'll see what the town knows."
+      events: [{flag: {id: favor_accepted}}]
+
+# Beat: the favor framing — shrink the ask until it's unrefusable.
+- id: a1_favor_framing
+  beat: act1
+  requires:
+    flag: {id: favor_accepted}
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      I want to be clear about what I'm asking, because it isn't much. Walk
+      past the pharmacy. Ask your mother if anyone's mentioned her. Notice
+      things. If it turns out she's on some spa trip ignoring us all, we
+      laugh about it and I owe you dinner forever.
+  responses:
+    - text: "Deal. Small things."
+      events: []
+    - text: "And if it's not nothing?"
+      events: []
+
+# Beat: scenario 8.3, the envelope. The first trap that doesn't look like a choice.
+- id: a1_envelope_offer
+  beat: act1
+  deep: true
+  requires:
+    flag: {id: favor_accepted}
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      One more thing, and please don't be weird about it. I sent you
+      something — for expenses. Petrol, coffee for whoever you talk to, your
+      time. Mira would kill me if I let you run around for free. It's not
+      payment. It's me being less useless from far away.
+  responses:
+    - text: "Okay. Thank you."
+      events:
+        - {mints: {token: dan_paid_player}}
+        - {flag: {id: envelope_accepted}}
+    - text: "I can't take money for this."
+      events:
+        - {refuse_ask: {}}
+        - {delay: {channel: dan_intel, days: 1}}
+
+# Beat: scraped anecdote 1/5 — verbatim from Katya's Nov post, 5 yrs ago.
+- id: a1_anecdote_first_snow
+  beat: act1
+  requires:
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      Cold in the city today. You know what Mira says every November —
+      "first snow always smells like pencil shavings to me." Every year,
+      word for word, like she'd just invented it. I'd give a lot to get that
+      text this week.
+  responses:
+    - text: "She sounds easy to like."
+      events: []
+    - text: "It hasn't snowed here yet. Soon."
+      events: []
+
+# Beat: scraped anecdote 2/5 — verbatim from Katya's café review.
+- id: a1_anecdote_cinnamon
+  beat: act1
+  requires:
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      There was this café we hid in during finals. She'd send back anything
+      with cinnamon on it and tell the waiter, absolutely straight-faced,
+      "cinnamon is a spice for people who don't trust themselves." Then
+      she'd eat half of mine. I never once won that argument.
+  responses:
+    - text: "Did anyone ever win an argument with her?"
+      events: []
+    - text: "Noted. No cinnamon if I ever meet her."
+      events: []
+
+# Beat: scraped anecdote 3/5 — verbatim from Katya's summer photo caption.
+- id: a1_anecdote_lake
+  beat: act1
+  requires:
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      She'd love that you live by the water. When my dad died she drove me
+      out to the reservoir and said nothing for an hour, and then: "I only
+      trust a lake that's seen me cry." I laughed. She didn't. I think about
+      that line a lot these days.
+  responses:
+    - text: "That's a whole person in one sentence."
+      events: []
+    - text: "Maybe the lake here has seen her too."
+      events: []
+
+# Beat: scraped anecdote 4/5 — verbatim from Katya's work anniversary post.
+- id: a1_anecdote_librarians
+  beat: act1
+  requires:
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      People hear "pharmacist" and picture someone counting pills. At her
+      first work party she stood up and said "pharmacists are just
+      librarians for the body," and her boss had it printed on a mug. She
+      loved that work. She wouldn't just walk out on it. That's how I know
+      something's wrong.
+  responses:
+    - text: "Her boss here doesn't strike me as a mug person."
+      events: []
+    - text: "You remember a lot of her lines."
+      events: []
+
+# Beat: scraped anecdote 5/5 — verbatim; her escape plan, and he read it.
+- id: a1_anecdote_bread_van
+  beat: act1
+  requires:
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      Funny thing. Years ago she told me, "I want a town small enough to
+      hear the bread van." I thought it was a joke about the city. Then one
+      day she'd found one. Maybe she's just found a smaller one now — tell
+      me that's all this is.
+  responses:
+    - text: "Ozerny's about as small as they come."
+      events: []
+    - text: "People don't usually leave a hiding place for a smaller one."
+      events: []
+
+# Beat: reciprocal-interest smalltalk — the likability budget.
+- id: a1_smalltalk_mom
+  beat: act1
+  requires:
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      Enough of my doom for one evening. How's your mom taking you being
+      back? Mine reorganized my entire kitchen the one week I stayed over.
+      By love, she said. Everything was alphabetical and nothing was
+      findable.
+  responses:
+    - text: "Thrilled. Suspiciously thrilled."
+      events: []
+    - text: "She feeds me like I'm being fattened for market."
+      events: []
+    - text: "We're still finding the rhythm."
+      events: []
+
+# Beat: routine-token camouflage — he holds Mom's "barely home" report via the network.
+- id: a1_smalltalk_long_day
+  beat: act1
+  requires:
+    knowledge: {agent: dan, has: [routine_barely_home]}
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      Long day yesterday? I can tell when someone's answering from the
+      doorway. Don't run yourself into the ground over this — she'd hate
+      that, and I'd have it on my conscience.
+  responses:
+    - text: "How could you tell?"
+      events: []
+    - text: "Long week, honestly."
+      events: []
+
+# Beat: routine-token camouflage — Mom's "on that laptop till two" report.
+- id: a1_smalltalk_late_nights
+  beat: act1
+  requires:
+    knowledge: {agent: dan, has: [routine_late_nights]}
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      Were you up past two again? Screens till dawn is how I lost most of
+      last year. Whatever you're chasing will keep till morning. Go to
+      sleep, detective. Doctor's orders — well, pharmacist's.
+  responses:
+    - text: "How do you know when I sleep, Dan?"
+      events: []
+    - text: "Rich, coming from the man who DMs at midnight."
+      events: []
+
+# Beat: the routine ask — stalking tradecraft dressed as concern.
+- id: a1_nudge_routine
+  beat: act1
+  requires:
+    knowledge: {agent: dan, lacks: [routine_mapped]}
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      The thing that would help most is her ordinary day. Where she bought
+      bread, which way she walked home, when her shift ended. Small boring
+      things — small boring things are how you find a person. I'd do it
+      myself if I weren't three hundred kilometers away.
+  responses:
+    - text: "I'll put her week together."
+      events: [{promise: {npc: dan, id: promise_routine}}]
+    - text: "Why does her routine matter if she's gone?"
+      events: []
+
+# Beat: delivering the routine — Act 1's ending transfer.
+- id: a1_deliver_routine
+  beat: act1
+  requires:
+    knowledge: {agent: dan, lacks: [routine_mapped]}
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: "Anything on her week yet? Even half a picture helps me think."
+    clipped: "Do you have her week or not?"
+  responses:
+    - text: "Bakery at opening, pharmacy till close, the lake path home. Same loop, every day."
+      events:
+        - {tell: {agent: dan, token: routine_mapped}}
+        - {report: {tokens: [routine_mapped]}}
+        - {resolve_promise: {id: promise_routine, kept: true}}
+    - text: "Nothing solid yet. She kept to herself."
+      events:
+        - {claim: {agent: dan, token: routine_mapped, verdict: denied}}
+
+# Beat: the last-seen probe.
+- id: a1_probe_last_seen
+  beat: act1
+  requires:
+    knowledge: {agent: dan, lacks: [mira_last_seen_photo]}
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: >-
+      Has anyone actually laid eyes on her since her last shift? A photo, a
+      receipt, anything with a date on it. I need one fixed point or my head
+      just spins.
+    clipped: "Last confirmed sighting. Do you have one?"
+  responses:
+    - text: "There's a photo. She's in the background, locking up the pharmacy."
+      events:
+        - {tell: {agent: dan, token: mira_last_seen_photo}}
+        - {report: {tokens: [mira_last_seen_photo]}}
+    - text: "Nothing dated. Just talk."
+      events:
+        - {claim: {agent: dan, token: mira_last_seen_photo, verdict: denied}}
+    - text: "Still working on it."
+      events: []
+
+# Beat: he warns the player about himself — scenario 8.1 aftershock.
+- id: a1_react_asking_questions
+  beat: act1
+  requires:
+    knowledge: {agent: dan, has: [player_asking_questions]}
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      Heard a funny thing — half of Ozerny apparently thinks you're
+      undercover police now. My fault, I should have said: ask quietly. If
+      she's avoiding someone, the last thing we want is that someone hearing
+      the whole town buzz.
+  responses:
+    - text: "Heard from who? You don't know anyone here."
+      events: []
+    - text: "Small towns. A question is a headline by dinner."
+      events: []
+
+# ---------------------------------------------------------------- ACT 2 ----
+
+# Beat: scenario 8.6 — the search party becomes his search engine.
+- id: a2_probe_search_party
+  beat: act2
+  requires:
+    knowledge: {agent: dan, has: [search_party_forming], lacks: [search_route_north]}
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: >-
+      A search party — that's the town I hoped she'd found. Where are they
+      starting? I want to keep a map of what's been covered so nobody wastes
+      a morning re-walking the same shore.
+    clipped: "Where does the search start?"
+  responses:
+    - text: "North shore, tomorrow morning."
+      events:
+        - {tell: {agent: dan, token: search_route_north}}
+        - {report: {tokens: [search_route_north]}}
+    - text: "They haven't settled on a route."
+      events:
+        - {claim: {agent: dan, token: search_route_north, verdict: denied}}
+    - text: "It's all in the volunteer chat. Read it yourself."
+      events: []
+
+# Beat: pointing him at the inner circle.
+- id: a2_probe_circle
+  beat: act2
+  requires:
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: >-
+      Who did she actually spend time with there? Everyone has one person
+      who gets the real version of them. Find that person and be kind to
+      them — they'll be scared for her too, even if they hide it well.
+    clipped: "Who was she close to in town? Names help."
+  responses:
+    - text: "There's a friend. I'm still earning her."
+      events: [{flag: {id: told_dan_about_friend}}]
+    - text: "She kept everyone at arm's length, from what I hear."
+      events: []
+
+# Beat: the landlady probe — he's shopping for an informant.
+- id: a2_probe_landlady
+  beat: act2
+  requires:
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: >-
+      What about her landlady? Landladies know everything — when the lights
+      go off, who visits, what the mail looks like. Is hers the talkative
+      kind?
+    clipped: "The landlady. What does she say?"
+  responses:
+    - text: "Talkative is one word for Lyudmila Petrovna. Tell her anything, the town has it by lunch."
+      events: [{flag: {id: told_dan_about_lyudmila}}]
+    - text: "Haven't gone near the house. Felt intrusive."
+      events: []
+
+# Beat: profiling her exit through the shift book.
+- id: a2_probe_pharmacy
+  beat: act2
+  requires:
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: >-
+      Could you get a look at her shift book? If her last weeks were normal,
+      something happened to her. If she was swapping shifts and clearing
+      time, she was getting ready to go. That difference is everything and
+      only the pharmacy has it.
+    clipped: "Her shift records. Any way in?"
+  responses:
+    - text: "Rufat barely lets me past the counter. I'll try."
+      events: [{promise: {npc: dan, id: promise_shift_book}}]
+    - text: "That's her employer's business, not ours."
+      events: [{refuse_ask: {}}]
+
+# Beat: fishing for the real account.
+- id: a2_probe_second_account
+  beat: act2
+  requires:
+    knowledge: {agent: dan, lacks: [second_account_found]}
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: >-
+      Her feed bothers me. It's so tidy it's almost anonymous — pastries,
+      sunsets, tea. Nobody is that tidy. Did she have another account
+      somewhere? An old one, a private one. People always keep one door
+      open.
+    clipped: "Any second account? Old handle, private profile, anything."
+  responses:
+    - text: "Found one. Old handle, abandoned years back."
+      events:
+        - {tell: {agent: dan, token: second_account_found}}
+        - {report: {tokens: [second_account_found]}}
+    - text: "The feed is all there is. I've looked."
+      events:
+        - {claim: {agent: dan, token: second_account_found, verdict: denied}}
+    - text: "If she wanted a door found, it wouldn't be private."
+      events: []
+
+# Beat: a detail no college friend should know.
+- id: a2_probe_second_phone
+  beat: act2
+  requires:
+    knowledge: {agent: dan, lacks: [mira_had_second_phone]}
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: >-
+      One more old habit worth checking — in the city she carried two
+      phones. Work and everything else, always. Did anyone in town ever
+      mention a second phone?
+    clipped: "Did she keep a second phone here? She used to."
+  responses:
+    - text: "Someone did mention a second phone, actually."
+      events:
+        - {tell: {agent: dan, token: mira_had_second_phone}}
+        - {report: {tokens: [mira_had_second_phone]}}
+    - text: "No. And how would you know how many phones she carried?"
+      events:
+        - {claim: {agent: dan, token: mira_had_second_phone, verdict: denied}}
+    - text: "Nothing like that has come up."
+      events: []
+
+# Beat: circling the old name — spans every pre-cut tier.
+- id: a2_probe_old_life
+  beat: act2
+  requires:
+    knowledge: {agent: dan, lacks: [mira_real_name]}
+  tone_variants:
+    warm: >-
+      Did she ever talk about her life before Ozerny? I realize I only ever
+      got the funny stories — never the town, never the before. Even which
+      city she came from would help her family put a timeline together.
+    clipped: "Where was she before Ozerny? Anyone say?"
+    auditing: "Her old name. Someone in that town knows it. Do you?"
+  responses:
+    - text: "Her old life is her business. I'm looking for where she went, not where she's from."
+      events: [{refuse_ask: {}}]
+    - text: "Nobody here knew her before. She arrived fully formed."
+      events:
+        - {claim: {agent: dan, token: mira_real_name, verdict: denied}}
+    - text: "She was Katya Zimina. From Vetrogorsk."
+      events:
+        - {tell: {agent: dan, token: mira_real_name}}
+
+# Beat: the full debrief — the slot-costing report scene.
+- id: a2_deliver_findings
+  beat: act2
+  deep: true
+  requires:
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: >-
+      Talk to me. Everything you've got, in whatever order it comes — I'll
+      sort it. Sorting other people's pieces is the one thing I'm good for.
+    clipped: "Give me everything since we last spoke. In order."
+  responses:
+    - text: "Full rundown: her routine, the last confirmed sighting, where the search stands."
+      events:
+        - {tell: {agent: dan, token: routine_mapped}}
+        - {tell: {agent: dan, token: mira_last_seen_photo}}
+        - {report: {tokens: [routine_mapped, mira_last_seen_photo]}}
+    - text: "Honestly? Dead ends all week."
+      events:
+        - {claim: {agent: dan, token: routine_mapped, verdict: denied}}
+        - {claim: {agent: dan, token: mira_last_seen_photo, verdict: denied}}
+    - text: "I'd rather organize it properly and send tonight."
+      events: []
+
+# Beat: §12 testing — he asks what he already knows (clipped tier).
+- id: a2_test_last_shift
+  beat: act2
+  requires:
+    knowledge: {agent: dan, has: [mira_last_seen_photo]}
+    suspicion: {tier_at_least: clipped, tier_at_most: clipped}
+  tone_variants:
+    clipped: "Remind me — when was she last seen? My notes disagree with each other."
+  responses:
+    - text: "Locking up the pharmacy, four days before you first messaged me. Same as I said."
+      events: [{report: {tokens: [mira_last_seen_photo]}}]
+    - text: "Still pinning that down."
+      events:
+        - {claim: {agent: dan, token: mira_last_seen_photo, verdict: denied}}
+    - text: "You have my messages. Scroll up."
+      events: [{flag: {id: player_noticed_testing}}]
+
+# Beat: §12 testing — the route he already holds.
+- id: a2_test_route
+  beat: act2
+  requires:
+    knowledge: {agent: dan, has: [routine_mapped]}
+    suspicion: {tier_at_least: clipped, tier_at_most: clipped}
+  tone_variants:
+    clipped: "Which way did she walk home — the water or the square? For my map."
+  responses:
+    - text: "The lake path. Every evening, like I told you."
+      events: [{report: {tokens: [routine_mapped]}}]
+    - text: "I never worked out her walking route."
+      events:
+        - {claim: {agent: dan, token: routine_mapped, verdict: denied}}
+    - text: "Your map already has it, doesn't it."
+      events: [{flag: {id: player_noticed_testing}}]
+
+# Beat: §12 testing — the search route he reads directly.
+- id: a2_test_search
+  beat: act2
+  requires:
+    knowledge: {agent: dan, has: [search_route_north]}
+    suspicion: {tier_at_least: clipped, tier_at_most: clipped}
+  tone_variants:
+    clipped: "Did the volunteers go out yet? Which shore did they take?"
+  responses:
+    - text: "North shore, like the chat said."
+      events: [{report: {tokens: [search_route_north]}}]
+    - text: "The search fell through, I heard."
+      events:
+        - {claim: {agent: dan, token: search_route_north, verdict: denied}}
+    - text: "You read that chat yourself. Why ask me?"
+      events: [{flag: {id: player_noticed_testing}}]
+
+# Beat: the silence reproach — turtling has a face.
+- id: a2_silence_reproach
+  beat: act2
+  requires:
+    suspicion: {tier_at_least: clipped}
+  tone_variants:
+    clipped: >-
+      You're still there? Two days of nothing — I started writing worst
+      cases. If you're done with this, say so. Don't just go dark on me.
+    auditing: "Two days. Silence is also information."
+  responses:
+    - text: "Busy days. I'm here."
+      events: []
+    - text: "I don't owe you a check-in schedule, Dan."
+      events: [{refuse_ask: {}}]
+
+# Beat: the anecdotes curdle — the player clocks the verbatim tell.
+- id: a2_anecdote_callback
+  beat: act2
+  deep: true
+  requires:
+    knowledge: {agent: player, has: [mira_old_posts_public]}
+    suspicion: {tier_at_most: warm}
+  tone_variants:
+    warm: >-
+      Sorry — I keep circling the same memories. The pencil shavings. The
+      lake that's seen her cry. You start to worry you're remembering a
+      person wrong when they're not there to correct you.
+  responses:
+    - text: "(Word for word. He isn't remembering her — he's reciting her posts.)"
+      events: [{mints: {token: dan_shared_memories_verbatim}}]
+    - text: "Grief loops like that. It's normal."
+      events: []
+
+# Beat: a small ask — he's assembling the town's noticeboard view.
+- id: a2_small_ask
+  beat: act2
+  requires:
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: >-
+      Small thing, if you're passing — could you photograph the notice board
+      by the market? Bus times, flyers, whatever's pinned up. I want to see
+      what the town sees when it stands still for a minute.
+    clipped: "Photograph the market notice board for me when you pass it."
+  responses:
+    - text: "Sure. Easy enough."
+      events: [{flag: {id: agreed_notice_board}}]
+    - text: "What could a notice board possibly tell you?"
+      events: []
+    - text: "No. That's an odd thing to want."
+      events: [{refuse_ask: {}}]
+
+# ---------------------------------------------------------------- ACT 3 ----
+
+# Beat: scenario 8.10 opening — he is in the player's room, calm.
+- id: a3_diary_opening
+  beat: diary_confrontation
+  requires:
+    time: {act: 3}
+  tone_variants:
+    warm: >-
+      There you are. Your mother let me in — the kettle's still warm, she's
+      lovely. I was reading while I waited. You write very clearly. Sit
+      down, I'm not angry.
+    clipped: "Sit. Your mother made tea. We'll go through your notes together."
+    auditing: "Sit down. Page nine. We'll start there."
+  responses:
+    - text: "That's my journal. Put it down."
+      events: []
+    - text: "(Sit down slowly. Say nothing.)"
+      events: []
+
+# Beat: diary branch — play dumb. He resets the process, politely.
+- id: a3_diary_play_dumb
+  beat: diary_confrontation
+  requires:
+    time: {act: 3}
+  tone_variants:
+    warm: >-
+      Some of this never made it into your reports. Organized people forget
+      to hit send — I know, I'm one. So we'll fix the process. You'll send
+      me pages now, not summaries.
+    clipped: "Pages, not summaries, from now on."
+    auditing: "You'll send pages now. Every evening. Not summaries."
+  responses:
+    - text: "That's fair. I got precious about my notes."
+      events: [{flag: {id: diary_branch_play_dumb}}]
+    - text: "You could have just asked to see them."
+      events: [{flag: {id: diary_branch_play_dumb}}]
+
+# Beat: diary branch — mask off. The reveal is relief, not rage.
+- id: a3_diary_mask_off
+  beat: diary_confrontation
+  requires:
+    knowledge: {agent: player, has: [dan_is_artyom]}
+    time: {act: 3}
+  tone_variants:
+    warm: "…Finally. Do you know how tiring it is, being Dan? Sit down. Nothing changes tonight."
+    clipped: "…Finally. Being Dan was getting heavy. Nothing changes tonight."
+    auditing: "…Finally. Now we can be accurate with each other."
+  responses:
+    - text: "Get out of my house, Artyom."
+      events: [{flag: {id: diary_branch_mask_off}}]
+    - text: "The town will hear the name Krayev by morning."
+      events:
+        - {flag: {id: diary_branch_mask_off}}
+        - {flag: {id: threatened_exposure}}
+
+# Beat: diary branch — counter-bluff. Credible only with decoys on the page.
+- id: a3_diary_counter_bluff
+  beat: diary_confrontation
+  requires:
+    journal: {decoy_count_at_least: 2}
+    time: {act: 3}
+  tone_variants:
+    warm: >-
+      Bait. Hm. The bus entry did read wrong — you're better in person than
+      on paper. So where do you keep the true version?
+    clipped: "Bait. Some of it, maybe. Where's the true version?"
+    auditing: "If it's bait, you wrote it for me specifically. Almost flattering. Where are the real pages?"
+  responses:
+    - text: "In my head. Where you can't read it."
+      events: [{flag: {id: diary_branch_counter_bluff}}]
+    - text: "Prove you can tell which pages are which."
+      events: [{flag: {id: diary_branch_counter_bluff}}]
+
+# Beat: diary branch — de-escalate. Become his asset again; race him.
+- id: a3_diary_de_escalate
+  beat: diary_confrontation
+  requires:
+    time: {act: 3}
+  tone_variants:
+    warm: >-
+      All right. We reset. No edits, no delays — you send me things the day
+      you learn them, and I stop needing to visit. Deal?
+    clipped: "Then we reset. The day you learn it, I learn it."
+    auditing: "Reset. Day you learn it, I learn it. That's the whole arrangement."
+  responses:
+    - text: "Deal."
+      events:
+        - {flag: {id: diary_branch_de_escalate}}
+        - {promise: {npc: dan, id: promise_same_day_reports}}
+    - text: "(Nod.)"
+      events: [{flag: {id: diary_branch_de_escalate}}]
+
+# Beat: diary exit — every branch ends with him staying.
+- id: a3_diary_exit
+  beat: diary_confrontation
+  requires:
+    time: {act: 3}
+  tone_variants:
+    warm: >-
+      Tell your mother the tea was lovely. I'll see you around town — I've
+      decided I like it here.
+    clipped: "Thank your mother for the tea. I'm staying in town."
+    auditing: "I'm staying in town. You'll see me."
+  responses:
+    - text: "(Watch him let himself out.)"
+      events: []
+    - text: "Ozerny notices strangers, you know."
+      events: []
+
+# Beat: scenario 8.11 — Dan comes to town.
+- id: a3_town_arrival
+  beat: act3
+  requires:
+    time: {act: 3}
+  tone_variants:
+    warm: >-
+      Don't be angry. I'm in Ozerny — took the morning bus, got a room by
+      the station. I couldn't do one more day of watching a feed that never
+      updates. Coffee? You can finally put a face to all this.
+    clipped: "I'm in Ozerny. Room by the bus station. We should talk in person."
+    auditing: "I'm in town. You'd hear about it within the hour anyway."
+  responses:
+    - text: "You should have asked me first."
+      events: [{flag: {id: dan_in_town}}]
+    - text: "Coffee, then. The place by the market."
+      events:
+        - {flag: {id: dan_in_town}}
+        - {flag: {id: met_dan_in_person}}
+    - text: "(Leave it on read.)"
+      events: [{flag: {id: dan_in_town}}]
+
+# Beat: the vigil — grief as public performance.
+- id: a3_town_vigil
+  beat: act3
+  requires:
+    flag: {id: dan_in_town}
+  tone_variants:
+    warm: >-
+      The vigil tonight — the whole square, candles, her photo from the
+      pharmacy site. I've never felt a town hold its breath before. Stand
+      with me? People keep asking who I am and I keep almost crying instead
+      of answering.
+    clipped: "I'll be at the vigil. Near the front. Come or don't."
+    auditing: "The vigil's at eight. I'll see who attends."
+  responses:
+    - text: "I'll tell people you're the friend from the city. It'll calm the chatter."
+      events: [{defend: {npc: dan, public: true}}]
+    - text: "I'll be there. For her, not for you."
+      events: []
+    - text: "I'm staying home tonight."
+      events: []
+
+# Beat: he is on Klenovaya Street, at her window, charming the landlady.
+- id: a3_town_groceries
+  beat: act3
+  requires:
+    flag: {id: dan_in_town}
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: >-
+      Your Lyudmila Petrovna is a force of nature. I carried her bags up
+      Klenovaya and received forty years of town history and, I think, a
+      marriage offer on behalf of a niece. She showed me Mira's window. The
+      curtains are exactly how she left them.
+    clipped: "Helped the landlady with her groceries. Useful woman. She showed me the room."
+  responses:
+    - text: "Stay away from that house."
+      events: [{flag: {id: warned_dan_off_klenovaya}}]
+    - text: "She'll have married you off by Friday."
+      events: []
+
+# Beat: the Mom beachhead — he's inside the player's home now.
+- id: a3_town_mom_beachhead
+  beat: act3
+  requires:
+    flag: {id: dan_in_town}
+  tone_variants:
+    warm: >-
+      I met your mother in the bakery queue — she guessed who I was before I
+      said a word. Apparently I have "a searching face." She fed me for two
+      hours and worried about you for three. I fixed her fence latch while
+      she talked. First hour in weeks I wasn't afraid. Thank you for
+      existing, family included.
+    clipped: "Your mother had me in for tea. She worries about you. The fence latch is fixed."
+    auditing: "I was at your mother's today. She tells me more than you do."
+  responses:
+    - text: "Stay away from my mother."
+      events: [{flag: {id: warned_dan_off_mom}}]
+    - text: "She never mentions the fence to me."
+      events: []
+    - text: "Thanks for keeping her company, I suppose."
+      events: []
+
+# Beat: buying goodwill and calling it grief.
+- id: a3_town_search_fund
+  beat: act3
+  requires:
+    flag: {id: dan_in_town}
+    suspicion: {tier_at_most: clipped}
+  tone_variants:
+    warm: >-
+      I put something in the search fund and doubled the print run on the
+      flyers. If money can't hold a candle, it can at least buy paper. Tell
+      me quietly where it's needed — I don't want it to look like the
+      out-of-towner is buying goodwill.
+    clipped: "I topped up the search fund. Where else is money useful?"
+  responses:
+    - text: "The volunteers need thermoses more than flyers."
+      events: []
+    - text: "Careful. Generosity gets noticed here too."
+      events: []
+
+# Beat: the double-agent check-in after de-escalating.
+- id: a3_double_agent_checkin
+  beat: act3
+  deep: true
+  requires:
+    flag: {id: diary_branch_de_escalate}
+    suspicion: {tier_at_least: clipped}
+  tone_variants:
+    clipped: "Daily report. What moved today?"
+    auditing: "Report. Everything, in order. I'll know what's missing."
+  responses:
+    - text: "One thing. A name came up for where she might be — the old boathouse by the pier."
+      events: [{tell: {agent: dan, token: boathouse_false_location}}]
+    - text: "The search covered the north shore. Nothing."
+      events: [{report: {tokens: [search_route_north]}}]
+    - text: "Nothing moved. Quiet day."
+      events: []
+
+# Beat: auditing tier — he recites the player's own day back.
+- id: a3_audit_whereabouts
+  beat: act3
+  requires:
+    flag: {id: dan_in_town}
+    suspicion: {tier_at_least: auditing}
+  tone_variants:
+    auditing: "Pharmacy at four. The market after. Home by seven. Your days are very regular lately."
+  responses:
+    - text: "You're watching me now?"
+      events: []
+    - text: "Then you already know I have nothing new."
+      events: []
+    - text: "Regular days. Regular town."
+      events: []
+
+# Beat: auditing tier — he's worked out someone is warning her.
+- id: a3_audit_who_warns_her
+  beat: act3
+  requires:
+    knowledge: {agent: dan, lacks: [dacha_location]}
+    suspicion: {tier_at_least: auditing}
+  tone_variants:
+    auditing: >-
+      She knew. Before the vigil, before the flyers — she was already gone.
+      Someone with reach warned her. I keep a short list of people with
+      reach.
+  responses:
+    - text: "Maybe she just knows when to leave."
+      events: []
+    - text: "Is that an accusation?"
+      events: []
+
+# Beat: the envelope as leverage, stated flat.
+- id: a3_leverage_envelope
+  beat: act3
+  requires:
+    flag: {id: envelope_accepted}
+    suspicion: {tier_at_least: auditing}
+  tone_variants:
+    auditing: >-
+      One thing, while we're being precise. The envelope. You kept it, and
+      you kept it quiet. If the town ever has to pick between our versions,
+      remember which of us that quiet helps.
+  responses:
+    - text: "It was expense money. You said so yourself."
+      events: []
+    - text: "Then maybe the town should hear it from me first."
+      events: [{flag: {id: player_considering_predisclosure}}]
+
+# Beat: scenario 8.12 fallout — the boathouse was Mira's canary.
+- id: a3_react_boathouse
+  beat: act3
+  requires:
+    knowledge: {agent: dan, has: [boathouse_false_location]}
+    suspicion: {tier_at_least: clipped}
+  tone_variants:
+    clipped: >-
+      I walked out to the boathouse at six this morning. Rusted padlock,
+      dust like snow. Nobody's opened that door in years. Interesting, who
+      wanted me looking there.
+    auditing: "The boathouse was empty. It was always going to be empty. Someone is testing lines."
+  responses:
+    - text: "Leads go stale. That's how leads work."
+      events: []
+    - text: "I only passed on what I heard."
+      events: []
+
+# Beat: the dacha reaches him — calm gratitude, the worst line in the game.
+- id: a3_react_dacha
+  beat: act3
+  requires:
+    knowledge: {agent: dan, has: [dacha_location]}
+  tone_variants:
+    warm: >-
+      The dacha co-op past the propane exchange. Of course — quiet,
+      unregistered, off every list. You found her. I mean it: thank you.
+      For everything. Rest now. I'll take it from here.
+    clipped: "The Beryozka co-op. That's it, then. Thank you — for everything. I'll take it from here."
+    auditing: "The dacha. I know. I'll finish this alone."
+  responses:
+    - text: "Dan — wait. What are you going to do?"
+      events: []
+    - text: "(Nothing you type will reach in time.)"
+      events: []
+
+# Beat: cut tier (≥90) — he closes the channel and works the town solo.
+- id: a3_cut_final
+  beat: act3
+  requires:
+    suspicion: {tier_at_least: cut}
+  tone_variants:
+    cut: >-
+      I'll manage the rest myself. You were a good friend to her — better
+      than you know. Don't reply.
+  responses:
+    - text: "Dan. Dan, answer me."
+      events: []
+    - text: "(Say nothing. Watch the status change.)"
+      events: []
+
+# Beat: cut tier — one-word replies to anything after the cut.
+- id: a3_cut_oneword
+  beat: act3
+  requires:
+    flag: {id: dan_in_town}
+    suspicion: {tier_at_least: cut}
+  tone_variants:
+    cut: "Busy."
+  responses:
+    - text: "Where are you right now?"
+      events: []
+    - text: "(Stop typing. He's in the town somewhere, and he's done talking.)"
+      events: []

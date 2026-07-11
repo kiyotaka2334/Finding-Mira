@@ -1,0 +1,277 @@
+# content/dialogue/aziza.yaml
+# Aziza Rakhimova, 36 — flower kiosk by the market. Mira's one real friend. The gatekeeper.
+#
+# Voice: short, precise, warm only once earned. She never performs feeling.
+# Agent facts (content/agents/aziza.yaml): spreads nothing, ever; stance prior
+# player: -1 ("anyone asking about Mira"). Trust gates per engine/rules.yaml:
+# dm >=1, volunteer >=3, artifact >=4.
+#
+# Arc: tier 0-1 brush-offs -> tier 2 (trust >=3) the canary delivery (azizas_canary,
+# false, NEVER flagged as a test in text or UI, design section 22) -> tier 3
+# (trust >=4) the old name (mira_real_name), then Act 3 dead-drop facilitation
+# (boathouse_false_location is Mira's mirror test, also never flagged).
+#
+# Engine-set flags this file depends on:
+#   aziza_burned            — set when azizas_canary attributes to the player
+#                             (trust -> 0, DM access severed). Scene queries MUST
+#                             check aziza_burned blocks before any other Aziza block.
+#   dead_drop_open          — set below, by the dead-drop offer.
+#   miras_test_passed       — set by the engine if boathouse_false_location never
+#                             reached town_chat or dan within 2 ticks (scene 8.12).
+#   mira_vouched_for_player — set by Mira via the dead-drop in the endgame; the
+#                             second half of Aziza's near-unreachable repair beat
+#                             (the first half, the public admission, is a scene).
+#
+# Response-level `requires:` gates options the same way scene branches gate branches.
+
+# --- Act 1: the closed door -------------------------------------------------
+
+- id: aziza_kiosk_first
+  beat: act1
+  requires:
+    trust: {npc: aziza, at_most: 2}
+  text: "Chrysanthemums are two hundred the bunch. Carnations one-fifty. The roses came in Tuesday, so I won't lie to you about them."
+  responses:
+    - text: "Actually — I wanted to ask about Mira Sokolova."
+      next: aziza_kiosk_pressed
+    - text: "Just the chrysanthemums, thanks."
+      events: []
+
+- id: aziza_kiosk_pressed
+  beat: act1
+  text: "I sell flowers. The pharmacy is across the square, the chat is on your phone, and neither of them is me. Anything else?"
+  responses:
+    - text: "I'm not trying to make trouble for her."
+      events: []
+    - text: "No. Sorry to bother you."
+      events: []
+
+- id: aziza_who_sent_you
+  beat: act1
+  requires:
+    trust: {npc: aziza, at_most: 2}
+    knowledge: {agent: aziza, has: [player_asking_questions]}
+  text: "You again. The market says you've been asking about Mira all week — the bakery, the chat, Lyudmila Petrovna, God help you. So before you open your mouth: who's asking? You, or someone standing behind you?"
+  responses:
+    - text: "A friend of hers from the city. Dan. He says her family's worried sick."
+      next: aziza_dan_reaction
+    - text: "Me. I grew up here. I don't like how fast everyone stopped saying her name."
+      events: []
+
+- id: aziza_dan_reaction
+  beat: act1
+  text: "Her family. …In three years, Mira never once mentioned a Dan. Not a friend, not a city, not a family. Maybe that means nothing. Maybe you should sit with the fact that it might. The carnations are one-fifty."
+  responses:
+    - text: "(Buy the carnations. Say nothing.)"
+      events: []
+    - text: "People keep parts of their lives separate."
+      events: []
+
+- id: aziza_dm_curt
+  beat: act1
+  requires:
+    trust: {npc: aziza, at_least: 1}
+  text: "Kiosk's open till six. If it's about flowers."
+  responses:
+    - text: "Understood. Till six."
+      events: []
+
+# --- Act 2, tier 2 (trust >= 3): the thaw and the canary ---------------------
+
+- id: aziza_thaw
+  beat: act2
+  requires:
+    trust: {npc: aziza, at_least: 3}
+  text: "You're back. Fine. Sit — the crate holds. …She used to stand exactly where you are, smelling the eucalyptus. Never bought it once. Said keeping the wanting was the good part. Don't put that in your notes. It isn't information. It's just her."
+  responses:
+    - text: "That's the first real thing anyone's told me about her."
+      next: aziza_canary_context
+    - text: "What else was she like — here, with you?"
+      next: aziza_canary_context
+
+- id: aziza_canary_context
+  beat: act2
+  text: "She kept rooms in her life, and doors between them. Work in one. Me in another, I think. This town in the smallest one, with the light off. …There's a thing I've gone back and forth on telling you."
+  responses:
+    - text: "Only if you want to."
+      next: aziza_canary
+    - text: "I'm listening."
+      next: aziza_canary
+
+# The canary (set-piece 8.5). azizas_canary is truth:false in content/tokens/.
+# It is delivered exactly like real intel, with an actionable lead attached,
+# and is never acknowledged as a test anywhere in the game.
+- id: aziza_canary
+  beat: act2
+  text: "There was someone. A boyfriend, over in Priozersk. She took the eleven-forty bus out on Sundays and was back before dark — three years, near enough, and she never gave me so much as a name. She didn't want it in the town's mouth. So now it's in yours, and I'm telling you where I'd look first: Sundays. Priozersk."
+  responses:
+    - text: "It stays with me. I promise."
+      events:
+        - {mints: {token: azizas_canary}}
+        - {promise: {npc: aziza, id: keep_priozersk_quiet}}
+    - text: "Why tell me now?"
+      events:
+        - {mints: {token: azizas_canary}}
+      next: aziza_canary_why
+
+- id: aziza_canary_why
+  beat: act2
+  text: "Because it's been eleven days and the police have watered nothing but their own tea. And because you keep coming back without buying anything, which in my experience is either a policeman or a friend. Don't make me wrong."
+  responses:
+    - text: "You're not wrong. It stays with me."
+      events:
+        - {promise: {npc: aziza, id: keep_priozersk_quiet}}
+
+- id: aziza_tier2_texture
+  beat: act2
+  requires:
+    trust: {npc: aziza, at_least: 3}
+  text: "No, nothing new. …She would have hated all this, you know. Being the town's topic. She ordered the same tea from Korzhik for three years so no one would ever have a reason to say her name twice. Think about what kind of person works that hard at being boring."
+  responses:
+    - text: "The kind who's practiced."
+      events: []
+    - text: "I'm starting to understand her."
+      events: []
+
+# --- Act 2, tier 3 (trust >= 4, artifact gate): the old name -----------------
+
+- id: aziza_name_doorstep
+  beat: act2
+  requires:
+    trust: {npc: aziza, at_least: 4}
+    knowledge: {agent: player, lacks: [mira_real_name]}
+  text: "Wait. Help me with the shutter. …I've watched what you did with everything I gave you. Sundays never came back to me from anyone else's mouth — and believe me, everything comes back to me eventually; I just don't send it out again. You've kept things shut when shutting them cost you. So I'm going to hand you the heaviest thing I hold, and you're going to keep your face still while I do."
+  responses:
+    - text: "Go on."
+      events:
+        - {resolve_promise: {id: keep_priozersk_quiet, kept: true}}
+      next: aziza_name_reveal
+
+- id: aziza_name_reveal
+  beat: act2
+  text: "Mira Sokolova is three years old. Before that she was Katya — Ekaterina Zimina, out of Vetrogorsk. She wasn't running from debts, or a bad marriage, or the tax office. She was running from a person. She never told me his name and I never asked, because a name you don't hold is a name you can't drop. Now you hold hers. Understand what that means."
+  responses:
+    - text: "Katya Zimina."
+      events:
+        - {mints: {token: mira_real_name}}
+      next: aziza_name_after
+    - text: "Why trust me with this?"
+      events:
+        - {mints: {token: mira_real_name}}
+      next: aziza_name_after
+
+- id: aziza_name_after
+  beat: act2
+  text: "Because somebody in this town has to know how to look, and it isn't the police. Type it into that search bar you live in. Read all of it. Then come back and tell me what kind of person you're going to be about it. And — this is a condition, not a request — the name never goes in a chat, never in a notebook that leaves your hands, never to the man from the city. Her life is the stake. Say it back."
+  responses:
+    - text: "The name stays off every screen that isn't mine. I promise."
+      events:
+        - {promise: {npc: aziza, id: guard_the_name}}
+
+# --- Act 3: the dead-drop ----------------------------------------------------
+
+- id: aziza_deaddrop_offer
+  beat: act3
+  requires:
+    trust: {npc: aziza, at_least: 4}
+    knowledge: {agent: player, has: [dan_is_artyom]}
+  text: "Close the kiosk door. …I know you've seen it by now — what he is. So listen once. There is a way to leave word for her. Not a place. A way. It's older than telephones and it doesn't leak. You give me what she needs to know, and you never ask how it travels. Those are the terms."
+  responses:
+    - text: "Agreed. No questions."
+      events:
+        - {flag: {id: dead_drop_open}}
+        - {resolve_promise: {id: guard_the_name, kept: true}}
+    - text: "How will I know it reached her?"
+      next: aziza_deaddrop_terms
+
+- id: aziza_deaddrop_terms
+  beat: act3
+  text: "You won't. That's what trust is when it's load-bearing. Yes or no."
+  responses:
+    - text: "Yes."
+      events:
+        - {flag: {id: dead_drop_open}}
+        - {resolve_promise: {id: guard_the_name, kept: true}}
+
+# Mira's test (set-piece 8.12), faced from the delivery side. boathouse_false_location
+# is truth:false; the text treats it as flatly real. Never surfaced as a test.
+- id: aziza_deaddrop_boathouse
+  beat: act3
+  requires:
+    flag: {id: dead_drop_open}
+  text: "She answered. …She says she's all right. She says she's been sleeping at the old boathouse past the pier since Tuesday, that the stove there still draws, and that nobody — nobody — is to know. Not the search party, not your mother, not the chat. You wanted a channel. This is what one costs."
+  responses:
+    - text: "The boathouse stays between the three of us."
+      events:
+        - {mints: {token: boathouse_false_location}}
+        - {promise: {npc: aziza, id: keep_boathouse_quiet}}
+    - text: "Understood. Not a word, to anyone."
+      events:
+        - {mints: {token: boathouse_false_location}}
+        - {promise: {npc: aziza, id: keep_boathouse_quiet}}
+
+- id: aziza_channel_open
+  beat: act3
+  requires:
+    flag: {id: miras_test_passed}
+  text: "The boathouse never made the rounds. I'd have heard — I hear everything in this square; I just don't pass it on. …She knows that about you now too. She wants to hear from you directly. Whatever you give me tonight goes out with the morning flowers."
+  responses:
+    - text: "Then let's not waste it."
+      events:
+        - {resolve_promise: {id: keep_boathouse_quiet, kept: true}}
+      next: aziza_deaddrop_channel
+
+- id: aziza_deaddrop_channel
+  beat: act3
+  requires:
+    flag: {id: miras_test_passed}
+  text: "Choose the words like they're the last ones. They might be."
+  responses:
+    - text: "Tell her: Dan is Artyom Krayev. He's here. In town. Walking the square."
+      requires:
+        knowledge: {agent: player, has: [dan_is_artyom]}
+      events:
+        - {tell: {agent: mira, token: dan_is_artyom}}
+    - text: "Tell her I found the Vetrogorsk record. She was believed once. She can be believed again."
+      requires:
+        knowledge: {agent: player, has: [restraining_order_record]}
+      events:
+        - {tell: {agent: mira, token: restraining_order_record}}
+    - text: "Tell her which mouth has been feeding him — so she knows which chats are poisoned."
+      requires:
+        knowledge: {agent: player, has: [informant_identity]}
+      events:
+        - {tell: {agent: mira, token: informant_identity}}
+
+# --- The burned state (canary attributed; engine sets aziza_burned) ----------
+
+- id: aziza_burned
+  beat: act3
+  requires:
+    flag: {id: aziza_burned}
+  text: "Don't. …I told one person in this town about Priozersk. One. So there's nothing to figure out, and nothing to say. The kiosk is out of whatever you came for — today, and after. …I hope whoever's asking pays you well."
+  responses:
+    - text: "Aziza — let me explain—"
+      next: aziza_burned_silence
+    - text: "(There is nothing to say.)"
+      events: []
+
+- id: aziza_burned_silence
+  beat: act3
+  requires:
+    flag: {id: aziza_burned}
+  text: "(She turns back to the buckets and starts stripping thorns. Your messages show 'seen' and nothing else, that night and every night after.)"
+  responses:
+    - text: "(Leave.)"
+      events: []
+
+# --- Endgame repair, second half: Mira vouched through the dead-drop ---------
+
+- id: aziza_endgame_repair
+  beat: act3
+  requires:
+    flag: {id: mira_vouched_for_player}
+  text: "…She wrote about you. Said the ending was yours more than anyone's. So the kiosk is open, and I'm saying thank you, and both of those things are true. The rest — the part where I gave you something of hers and it came back wearing the town's voice — that takes longer than one good ending. Chrysanthemums are two hundred."
+  responses:
+    - text: "That's fair. Two hundred it is."
+      events: []

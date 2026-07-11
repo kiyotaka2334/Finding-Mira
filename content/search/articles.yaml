@@ -1,0 +1,289 @@
+# =============================================================================
+# Finding Mira — content/search/articles.yaml
+# The news archive (design §23: ~12 articles). These are the results the
+# keyword table (content/search/keywords.yaml) unlocks; ids are
+# cross-referenced there. Print register throughout; every byline a
+# different human.
+#
+# SCHEMA
+#   id           unique article id (referenced from keywords.yaml `unlocks`)
+#   source       publication (Vetrogorsk Courier = city daily;
+#                Ozerny Weekly = the town paper)
+#   dated        relative to game day 1 (canon timeline; game is mid-October)
+#   byline       author credit as printed
+#   headline     as printed
+#   body         80–200 words, print register
+#   mints        (optional) token ids granted when the player reads it
+#                (schema v2 §2.1 minted_by: search — the article is the
+#                evidence surface)
+#   attachments  (optional) evidence-card ids that accompany the piece
+# =============================================================================
+
+articles:
+
+  # --- VETROGORSK: THE STALKING-CASE ERA (no tabloid framing) -------------
+
+  - id: art_vetrogorsk_court_blotter
+    source: Vetrogorsk Courier
+    dated: "~3.5 years before day 1 (September)"
+    byline: "Court desk / V. Snegirev"
+    headline: "From the district court: orders granted this week"
+    mints: [restraining_order_record]
+    # Names Artyom Krayev; description, not photo. His face comes only from
+    # card_artyom_photo (see art_pharmacist_honored).
+    body: >-
+      Among civil orders granted this week by the Zheleznodorozhny district
+      court: a six-month order of protection sought by E. Zimina, an
+      employee of a pharmaceutical warehouse firm, against Artyom Krayev,
+      37, an inventory-systems technician formerly of the same firm. The
+      application, heard by Judge Malikova, cites repeated unsolicited
+      contact over eleven months, including appearances outside the
+      applicant's workplace and residence, correspondence routed through
+      third parties, and gifts left with neighbors after direct contact was
+      refused. The filing characterizes the respondent as "methodical and
+      unfailingly polite throughout." Krayev did not contest the order and
+      told the court the matter was "a misunderstanding between colleagues."
+      The order prohibits contact in any form and approach within one
+      hundred meters, and lapses in March unless renewed on application.
+      No criminal charges were filed. In other business, the court heard
+      two boundary disputes and a matter concerning a stairwell.
+
+  - id: art_farmakor_scandal
+    source: Vetrogorsk Courier
+    dated: "~4 years before day 1 (February)"
+    byline: "D. Uraev"
+    headline: "Audit finds shortfall at Farmakor warehouse; two suspended"
+    # The red herring (design §18): real, searchable, and unrelated to why
+    # Katya left. Players who theorize she fled the scandal are wrong.
+    body: >-
+      An internal audit at Farmakor, the city's largest warehouse-pharmacy
+      concern, has identified discrepancies in cold-chain inventory valued
+      at roughly 1.4 million rubles, the company confirmed Tuesday. Two
+      shift managers have been suspended pending review; the company
+      declined to name them. A spokesman attributed the shortfall to
+      "documentation practices, not diversion," and said no product reached
+      the market outside proper channels. Employees of the order desk and
+      dispatch floor were interviewed by the auditors and cleared of
+      involvement. The regional health inspectorate has requested the
+      audit's findings but has opened no proceedings of its own. Farmakor
+      supplies pharmacies across the district, including several rural
+      points, and stressed that deliveries would continue uninterrupted.
+      Union representatives called the affair "a bookkeeping storm in a
+      refrigerated teacup," while cautioning against blaming floor staff
+      for what they termed a management failure of long standing.
+
+  - id: art_pharmacist_honored
+    source: Vetrogorsk Courier
+    dated: "~5 years before day 1 (May)"
+    byline: "L. Gorbunova"
+    headline: "Quiet professions: order desk marks Pharmacy Workers' Day"
+    attachments: [card_artyom_photo]
+    # The puff piece. Katya named in the photo caption; the group photo is
+    # the separate evidence card card_artyom_photo — the only place
+    # Artyom's face exists in the archive.
+    body: >-
+      Not every white coat stands behind a counter. At Farmakor's central
+      warehouse, the order desk fills prescriptions for forty rural
+      pharmacies a day, and on Friday the firm marked Pharmacy Workers' Day
+      by honoring its quietest department. Commended among others was
+      Ekaterina Zimina, whose colleagues describe her as the desk's
+      institutional memory. "If a village pharmacy is missing something on
+      a Friday evening, it is Katya who notices before the village does,"
+      said a senior dispatcher. Asked for a comment, Zimina offered only
+      that "pharmacists are just librarians for the body," a line her
+      colleagues assure us she has used before. The department was
+      presented with certificates and, by tradition, a cake it had to
+      inventory first. — Photo: the Farmakor order desk and dispatch team
+      marking the occasion; E. Zimina third from left, holding the
+      certificate; dispatch and systems staff, including A. Krayev,
+      at right.
+
+  # --- OZERNY: THE TOWN PAPER ---------------------------------------------
+
+  - id: art_pharmacy_opening
+    source: Ozerny Weekly
+    dated: "3 years before day 1 (November)"
+    byline: "T. Nasyrova"
+    headline: "Zarya pharmacy reopens with longer hours — and a new face"
+    # The only archive trace of "Mira Sokolova": thin, clean, boring.
+    # Her cover works.
+    body: >-
+      After a month behind paper-covered windows, the Zarya pharmacy on the
+      market square reopened Monday with new shelving, a repaired porch
+      step, and extended evening hours. Owner Rufat Aliyev, pressed for a
+      statement, produced one sentence: "The step is fixed; mind it
+      anyway." Of more interest to customers will be the second white coat
+      behind the counter: a new specialist from out of region has joined
+      the pharmacy, easing the queue that has been the square's chief
+      complaint since spring. The new pharmacist declined to be
+      photographed for this item, citing modesty, but customers describe
+      her as attentive and quick. Zarya now opens until eight on weekdays.
+      The Weekly reminds readers that the flu-season syrup shortage
+      reported last year is not expected to repeat.
+
+  - id: art_bakery_anniversary
+    source: Ozerny Weekly
+    dated: "~3 weeks before day 1 (late September)"
+    byline: "T. Nasyrova"
+    headline: "Twenty years of Korzhik: the bakery that outlasted the bets"
+    # The promo-photo era. The window shot mentioned here is the photo whose
+    # reflection found the town (§4) — the archive politely records the
+    # murder weapon.
+    body: >-
+      When Korzhik opened its doors twenty years ago, the square's
+      merchants gave it one winter. This week the bakery celebrated its
+      anniversary with free buns for the morning queue and a display of
+      photographs from two decades of business, including the much-shared
+      picture of the shop window taken for the occasion by the owner's
+      nephew — an amateur photographer whose promotional shot of the
+      window display has, to the family's astonishment, traveled far
+      beyond the district online. "People from the city write to ask what
+      town this is," the owner laughed. "I tell them: the one with the
+      bread." The Weekly joins the queue in congratulating Korzhik, and
+      confirms the rumor about the honey loaf returning for the holidays.
+
+  - id: art_lake_cleanup
+    source: Ozerny Weekly
+    dated: "~1 month before day 1 (September)"
+    byline: "Weekly staff"
+    headline: "Forty bags and one bicycle: shore cleanup concludes"
+    body: >-
+      Saturday's volunteer cleanup of the lake shore gathered some sixty
+      residents, forty bags of refuse, one entire bicycle, and, by the
+      organizers' count, eleven separate arguments about whose refuse it
+      had been. Pupils of school №2 worked the stretch from the pier to
+      the pines and are commended for it. The section around the old
+      boathouse remains fenced off and was not part of the route; the
+      council asks residents, again, to respect the barrier tape, which
+      has now been replaced four times. Tea was provided by the Korzhik
+      bakery. Organizers note the shore path — favored by the town's
+      early walkers and its dogs — is now "cleaner than some kitchens,"
+      a comparison the Weekly prints without endorsing. The spring
+      cleanup date will be announced after the ice.
+
+  - id: art_beryozka_dispute
+    source: Ozerny Weekly
+    dated: "~6 months before day 1 (April)"
+    byline: "M. Adylova"
+    headline: "Beryozka co-op and roads office trade letters over the 7 km turnoff"
+    # The printed half of the dacha deduction: geography (7 km, past the
+    # propane exchange) + the detail that unregistered plots exist and
+    # nobody can say who uses them.
+    body: >-
+      The Beryozka dacha cooperative, seven kilometers out past the propane
+      exchange, has written to the roads office for the third consecutive
+      spring regarding the grading of its access turnoff, and the roads
+      office has replied, for the third consecutive spring, that the
+      turnoff serves "no permanent registered residents" and therefore
+      waits its turn. The cooperative's chairwoman disputes the arithmetic:
+      "Half the plots changed hands informally over the years — inherited,
+      lent, left to nephews. On paper the co-op is empty. In June you
+      cannot park." She acknowledged the flip side of loose paperwork:
+      dues go uncollected on plots "nobody can even say who visits."
+      The roads office suggests the cooperative formalize its registry.
+      The cooperative suggests the roads office visit in mud season.
+      The Weekly will report any developments, likely next April.
+
+  - id: art_boathouse_condemned
+    source: Ozerny Weekly
+    dated: "~1 year before day 1 (October)"
+    byline: "M. Adylova"
+    headline: "Old boathouse condemned; demolition waits on the budget"
+    body: >-
+      The boathouse at the end of the pier, unused since the rowing section
+      closed, has been formally condemned by the district commission, which
+      found the floor joists rotten and the roof "held up chiefly by
+      habit." Demolition is approved in principle and unfunded in practice;
+      the council voted to fence the structure and revisit the question in
+      the spring budget round. Residents of a certain age spoke against
+      demolition at the hearing, recalling regattas, first dances, and in
+      one testimony "a perfectly good accordion, lost through the floor in
+      1987, which may yet be recovered." The commission was unmoved. The
+      barrier tape went up Thursday. The council asks parents to impress
+      upon children that the building is dangerous, and asks everyone else
+      to stop asking about the accordion.
+
+  - id: art_search_volunteers
+    source: Ozerny Weekly
+    dated: "current week (served once the town organizes, §8.6)"
+    byline: "T. Nasyrova"
+    headline: "Volunteers organize shore and forest walks for missing pharmacist"
+    # Unlocked via the missing_pharmacist keyword, gated on
+    # search_party_forming being townwide. Dan reads the coordination chat
+    # directly — the paper cheerfully prints the map he needs.
+    body: >-
+      Residents have begun organized walks of the shore path, the forest
+      belt, and the quarry road in connection with the disappearance of
+      the Zarya pharmacist, who has not been seen since the first week of
+      the month. Police, contacted by the Weekly, would say only that
+      "an adult has the right to leave," a formulation that has not
+      satisfied the market square. Coordination is being handled through
+      the town chat; volunteers are asked to sign the sheet at the House
+      of Culture, walk in pairs, and report sections completed so effort
+      is not duplicated. Sturdy boots are advised, and the council asks
+      walkers, once more, to respect the tape at the old boathouse.
+      The pharmacy's owner has posted the schedule of covered shifts;
+      the Weekly, with the town, hopes for the simple explanation.
+
+  # --- PURE FILLER, REGIONAL (the archive has a life of its own) ----------
+
+  - id: art_dk_roof
+    source: Ozerny Weekly
+    dated: "~2 months before day 1 (August)"
+    byline: "Weekly staff"
+    headline: "House of Culture roof fund reaches half; concert season proceeds regardless"
+    body: >-
+      The subscription fund for the House of Culture roof has reached
+      approximately half its target, the director announced, thanking the
+      choir, the chess section, and "one anonymous donor who is Zulfia,
+      everyone knows it is Zulfia." Engineers assess the roof as sound over
+      the auditorium and "philosophical" over the west wing, where buckets
+      are now numbered and assigned. The autumn concert season will
+      proceed with the program shifted east. A reader's letter proposing
+      the roof be simply left "as a feature, like in the capital" was read
+      aloud at the meeting to general enjoyment and was not adopted.
+      Donations are accepted at the box office and, from this month, by
+      transfer; the director asks donors to write their names legibly,
+      "unlike Zulfia."
+
+  - id: art_school_olympiad
+    source: Ozerny Weekly
+    dated: "~6 months before day 1 (spring)"
+    byline: "R. Sattarov"
+    headline: "School №2 takes second in regional chemistry olympiad"
+    # Timur cameo. "An after-school tutor" — the archive brushes against
+    # Mira without seeing her, same as the town did.
+    body: >-
+      A pupil of class 9B at school №2, T. Ganiev, has placed second in
+      the regional chemistry olympiad in Kirovsk, the school's best result
+      in the subject in eleven years. His chemistry teacher credits "a
+      turnaround nobody predicted, least of all his chemistry teacher,"
+      noting the pupil had been better known for his phone than his
+      titrations. Ganiev himself credits an after-school tutor, whom he
+      declined to name "because she'd hate it," and a podcast the Weekly
+      elects not to advertise. The school's director used the occasion to
+      renew his appeal for a fume cupboard newer than the director.
+      The regional final takes place in November; the town is asked to
+      keep its congratulations proportionate, "as the boy still cannot
+      balance a redox equation under pressure."
+
+  - id: art_wolves
+    source: Vetrogorsk Courier
+    dated: "~2 weeks before day 1 (October)"
+    byline: "Regional desk / P. Zhuk"
+    headline: "District wolf reports 'almost certainly dogs,' hunters' society says — again"
+    body: >-
+      October has produced its annual crop of wolf sightings across the
+      lake district, and the hunters' society has produced its annual
+      reply: almost certainly dogs. Of nineteen reports logged since
+      September, the society's inspection attributed twelve to feral or
+      free-roaming dogs, four to "tracks enthusiastically misread," and
+      three to nothing findable at all. "A wolf that wanted to be seen
+      this badly would be a first in my forty years," the society's
+      chairman told the Courier. Residents of lakeside settlements are
+      nonetheless advised to keep dogs leashed and rubbish covered, advice
+      the society notes it issues "with the same annual optimism as the
+      roads office announcing grading schedules." No livestock losses have
+      been confirmed in the district this season. Reports may be logged
+      with the society by telephone, ideally with photographs, ideally
+      in focus.

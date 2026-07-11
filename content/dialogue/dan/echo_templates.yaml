@@ -1,0 +1,15 @@
+# Finding Mira — Dan echo templates (design §14, schema §2.4)
+# One synthetic echo block is injected per token Dan holds that the player
+# never gave him. {wording} is filled with the wording variant that actually
+# reached him through the network — the line exhibits the hop that produced it.
+# Per-token overrides live on the token (`echo:`); these are the defaults.
+
+warm:     "Someone mentioned {wording} — you hadn't said that. Everything okay out there?"
+clipped:  "{wording}. You didn't mention that."
+auditing: "Why am I hearing about {wording} from other people?"
+
+responses:
+  - text: "First I'm hearing of it."
+    events: [{claim: {agent: dan, verdict: denied}}]   # token bound by the injected block
+  - text: "I was about to tell you."
+    events: [{tell: {agent: dan}}]                     # token bound by the injected block

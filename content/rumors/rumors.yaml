@@ -1,0 +1,344 @@
+# =============================================================================
+# Finding Mira — content/rumors/rumors.yaml
+# The rumor feed (design §17): 1–3 rumors served each morning through Mom,
+# Timur, or the chats. ~30 authored rumors.
+#
+# SCHEMA
+#   id           unique rumor id
+#   kind         distorted_truth | noise | defensive | memory_slip
+#   source_chain ordered list, nearest first: who delivered it to the player,
+#                then who they heard it from, back to the origin.
+#                Renders as "Mom ← Lyudmila ← the bakery girl".
+#                Canon agents (mom, lyudmila, galina, roza, timur, oleg,
+#                town_chat, class_chat) are bare ids; flavor endpoints are
+#                quoted strings.
+#   text         spoken-register one-liner, voiced by source_chain[0]
+#                (Mom relays in triple-message cadence; Timur lowercase;
+#                Lyudmila ALL CAPS with ellipses……; Oleg quotes people).
+#   day          fixed morning drop (game day), OR
+#   trigger      typed condition per schema v2 §2.7 — reactive rumors fire the
+#                first morning the condition holds (exactly one of day/trigger).
+#   points_at    (distorted truths only) the real canonical token this rumor
+#                gestures toward but does not mint. The lead, not the fact.
+#
+# Kind counts: 12 distorted_truth, 11 noise, 4 defensive/reactive, 3 memory_slip.
+# =============================================================================
+
+rumors:
+
+  # ------------------------------------------------------------------
+  # DISTORTED TRUTHS (12) — each points at a real token the player
+  # hasn't found yet. The network is working FOR the player, badly.
+  # ------------------------------------------------------------------
+
+  - id: rumor_last_shutter
+    kind: distorted_truth
+    source_chain: [mom, roza]
+    day: 1
+    points_at: mira_last_seen_photo
+    text: >-
+      Roza says she was at the counter Thursday same as always, and Friday
+      the shutter just never went up. No note, nothing. Thursday!! Write
+      that down somewhere, you never write anything down.
+
+  - id: rumor_bus_station_stranger
+    kind: distorted_truth
+    source_chain: [mom, galina, "the bakery girl"]
+    day: 2
+    points_at: dan_is_artyom
+    text: >-
+      Galina heard it from the bakery girl — back in spring there was a man
+      at the bus station showing people a photo on his phone. Not from here.
+      Nobody thought anything of it THEN, of course. Now everyone remembers
+      him differently.
+
+  - id: rumor_shore_path
+    kind: distorted_truth
+    source_chain: [town_chat, "the dog walkers"]
+    day: 2
+    points_at: routine_mapped
+    text: >-
+      The dog-walking crowd swears she did the shore path every morning
+      before opening, rain or shine, same bench, same thermos. So who saw
+      her Friday morning? Nobody. That's the whole town chat right now.
+
+  - id: rumor_city_account_scraping
+    kind: distorted_truth
+    source_chain: [timur, class_chat, "the Korzhik counter girl"]
+    day: 3
+    points_at: dan_is_scraping
+    text: >-
+      ok so the korzhik counter girl told dasha some city account was going
+      through the bakery's old photos at like 3am. months ago. liking stuff
+      from two years back. who does that. nobody normal does that
+
+  - id: rumor_two_phones
+    kind: distorted_truth
+    source_chain: [mom, lyudmila]
+    day: 4
+    points_at: mira_had_second_phone
+    text: >-
+      Lyudmila Petrovna SWEARS the girl had two phones. One for show on the
+      counter, and one that never once rang in the house…… her words, the
+      dots are hers. Two phones! I can barely manage the one.
+
+  - id: rumor_city_courts
+    kind: distorted_truth
+    source_chain: [mom, lyudmila]
+    day: 5
+    points_at: restraining_order_record
+    text: >-
+      SHE HAD TROUBLE IN THE CITY…… COURTS…… PAPERS…… — that is the entire
+      statement, in capitals, and then Lyudmila looks pleased with herself
+      and waters her geraniums.
+
+  - id: rumor_dark_page
+    kind: distorted_truth
+    source_chain: [timur, class_chat]
+    day: 5
+    points_at: second_account_found
+    text: >-
+      kids in 9B say she used to have a whole other page online that went
+      dark. arman swears the name on it wasn't even sokolova. arman also
+      swears he's seen a UFO so. but he's weirdly specific about this one
+
+  - id: rumor_propane_offseason
+    kind: distorted_truth
+    source_chain: [timur, class_chat, "the propane exchange kid"]
+    day: 6
+    points_at: dacha_location
+    text: >-
+      olya's dad runs the propane exchange and he says somebody's been
+      swapping full bottles out past beryozka. in october. nobody grills in
+      october. nobody LIVES out there in october
+
+  - id: rumor_thin_papers
+    kind: distorted_truth
+    source_chain: [mom, galina, "the passport-office cousin"]
+    day: 7
+    points_at: mira_real_name
+    text: >-
+      Galina's cousin at the passport office — don't quote me, don't quote
+      HER — says when Sokolova registered here her file was thin. New, like.
+      Three years deep and nothing behind it. Galina says that's normal.
+      Galina's cousin says it isn't.
+
+  - id: rumor_two_suns
+    kind: distorted_truth
+    source_chain: [timur, class_chat]
+    day: 8
+    points_at: dan_photos_forged
+    text: >-
+      someone in 9B blew up that beach photo the city guy posted, the one
+      "with mira". says the shadows go two different ways. like two suns.
+      probably compression or whatever. probably.
+
+  - id: rumor_oleg_consulting
+    kind: distorted_truth
+    source_chain: [mom, roza]
+    day: 8
+    points_at: informant_identity
+    text: >-
+      Roza saw Oleg buying rounds at the bar — OLEG — telling anyone who'd
+      sit still that he's "consulting" for somebody serious now. Consulting.
+      Oleg. The man consults his fishing float.
+
+  - id: rumor_rufat_coop_fees
+    kind: distorted_truth
+    source_chain: [mom, galina]
+    day: 9
+    points_at: rufat_dacha_mention
+    text: >-
+      Galina heard Rufat grumbling at the counter about co-op fees on a plot
+      that isn't even anyone's anymore — some assistant's late aunt, never
+      re-registered, and who pays for THAT, he wants to know. Then he caught
+      himself mid-sentence and charged her double for the valerian.
+
+  # ------------------------------------------------------------------
+  # NOISE (11) — authored red herrings. Plausible, textured, going
+  # nowhere. Several are searchable dead ends (see keywords.yaml).
+  # ------------------------------------------------------------------
+
+  - id: rumor_white_van
+    kind: noise
+    source_chain: [town_chat, oleg]
+    day: 3
+    text: >-
+      Oleg keeps posting about a white van from the fish plant idling on
+      Klenovaya "three nights running". The fish plant says it's their van.
+      It is always their van. It has been their van since the van was new.
+
+  - id: rumor_pe_teacher
+    kind: noise
+    source_chain: [mom, roza]
+    day: 4
+    text: >-
+      Roza is positive there was something with the PE teacher from school
+      №2. There wasn't. He's been at his mother's in Priozersk since
+      September, but try telling the choir that.
+
+  - id: rumor_sanatorium
+    kind: noise
+    source_chain: [mom, galina]
+    day: 5
+    text: >-
+      Galina's version is a sanatorium. Nerves. "Women her age, it happens."
+      Galina has been to one (1) sanatorium in her life and now everything
+      is a sanatorium.
+
+  - id: rumor_market_debts
+    kind: noise
+    source_chain: [town_chat, "the market rows"]
+    day: 6
+    text: >-
+      The market rows have her owing money — to whom depends on which row
+      you ask. The dairy row says the fish row. The fish row says gambling.
+      The fish row always says gambling.
+
+  - id: rumor_junction_bus
+    kind: noise
+    source_chain: [town_chat, "the Thursday bus driver"]
+    day: 6
+    text: >-
+      The Thursday driver swears he took her to the junction on the 4th,
+      seat behind him, grey coat. He also swears he never forgets a face.
+      He once drove Roza to the depot and called her Galina the whole way.
+
+  - id: rumor_wolves
+    kind: noise
+    source_chain: [town_chat, oleg]
+    day: 7
+    text: >-
+      Oleg has the wolves out again. "Tracks by the lake. Big ones." Every
+      October there are wolves, and every November it turns out to be the
+      Ganievs' dog.
+
+  - id: rumor_rufat_books
+    kind: noise
+    source_chain: [mom, lyudmila]
+    day: 7
+    text: >-
+      Lyudmila's latest: Rufat's books are short and THAT is why the girl
+      ran. Lyudmila has been saying Rufat's books are short since 1998. The
+      one audit they ever had, he came out owed money.
+
+  - id: rumor_sovkhoz_sect
+    kind: noise
+    source_chain: [mom, lyudmila]
+    day: 8
+    text: >-
+      Now it's a PRAYER GROUP at the old sovkhoz…… recruiting WOMEN……
+      Lyudmila has seen the minibus…… The minibus is the beekeepers.
+      Everyone knows the minibus is the beekeepers.
+
+  - id: rumor_quarry_scarf
+    kind: noise
+    source_chain: [town_chat, "the mushroom pickers"]
+    day: 9
+    text: >-
+      The mushroom pickers found a scarf out by the quarry and the chat has
+      already buried her twice over it. It's Zulfia's scarf. Zulfia lost it
+      in August. Zulfia has confirmed this. The chat does not care.
+
+  - id: rumor_roof_money
+    kind: noise
+    source_chain: [mom, roza]
+    day: 10
+    text: >-
+      The choir has decided the House of Culture roof money and the missing
+      girl are CONNECTED. Don't ask me how. Roza has a diagram. There are
+      arrows.
+
+  - id: rumor_boathouse_light
+    kind: noise
+    source_chain: [town_chat, "the ice fishermen"]
+    day: 10
+    text: >-
+      The early-ice men say there's been a light in the old boathouse after
+      dark. Kids, probably. It's always kids. Somebody's aunt is going to
+      walk out there and check anyway, you watch.
+
+  # ------------------------------------------------------------------
+  # REACTIVE / DEFENSIVE (4) — keyed to network state. The town
+  # investigating the player back, and stance-generated pushback when
+  # disbelieved evidence circulates (§10.1, §17).
+  # ------------------------------------------------------------------
+
+  - id: rumor_player_police
+    kind: defensive
+    source_chain: [mom, galina]
+    trigger:
+      knowledge: {agent: town_chat, has: [player_asking_questions]}
+    text: >-
+      Galina asked me straight out at the bakery whether you're working for
+      the city police. AT THE BAKERY. I said of course not, and she did the
+      face. People are saying it, you know. All of them. At once.
+
+  - id: rumor_envelope_talk
+    kind: defensive
+    source_chain: [mom, lyudmila]
+    trigger:
+      knowledge: {agent: town_chat, has: [dan_paid_player]}
+    text: >-
+      Lyudmila is telling the whole street that the city man PAYS you……
+      in an ENVELOPE…… I said you would never. Tell me you would never.
+      Tell me twice.
+
+  - id: rumor_vigil_defense
+    kind: defensive
+    source_chain: [mom, roza]
+    trigger:
+      all:
+        - {knowledge: {agent: town_chat, has: [dan_photos_forged]}}
+        - {stance: {agent: town_chat, subject: dan, at_least: 1}}
+    text: >-
+      Roza's line all morning: "people will say anything about a boy who
+      cries at a vigil." That shadows business is going around and it is
+      going around BADLY — the whole street has decided it's spite.
+
+  - id: rumor_eight_months_defense
+    kind: defensive
+    source_chain: [town_chat, lyudmila]
+    trigger:
+      all:
+        - {knowledge: {agent: town_chat, has: [dan_account_is_8mo_old]}}
+        - {stance: {agent: town_chat, subject: dan, at_least: 1}}
+    text: >-
+      EIGHT MONTHS, EIGHT YEARS, WHO SITS THERE COUNTING…… the boy carried
+      my shopping up THREE FLOORS…… — and the chat, for the record, is
+      agreeing with her.
+
+  # ------------------------------------------------------------------
+  # MEMORY SLIPS (3) — a firsthand detail returns from the network
+  # contradicted. Witnesses are not recordings. Authored beats, not
+  # simulation (§17, §25).
+  # ------------------------------------------------------------------
+
+  - id: rumor_slip_east_west
+    kind: memory_slip
+    source_chain: [mom, galina]
+    trigger:
+      knowledge: {agent: player, has: [routine_mapped]}
+    text: >-
+      She always walked east along the shore, towards the pier — no. West.
+      Galina says west, towards the pines. I was so sure you said east.
+      Write down west. Or ask Galina. Don't ask Galina.
+
+  - id: rumor_slip_coat
+    kind: memory_slip
+    source_chain: [mom, roza, "the bakery girl"]
+    day: 8
+    text: >-
+      Roza remembers the green coat that last Thursday, she's certain of the
+      green. The bakery girl says grey. I could have sworn green too — but
+      she wore the green to church, maybe that's the green I'm remembering.
+
+  - id: rumor_slip_taxi
+    kind: memory_slip
+    source_chain: [town_chat, oleg]
+    trigger:
+      knowledge: {agent: town_chat, has: [mira_last_seen_photo]}
+    text: >-
+      First it was one bag. Now Oleg quotes the neighbor: two suitcases and
+      a taxi. There is exactly one taxi in Ozerny and Marat says he never
+      took her anywhere. Now the chat wants to know who deleted the taxi.

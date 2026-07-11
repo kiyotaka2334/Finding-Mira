@@ -1,0 +1,265 @@
+# =============================================================================
+# Finding Mira — content/search/keywords.yaml
+# The search-engine keyword table (design §18). Queries are normalized
+# (lowercased, punctuation and diacritics stripped, "@" dropped) and matched
+# against `keys`. Any proper noun the player learns is a potential key —
+# knowledge is the inventory: most entries have NO `requires`, because having
+# the string to type IS the gate ("Katya Zimina" works the moment you learn it).
+#
+# SCHEMA
+#   id        unique keyword id
+#   keys      query strings and aliases that normalize to this entry
+#   unlocks   result ids served on hit — article ids from
+#             content/search/articles.yaml and/or card ids
+#   mints     (optional) token ids granted on hit (schema v2 §2.1
+#             minted_by: search). Tokens the RESULT proves are minted by the
+#             article instead — see articles.yaml `mints`.
+#   snippet   (optional) inline result text for entries with no article —
+#             authored dead ends so the bar never feels dead
+#   requires  (optional) typed condition per schema v2 §2.7. Used only where
+#             the design gates a key on story state, not on knowing the string.
+#
+# Unknown queries fall through to `filler_pool` below. 25 keyword entries.
+# =============================================================================
+
+keywords:
+
+  # --- THE SIGNATURE BEAT -----------------------------------------------
+  # No requires: the string itself is the lock. The player must LEARN the
+  # name (via Aziza, or Timur's slow archive path); typing it opens Act 3.
+  - id: katya_zimina
+    keys: ["katya zimina", "ekaterina zimina", "e zimina", "k zimina",
+           "zimina", "zimina vetrogorsk", "zimina pharmacist"]
+    unlocks: [art_vetrogorsk_court_blotter, art_pharmacist_honored,
+              art_farmakor_scandal]
+    # Chain: art_vetrogorsk_court_blotter mints restraining_order_record and
+    # names Artyom Krayev -> enables the artyom_krayev key below ->
+    # art_pharmacist_honored carries card_artyom_photo (his face).
+
+  - id: artyom_krayev
+    keys: ["artyom krayev", "a krayev", "krayev", "krayev vetrogorsk",
+           "krayev farmakor"]
+    requires:
+      knowledge: {agent: player, has: [restraining_order_record]}
+    # Post-reveal key (design §18): the name first exists for the player in
+    # the court blotter. Before that, the query falls to filler.
+    unlocks: [art_vetrogorsk_court_blotter, art_pharmacist_honored]
+
+  - id: mira_sokolova
+    keys: ["mira sokolova", "sokolova", "mira sokolova ozerny",
+           "mira.ozerny", "mira ozerny pharmacist"]
+    # Deliberately thin and clean — her cover works. One local puff mention,
+    # nothing else.
+    unlocks: [art_pharmacy_opening]
+    snippet: >-
+      Two further matches: an M. Sokolova in the regional chess-club
+      standings (Kirovsk, 2nd board), and a Sokolov & Sokolova notary office
+      in Vetrogorsk. Nothing else indexed.
+
+  - id: k_moroz
+    keys: ["k_moroz", "k moroz", "moroz svoi"]
+    # Typing the handle is the gate; learning it is the puzzle.
+    mints: [second_account_found]
+    snippet: >-
+      Svoi profile "@k_moroz": registered eight years ago. Private. No
+      public posts. Profile photo: a frosted window, no face. Status line,
+      unchanged for three years: "moved on."
+
+  - id: scraped_lines
+    keys: ["first snow smells like pencil shavings",
+           "pencil shavings",
+           "cinnamon is a spice for people who don't trust themselves",
+           "i only trust a lake that's seen me cry",
+           "pharmacists are just librarians for the body",
+           "a town small enough to hear the bread van",
+           "hear the bread van"]
+    # Reverse-searching one of Dan's "shared memories" verbatim. Proves the
+    # posts exist publicly without surfacing the old name (name-gating stays
+    # with Aziza / the archive path).
+    mints: [mira_old_posts_public]
+    snippet: >-
+      Social index: exact phrase match in an archived public post,
+      Vetrogorsk region, posted several years ago. The account has since
+      been deleted; cached text only, profile unavailable.
+
+  # --- PLACES & INSTITUTIONS -------------------------------------------
+
+  - id: vetrogorsk
+    keys: ["vetrogorsk", "vetrogorsk news", "vetrogorsk courier"]
+    unlocks: [art_farmakor_scandal, art_wolves]
+    snippet: >-
+      1,214 further results in the Vetrogorsk Courier archive, most recent
+      first: tram fare consultations, the ring-road interchange, a kennel
+      club exposition. Refine your query.
+
+  - id: farmakor
+    keys: ["farmakor", "farmakor vetrogorsk", "farmakor scandal",
+           "farmakor inventory", "farmakor inventory scandal",
+           "farmakor shortage"]
+    # The red herring (design §18, canon): a real, searchable, unrelated
+    # scandal that makes the archive feel deep and points nowhere.
+    unlocks: [art_farmakor_scandal, art_pharmacist_honored]
+
+  - id: beryozka
+    keys: ["beryozka", "beryozka cooperative", "beryozka dacha",
+           "beryozka co-op", "dacha cooperative ozerny"]
+    unlocks: [art_beryozka_dispute]
+
+  - id: zarya_pharmacy
+    keys: ["zarya", "zarya pharmacy", "pharmacy ozerny", "aliyev pharmacy"]
+    unlocks: [art_pharmacy_opening]
+
+  - id: korzhik
+    keys: ["korzhik", "bakery korzhik", "korzhik ozerny", "ozerny bakery"]
+    unlocks: [art_bakery_anniversary]
+
+  - id: ozerny
+    keys: ["ozerny", "ozerny news", "ozerny weekly"]
+    unlocks: [art_bakery_anniversary, art_lake_cleanup, art_dk_roof]
+
+  - id: boathouse
+    keys: ["boathouse", "old boathouse", "ozerny boathouse", "the pier",
+           "ozerny pier"]
+    unlocks: [art_boathouse_condemned]
+
+  - id: house_of_culture
+    keys: ["house of culture", "dk ozerny", "house of culture ozerny",
+           "dk roof"]
+    unlocks: [art_dk_roof]
+
+  - id: school_2
+    keys: ["school 2", "school no 2", "school №2", "ozerny school"]
+    unlocks: [art_school_olympiad]
+
+  - id: propane
+    keys: ["propane", "propane exchange", "propane ozerny",
+           "propane refill", "gas bottles ozerny"]
+    # Converges with the Beryozka entry on purpose: the dispute piece is the
+    # printed half of the dacha deduction.
+    unlocks: [art_beryozka_dispute]
+
+  - id: lake_cleanup
+    keys: ["lake cleanup", "ozerny lake", "shore cleanup", "lake volunteers"]
+    unlocks: [art_lake_cleanup]
+
+  # --- STORY-STATE-GATED ------------------------------------------------
+
+  - id: restraining_order
+    keys: ["restraining order", "restraining order vetrogorsk",
+           "zimina court", "order of protection vetrogorsk"]
+    requires:
+      knowledge: {agent: player, has: [mira_real_name]}
+    # Generic legal words alone shouldn't dredge the blotter; knowing WHO
+    # to look for is what makes the query findable.
+    unlocks: [art_vetrogorsk_court_blotter]
+
+  - id: missing_pharmacist
+    keys: ["missing person ozerny", "missing pharmacist", "mira missing",
+           "search party ozerny", "ozerny volunteers"]
+    requires:
+      knowledge: {agent: town_chat, has: [search_party_forming]}
+    # The town paper only has copy once the town has organized (§8.6).
+    unlocks: [art_search_volunteers]
+
+  # --- AUTHORED DEAD ENDS (the bar never feels dead) ---------------------
+
+  - id: dan_volkov
+    keys: ["dan volkov", "dan.volkov", "volkov", "daniil volkov",
+           "dan volkov vetrogorsk"]
+    # The absence IS the result: eight months of person, zero archive.
+    snippet: >-
+      Search returns: a D. Volkov, veterinary supplies wholesale, Kirovsk;
+      a Volkov, Denis, in the junior hockey league standings; an obituary
+      for a Volkova, E. P., aged 94. No matches in the Vetrogorsk or Ozerny
+      archives.
+
+  - id: priozersk
+    keys: ["priozersk", "priozersk sanatorium", "boyfriend priozersk"]
+    # Where the canary points (azizas_canary) and where the PE teacher
+    # actually is. Innocuous by design.
+    snippet: >-
+      Priozersk municipal page: sanatorium "Kedr" announces winter rates;
+      the 08:40 connecting bus now runs Tuesdays and Saturdays only;
+      library reading circle resumes after renovation.
+
+  - id: bus_station
+    keys: ["bus station", "bus station ozerny", "bus schedule ozerny",
+           "northbound bus"]
+    snippet: >-
+      Ozerny bus station notice, October: the northbound service to the
+      junction departs 07:15 and 16:40 daily; the Priozersk connection is
+      reduced for the season; lost property may be claimed at the window
+      before noon.
+
+  - id: fish_plant
+    keys: ["fish plant", "fish plant ozerny", "white van", "fish plant van"]
+    snippet: >-
+      Ozerny fish plant, classifieds section: seasonal vacancies for two
+      sorters and a night driver ("own van an advantage"); the smokehouse
+      tour remains suspended pending repairs.
+
+  - id: klenovaya
+    keys: ["klenovaya", "klenovaya street", "klenovaya 14"]
+    snippet: >-
+      Municipal works bulletin: resurfacing of Klenovaya Street postponed a
+      third year; residents are asked to direct complaints to the roads
+      office "in writing, not in the chat."
+
+  - id: sanatorium
+    keys: ["sanatorium", "sanatorium nerves", "rest home"]
+    snippet: >-
+      Regional listings: eleven sanatoria currently accepting bookings.
+      "Kedr" (Priozersk) is nearest. No patient registries are public.
+      An advertorial praises the mud baths.
+
+  - id: wolves
+    keys: ["wolves", "wolves ozerny", "wolf tracks", "wolves lake"]
+    unlocks: [art_wolves]
+
+  - id: sovkhoz
+    keys: ["sovkhoz", "old sovkhoz", "prayer group sovkhoz", "beekeepers"]
+    snippet: >-
+      One indexed mention, regional agricultural bulletin: the former
+      sovkhoz buildings are leased seasonally to the district beekeepers'
+      association. Honey sale dates listed below.
+
+# =============================================================================
+# FILLER POOL — served for any query that matches no keyword entry
+# (design §18: "unknown queries return authored filler results"). The engine
+# deals 1–2 per unknown query, rotating deterministically.
+# =============================================================================
+
+filler_pool:
+  - id: fp_frost_advisory
+    snippet: >-
+      Ozerny Weekly, weather desk: first hard frosts expected mid-month;
+      the roads office reminds drivers the bridge boards ice over before
+      the asphalt does.
+  - id: fp_classifieds
+    snippet: >-
+      Classifieds: seasoned birch firewood, delivered; a winter coat,
+      "worn twice, wrong color"; accordion lessons, patient teacher,
+      results not guaranteed.
+  - id: fp_choir_concert
+    snippet: >-
+      The House of Culture choir presents an evening of romances, Sunday at
+      five. Entry by donation toward the roof fund. Tea after.
+  - id: fp_crossword
+    snippet: >-
+      Last week's crossword solution published; the editors apologize:
+      14-across, "a lake fish," was intended to be BREAM, not DREAM, and
+      regret the letters received on the subject.
+  - id: fp_bus_change
+    snippet: >-
+      Transport notice: the school bus will board at the market square
+      while Klenovaya remains unsurfaced. Parents are thanked for their
+      patience, again.
+  - id: fp_hockey
+    snippet: >-
+      Junior hockey: Ozerny's boys fall 2:5 in Kirovsk; the coach cites
+      "the ice, the referee, and October." Return fixture at home next
+      month.
+  - id: fp_pension_queue
+    snippet: >-
+      The pension office moves to winter hours from the 20th. The bench
+      outside will be brought indoors. The queue, presumably, will follow.

@@ -1,0 +1,941 @@
+# =============================================================================
+# Finding Mira — content/tokens/core.yaml
+# The core fact-token table (design §9; schema v2 §2.1).
+#
+# CONVENTIONS
+#   - Field order follows the §2.1 worked examples:
+#     id, truth, tags, valence, summary, evidence?, wordings, minted_by,
+#     decoy?, echo, editor.
+#   - `truth:` is required on every token (schema principle 2). False tokens
+#     (Aziza's canary, Mira's boathouse test, planted rumors, Dan's cover
+#     story) spread like any other but never satisfy evidence gates.
+#   - `valence:` entries are {subject, sign} pairs; subjects are the closed
+#     set {dan, player, mira} (§10.1). 33 tokens here carry valence.
+#   - `evidence:` cards live in content/tokens/evidence_cards.yaml. Every
+#     `critical` token carries one (validator rule §2.9). The six critical
+#     tokens: dan_photos_forged, mira_real_name, dacha_location,
+#     informant_identity, restraining_order_record, dead_drop_channel.
+#   - `minted_by: []` marks a dialogue-granted token: dialogue blocks declare
+#     `mints:` and the validator unions block-side grants with token-side
+#     sources when proving reachability (§2.1 field notes). The comment on
+#     each names the intended granting channel for the dialogue author.
+#   - `decoy:` appears ONLY on tokens whose minted_by contains a `deduction`
+#     source (validator rule). The compiler derives `<id>__decoy` with
+#     truth: false and contradicts: [<id>]. Five decoys here — enough for
+#     the counter-bluff branch's decoy_count_at_least: 2 (§2.6).
+#   - `echo: default` uses content/dialogue/dan/echo_templates.yaml; four
+#     tokens override all three tiers where the template reads wrong.
+#   - Mom's routine tokens are authored per slot-pattern class and selected
+#     by the engine each morning (§2.1 field notes, design §13.1).
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# ACT 1 — the favor: public-layer OSINT, the town noticing the player
+# ---------------------------------------------------------------------------
+
+- id: player_asking_questions
+  truth: true
+  tags: [juicy, about_player]
+  valence:
+    - {subject: player, sign: "-"}
+  summary: "The returnee has been asking around town about the missing pharmacist"
+  wordings:
+    - "they were grilling half the market about Mira, did you hear"
+    - "back five minutes and already interrogating people like some detective"
+  minted_by:
+    - scene: whos_asking          # set-piece 8.1
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: player_city_breakup
+  truth: true
+  tags: [juicy, about_player]
+  valence: []
+  summary: "The player moved back to Ozerny after a breakup in the city"
+  wordings:
+    - "came home over a broken heart, that's the real story"
+    - "the city didn't work out, if you follow me"
+  minted_by:
+    - scene: only_galina          # set-piece 8.2 — the "just between us" lesson
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: player_working_for_police
+  truth: false
+  tags: [juicy, about_player]
+  valence:
+    - {subject: player, sign: "-"}
+  summary: "The player is secretly working for the city police"
+  wordings:
+    - "they say the city police sent someone home to poke around"
+    - "asking questions like that? somebody's on a payroll"
+  minted_by:
+    - scene: rumor_police_reactive   # town-chat mutation of player_asking_questions
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: dan_paid_player
+  truth: true
+  tags: [juicy, about_player]
+  valence:
+    - {subject: dan, sign: "-"}
+    - {subject: player, sign: "-"}
+  summary: "Dan sent the player money 'for expenses' and the player accepted"
+  wordings:
+    - "the city man pays them, you know — in an envelope"
+    - "money changed hands, that's all I'm saying"
+  minted_by:
+    - scene: the_envelope         # set-piece 8.3, accept branch
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: player_disclosed_payment
+  truth: true
+  tags: [about_player]
+  valence:
+    - {subject: player, sign: "+"}
+  summary: "The player publicly declared Dan's expense money before anyone could 'discover' it"
+  wordings:
+    - "they put it in the chat themselves — the money, the amount, everything"
+  minted_by:
+    - scene: envelope_disclosure  # pre-disclosure neutralizes Dan's leverage (§16)
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: dan_account_is_8mo_old
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+  summary: "Dan's account is eight months old despite claiming years of friendship"
+  evidence: card_dan_account_meta
+  wordings:
+    - "that profile's not even a year old, someone checked"
+    - "eight months of account for ten years of friendship, count it yourself"
+  minted_by:
+    - hotspot: {photo: screenshot_dan_profile, hotspot: join_date}
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: dan_claims_family_asked
+  truth: false
+  tags: [mundane]
+  valence:
+    - {subject: dan, sign: "+"}
+  summary: "Dan says Mira's family asked him to come look for her"
+  wordings:
+    - "the family sent him, apparently — they're worried sick"
+    - "he's here for the family's sake, the poor things can't travel"
+  minted_by: []                   # dialogue-granted: Dan's Act 1 intro DMs
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: dan_devoted_friend_story
+  truth: false
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "+"}
+  summary: "Dan is Mira's oldest friend, sick with grief, doing what the police won't"
+  wordings:
+    - "friends since college, and he's the only one who cared enough to act"
+    - "that boy hasn't slept since she went missing, you can hear it in him"
+  minted_by: []                   # dialogue-granted: Dan's warm-tier anecdotes; town absorbs it
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: korzhik_reflection
+  truth: true
+  tags: [about_mira]
+  valence: []
+  summary: "Korzhik's promo photo caught Mira reflected in the window, timestamped mid-route"
+  evidence: card_bakery_promo
+  wordings:
+    - "she's in the bakery's own advert, if you squint at the glass"
+  minted_by:
+    - hotspot: {photo: photo_korzhik_promo, hotspot: window_reflection}
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: mira_morning_route
+  truth: true
+  tags: [about_mira, mundane]
+  valence: []
+  summary: "Mira walked the shore path past Korzhik every morning before opening"
+  wordings:
+    - "shore path, same bench, same thermos, rain or shine"
+    - "you could set a clock by her mornings, the dog walkers say"
+  minted_by:
+    - pin: {photo: photo_korzhik_promo, target: shore_path}
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: mira_last_seen_photo
+  truth: true
+  tags: [about_mira]
+  valence: []
+  summary: "The last picture of Mira: locking the pharmacy Thursday evening, day −4"
+  evidence: card_last_seen
+  wordings:
+    - "somebody's dashcam has her locking up Thursday, grey coat, that's the last of her"
+  minted_by:
+    - hotspot: {photo: photo_zarya_last_evening, hotspot: date_stamp}
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: mira_last_post_scheduled
+  truth: true
+  tags: [about_mira, juicy]
+  valence: []
+  summary: "Mira's final curated post was queued in advance — posted after she was already gone"
+  evidence: card_final_post_meta
+  wordings:
+    - "that last sunset of hers went up on a timer, the little clock icon gives it away"
+  minted_by:
+    - hotspot: {photo: screenshot_final_post_meta, hotspot: queued_marker}
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: routine_mapped
+  truth: true
+  tags: [about_mira]
+  valence: []
+  summary: "Mira's full weekly routine is mapped: route, hours, habits, last confirmed sighting"
+  wordings:
+    - "walk at seven, counter at nine, kiosk flowers on Fridays — the whole week, mapped"
+    - "someone's put her whole schedule together like a train timetable"
+  minted_by:
+    - deduction: [korzhik_reflection, mira_morning_route, mira_last_seen_photo]
+  decoy:
+    text: "Her days were erratic — shifts swapped constantly, no fixed route worth writing down"
+  echo: default
+  editor:
+    expected_act: 1
+
+# --- Mom's routine tokens (design §13.1): authored per slot-pattern class;
+# --- the engine SELECTS one each morning from yesterday's slot pattern.
+
+- id: routine_barely_home
+  truth: true
+  tags: [mundane, about_player]
+  valence: []
+  summary: "The player was barely home yesterday — out all three slots"
+  wordings:
+    - "barely home these days, in and out like a lodger"
+    - "I cooked for two and ate for two, that's all I'll say"
+  minted_by:
+    - routine: barely_home
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: routine_late_nights
+  truth: true
+  tags: [mundane, about_player]
+  valence: []
+  summary: "The player was up on the laptop past two in the morning again"
+  wordings:
+    - "on that laptop till two, the light under the door"
+    - "screens all night — you can tell by the eyes at breakfast"
+  minted_by:
+    - routine: late_nights
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: routine_out_every_evening
+  truth: true
+  tags: [mundane, about_player]
+  valence: []
+  summary: "The player has been out visiting someone every evening this week"
+  wordings:
+    - "out every evening and never says where — visiting somebody, obviously"
+    - "evenings out, three in a row now, I keep count, it's a mother's job"
+  minted_by:
+    - routine: out_every_evening
+  echo: default
+  editor:
+    expected_act: 1
+
+- id: routine_quiet_day
+  truth: true
+  tags: [mundane, about_player]
+  valence: []
+  summary: "The player stayed in all day, hardly said a word"
+  wordings:
+    - "home all day and quiet as church, something's on their mind"
+  minted_by:
+    - routine: quiet_day
+  echo: default
+  editor:
+    expected_act: 1
+
+# ---------------------------------------------------------------------------
+# ACT 2 — the circle: the people who knew her; the rot in Dan's story
+# ---------------------------------------------------------------------------
+
+- id: mira_old_posts_public
+  truth: true
+  tags: [about_mira, juicy]
+  valence: []
+  summary: "A Vetrogorsk-era public account with Mira's face and years of old posts still exists"
+  evidence: card_katya_old_posts
+  wordings:
+    - "there's a whole old page of hers still up somewhere, from before"
+    - "her old life never got deleted, just abandoned"
+  minted_by:
+    - search: {keyword: pencil_shavings}     # searching Dan's own quoted line finds the original
+    - search: {keyword: katya_zimina}        # late redundancy via the Act 3 unlock
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: dan_shared_memories_verbatim
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+  summary: "Dan's 'shared memories' quote Mira's old public posts word for word"
+  evidence: card_dan_dm_verbatim
+  wordings:
+    - "his stories match her old posts to the letter — the pencil shavings, the lake, all of it"
+    - "he remembers her life exactly the way she typed it, isn't that something"
+  minted_by:
+    - hotspot: {photo: screenshot_dan_dms, hotspot: verbatim_lines}
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: dan_is_scraping
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+  summary: "Dan was never remembering — he memorized her old public posts"
+  wordings:
+    - "he didn't live any of it, he read it — copied her own words back like a parrot"
+    - "the grieving friend studied for the part off her old page"
+  minted_by:
+    - deduction: [dan_shared_memories_verbatim, mira_old_posts_public]
+  decoy:
+    text: "Checked his stories against her old posts — they diverge; he knew her offline, no question"
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: dan_photos_forged
+  truth: true
+  tags: [critical, juicy]
+  valence:
+    - {subject: dan, sign: "-"}    # directed: negative ABOUT DAN
+  summary: "Dan's photos with Mira are composites"
+  evidence: card_composite_shadows
+  wordings:
+    - "the shadows in his beach photo point two different ways"
+  minted_by:
+    - hotspot: {photo: photo_dan_mira_lake, hotspot: shadow_mismatch}
+  echo:
+    warm: "Funny thing — someone told your bakery friend my photos look 'off'. Phone cameras, huh? They ruin everything."
+    clipped: "I hear my photos are a topic in your town now."
+    auditing: "Shadows. You had people going through my photos, looking at shadows."
+  editor:
+    expected_act: 2
+
+- id: azizas_canary
+  truth: false
+  tags: [juicy, about_mira]
+  valence:
+    - {subject: mira, sign: "-"}
+  summary: "Mira had a boyfriend in Priozersk she visited on Sundays"
+  wordings:
+    - "a man in Priozersk, Sundays, regular as mass — that's where she went"
+    - "there was someone in Priozersk, apparently. every Sunday"
+  minted_by:
+    - scene: azizas_canary_scene   # set-piece 8.5 — unique to the player; never surfaced (§22)
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: mira_estranged_family
+  truth: true
+  tags: [about_mira]
+  valence: []
+  summary: "Mira has no family who speaks to her — no one who would send anyone anywhere"
+  wordings:
+    - "family? she hasn't had family in years, not the kind that calls"
+  minted_by: []                   # dialogue-granted: Aziza at trust tier 2
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: dan_lied_about_family
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+  summary: "Nobody sent Dan — the family that 'asked him to look' does not exist"
+  wordings:
+    - "the worried family sent him? she doesn't have one that talks to her"
+    - "there's no family behind him — the story arrived with the man"
+  minted_by:
+    - deduction: [dan_claims_family_asked, mira_estranged_family]
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: second_account_found
+  truth: true
+  tags: [about_mira, juicy]
+  valence: []
+  summary: "Mira's real, abandoned account exists on Svoi: @k_moroz"
+  evidence: card_kmoroz_feed
+  wordings:
+    - "she had a whole other page that went dark — different name on it, even"
+    - "there's a second account, the real one, dead for years"
+  minted_by:
+    - search: {keyword: k_moroz}   # handle surfaces via Timur's class-chat lead + Aziza's hint
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: mira_second_feed_grief
+  truth: true
+  tags: [about_mira, juicy]
+  valence:
+    - {subject: mira, sign: "+"}
+  summary: "The second account, same dates as the pastries and sunsets, reads like a war diary — she was frightened, not hiding sins"
+  wordings:
+    - "whatever she ran from, that old page says she ran for her life, not from debts"
+    - "read the real one and try calling her a runaway again"
+  minted_by:
+    - scene: second_account_readthrough    # set-piece 8.8
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: mira_had_second_phone
+  truth: true
+  tags: [about_mira, juicy]
+  valence:
+    - {subject: mira, sign: "-"}
+  summary: "Mira kept a second phone that never rang in the house"
+  wordings:
+    - "two phones — one for show on the counter, one that never once rang"
+    - "who keeps a secret phone? someone with a secret, that's who"
+  minted_by: []                   # dialogue-granted: Lyudmila at trust tier 1
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: propane_receipt
+  truth: true
+  tags: [about_mira]
+  valence: []
+  summary: "A photo on the abandoned account shows a propane-exchange receipt from the Beryozka depot"
+  evidence: card_propane_receipt
+  wordings:
+    - "she's been buying propane out past the exchange, there's a paper trail"
+  minted_by:
+    - hotspot: {photo: photo_kmoroz_kitchen, hotspot: receipt_on_table}
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: rufat_dacha_mention
+  truth: true
+  tags: [about_mira, mundane]
+  valence: []
+  summary: "Rufat grumbled about co-op fees on an unregistered plot — his late assistant's aunt's dacha"
+  wordings:
+    - "Rufat's still paying fees on a plot that isn't anyone's — some aunt's old dacha"
+  minted_by: []                   # dialogue-granted: Rufat at trust tier 2, offhand
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: map_pin_dacha
+  truth: true
+  tags: [about_mira]
+  valence: []
+  summary: "The Beryozka co-op plot is pinned: 7 km out, past the propane exchange"
+  wordings:
+    - "there's exactly one unregistered plot out past the exchange, and now it has a pin in it"
+  minted_by:
+    - pin: {photo: photo_kmoroz_kitchen, target: beryozka_cooperative}
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: dacha_location
+  truth: true                      # required on every token (principle 2)
+  tags: [critical, about_mira]
+  valence: []                      # no stance relevance for this one
+  summary: "Mira is hiding at the unregistered dacha"
+  evidence: card_propane_receipt   # firsthand-proof card; required on critical tokens
+                                   # (enables the §10.1 dissonant-belief exception)
+  wordings:                        # network hop variants (§10)
+    - "she's been buying propane out by the co-op"
+    - "someone's living at one of the old dachas"
+  minted_by:                       # typed sources; ≥1 path required if critical
+    - deduction: [propane_receipt, rufat_dacha_mention, map_pin_dacha]
+  decoy:                           # allowed ONLY on deduction tokens (validator rule)
+    text: "She took the northbound bus on the 4th"
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: pharmacy_schedule_records
+  truth: true
+  tags: [about_mira, pharmacy]
+  valence: []
+  summary: "The Zarya shift book: Mira rearranged her own final week a full week in advance"
+  evidence: card_pharmacy_schedule
+  wordings:
+    - "she set up her own last shift days ahead — it's right there in Rufat's book"
+  minted_by:
+    - scene: rufat_artifact_handover   # Rufat trust tier 3 artifact (§13)
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: mira_left_deliberately
+  truth: true
+  tags: [about_mira, juicy]
+  valence:
+    - {subject: mira, sign: "+"}
+  summary: "Mira wasn't taken — she planned her own disappearance, calmly, a week ahead"
+  wordings:
+    - "nobody snatched her — she squared her shifts, queued her posts, and walked"
+    - "planned like a holiday, executed like a fire drill"
+  minted_by:
+    - deduction: [pharmacy_schedule_records, mira_last_post_scheduled]
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: search_party_forming
+  truth: true
+  tags: [mundane]
+  valence: []
+  summary: "The town is organizing volunteer searches, coordinated in an open chat"
+  wordings:
+    - "they're mustering by the House of Culture Saturday, bring boots"
+  minted_by:
+    - scene: search_party_forms    # set-piece 8.6
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: search_route_north
+  truth: true
+  tags: [mundane]
+  valence: []
+  summary: "The volunteer search starts from the north shore tomorrow"
+  wordings:
+    - "north shore first thing, they've split it into squares like mushroom season"
+  minted_by: []                   # dialogue-granted: search-party chat / Dan probe block
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: search_places_checked
+  truth: true
+  tags: [about_mira]
+  valence: []
+  summary: "The searchers' map of places already checked — a map of everywhere she is not"
+  wordings:
+    - "the chat keeps a tidy list of everywhere she isn't — very organized, very public"
+  minted_by:
+    - scene: search_party_day_two   # the open chat Dan reads directly (§10)
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: timur_screenshot_circulating
+  truth: true
+  tags: [juicy, about_player]
+  valence:
+    - {subject: player, sign: "-"}
+  summary: "Screenshots of the player's case notes are going around Timur's class chat as true-crime content"
+  wordings:
+    - "the schoolkids are passing the notes around like a serial — episode two tonight, probably"
+    - "9B has the whole investigation on their phones"
+  minted_by:
+    - scene: timurs_screenshot     # set-piece 8.9, reactive
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: leak_was_players_fault
+  truth: true
+  tags: [juicy, about_player]
+  valence:
+    - {subject: player, sign: "-"}
+  summary: "The player publicly took the blame for the class-chat leak"
+  wordings:
+    - "they stood up in the chat and said the leak was on them, not the boy"
+  minted_by:
+    - scene: timur_repair_blame    # Timur's repair beat: Standing −1, Timur +2 (§13)
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: dan_knows_unshared_details
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+  summary: "Dan keeps knowing things the player never told him"
+  wordings:
+    - "he asked about the propane before anyone told him about the propane"
+    - "the city man hears things — the question is through whose window"
+  minted_by:
+    - scene: first_echo_noticed    # fires the first time an echo line lands (§14)
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: town_chat_relay_pattern
+  truth: true
+  tags: []
+  valence: []
+  summary: "Everything Dan 'somehow knows' surfaces exactly one morning after it appears in the town chat"
+  evidence: card_chat_timestamps
+  wordings:
+    - "line his questions up against the chat and there's your one-day delay, regular as the bread van"
+  minted_by:
+    - hotspot: {photo: screenshot_town_chat_times, hotspot: timing_pattern}
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: informant_identity
+  truth: true
+  tags: [critical, juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+  summary: "Dan's second local source is identified"
+  evidence: card_echo_compilation
+  wordings:
+    - "somebody in town has been reporting to the city man all along"
+    - "he's had a second pair of ears here since the beginning"
+  minted_by:
+    - deduction: [dan_knows_unshared_details, town_chat_relay_pattern]
+  decoy:
+    text: "Dan has no other source in Ozerny — everything he knows, he got from me"
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: stranger_at_bus_station
+  truth: true
+  tags: [juicy]
+  valence: []
+  summary: "Months ago a stranger was at the bus station showing people a woman's photo on his phone"
+  wordings:
+    - "back in spring some man was showing a photo around the station — not from here"
+    - "nobody thought anything of him then. now everyone remembers him differently"
+  minted_by:
+    - scene: rumor_bus_station_followup   # chasing the day-2 rumor to its witness
+  echo: default
+  editor:
+    expected_act: 2
+
+# ---------------------------------------------------------------------------
+# ACT 3 — the turn: the old name, the archive, Dan in town, the dead drop
+# ---------------------------------------------------------------------------
+
+- id: mira_real_name
+  truth: true
+  tags: [critical, about_mira, juicy]
+  valence: []
+  summary: "Mira Sokolova is Katya Zimina — Ekaterina, a pharmacist from Vetrogorsk"
+  evidence: card_katya_staff_photo
+  wordings:
+    - "Sokolova's not the name she was born with — she came here as somebody else"
+    - "three years ago she was a Zimina, from Vetrogorsk"
+  minted_by:
+    - scene: aziza_name_reveal     # Aziza trust tier 3 (§13)
+    - scene: timur_archive_path    # slow path if Aziza is burned: +2 days (§2.6 delay event)
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: restraining_order_record
+  truth: true
+  tags: [critical, juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+    - {subject: mira, sign: "+"}
+  summary: "A Vetrogorsk court granted Ekaterina Zimina a restraining order against Artyom Krayev; it expired unrenewed"
+  evidence: card_restraining_order
+  wordings:
+    - "there were courts in the city — papers, a man ordered to keep away"
+    - "she had protection on paper once, and the paper ran out"
+  minted_by:
+    - search: {keyword: katya_zimina}   # the signature Act 3 unlock (§18)
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: artyom_photo_match
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+  summary: "The Artyom Krayev in the Vetrogorsk news photo is the man in Dan's profile pictures"
+  evidence: card_artyom_photo
+  wordings:
+    - "put the court-story photo next to the city friend's page and tell me that's two men"
+  minted_by:
+    - hotspot: {photo: photo_artyom_news, hotspot: face_match}
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: katya_stalking_forum_thread
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+    - {subject: mira, sign: "+"}
+  summary: "An old Vetrogorsk forum thread documents the Farmakor stalking case in the posters' own words"
+  evidence: card_forum_thread
+  wordings:
+    - "the whole story's on an old city forum — the letters, the waiting outside, the two years of it"
+  minted_by:
+    - search: {keyword: katya_zimina}
+    - search: {keyword: farmakor}
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: dan_is_artyom
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+  summary: "Dan Volkov is Artyom Krayev — the man the restraining order named"
+  evidence: card_artyom_photo
+  wordings:
+    - "the grieving friend and the man from the court papers are the same person"
+    - "there is no Dan. there never was a Dan"
+  minted_by:
+    - deduction: [restraining_order_record, artyom_photo_match]
+  decoy:
+    text: "Ran him down properly: Dan Volkov is real — an old college classmate of hers, checks out end to end"
+  echo:
+    warm: "Someone's been telling people I'm not who I say I am. Small towns, huh. You'd tell me if it was you, right?"
+    clipped: "People here have started saying a name at me. You know which one."
+    auditing: "You can stop calling me Dan if it's easier. …Finally."
+  editor:
+    expected_act: 3
+
+- id: player_suspects_dan
+  truth: true
+  tags: [juicy, about_player]
+  valence:
+    - {subject: dan, sign: "-"}
+  summary: "The player has stopped believing Dan's story"
+  wordings:
+    - "our local detective has doubts about the city friend now, big ones"
+    - "they've gone cold on the grieving-friend business, you can see it"
+  minted_by:
+    - deduction: [dan_account_is_8mo_old, dan_is_scraping]
+  echo:
+    warm: "Your mom mentioned you've seemed worried about me lately. I'm fine. Worry about Mira."
+    clipped: "Word going around is that you have doubts. About me."
+    auditing: "So we're investigating each other now. All right."
+  editor:
+    expected_act: 2
+
+- id: artyom_scouted_town
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+  summary: "The stranger showing a photo at the bus station last spring was Artyom, scouting Ozerny in person"
+  wordings:
+    - "he walked this town months before he ever messaged anyone — photo in hand"
+  minted_by:
+    - deduction: [stranger_at_bus_station, artyom_photo_match]
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: dan_fixed_moms_fence
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "+"}
+  summary: "Dan spent an afternoon fixing Nina's fence, wouldn't take a ruble"
+  wordings:
+    - "fixed the whole fence and stayed for tea — when did our own men last do that"
+    - "such a lonely boy, and look how he helps"
+  minted_by:
+    - scene: dan_charms_mom        # set-piece 8.11: the beachhead
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: dan_donated_search_fund
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "+"}
+  summary: "Dan put a visible sum into the volunteer search fund"
+  wordings:
+    - "he gave more to the fund than the whole market row together"
+  minted_by:
+    - scene: dan_charms_town
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: dan_cried_at_vigil
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "+"}
+  summary: "Dan wept openly at the candlelight vigil for Mira"
+  wordings:
+    - "he stood there with a candle and cried like family — people saw"
+  minted_by:
+    - scene: vigil_scene
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: dan_searched_room
+  truth: true
+  tags: [juicy]
+  valence:
+    - {subject: dan, sign: "-"}
+  summary: "Before Mom let him in, Dan asked about the player's notebook — he came to search, not to visit"
+  evidence: card_mom_account
+  wordings:
+    - "he asked about the notebook before he was even through the door — her own words"
+  minted_by:
+    - scene: mom_diary_aftermath_calm   # 8.10 aftermath, explain-calmly branch
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: dead_drop_channel
+  truth: true
+  tags: [critical, about_mira]
+  valence: []
+  summary: "A one-way channel to Mira exists — she is alive, lurking, and reachable"
+  evidence: card_dead_drop_note
+  wordings:
+    - "there's a way to get word to her, if you can keep a thing to yourself"
+    - "someone's been passing messages out of town, quiet as post"
+  minted_by:
+    - scene: aziza_dead_drop       # Aziza trust tier 3, post-name-reveal (§8.12)
+    - scene: dead_drop_direct_route   # riskier route if Aziza is burned
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: boathouse_false_location
+  truth: false
+  tags: [juicy, about_mira]
+  valence: []
+  summary: "Mira is hiding in the old boathouse by the pier"
+  wordings:
+    - "she never left at all — she's been in the old boathouse the whole time"
+    - "the light the ice fishermen saw? that's her. the boathouse"
+  minted_by:
+    - scene: miras_test            # set-piece 8.12: her canary, faced from the other side
+  echo:
+    warm: "Someone mentioned the old boathouse by the pier — that light people keep seeing. You'd have told me about a thing like that… right?"
+    clipped: "The boathouse. You knew about the boathouse."
+    auditing: "You knew about the boathouse and I heard it from the chat."
+  editor:
+    expected_act: 3
+
+- id: mira_online_recently
+  truth: true
+  tags: [about_mira, juicy]
+  valence: []
+  summary: "The abandoned @k_moroz account showed 'online 2 min ago' — she is alive and reading"
+  evidence: card_lastseen_status
+  wordings:
+    - "the dead page blinked — online two minutes ago, then gone"
+  minted_by:
+    - hotspot: {photo: screenshot_kmoroz_lastseen, hotspot: online_two_min}
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: player_visited_dacha
+  truth: true
+  tags: [juicy, about_player]
+  valence: []
+  summary: "The player was seen taking the co-op road out past the propane exchange"
+  wordings:
+    - "they were out on the Beryozka road today — on foot, past the exchange, alone"
+  minted_by:
+    - scene: dacha_trip            # set-piece 8.13: the trip itself is the leak
+  echo: default
+  editor:
+    expected_act: 3
+
+- id: mira_vouches_player
+  truth: true
+  tags: [about_player]
+  valence:
+    - {subject: player, sign: "+"}
+  summary: "Through the dead drop, Mira herself vouched for the player"
+  wordings:
+    - "word came back from her, wherever she is: this one can be trusted"
+  minted_by:
+    - scene: dead_drop_vouch       # endgame; required leg of Aziza's repair (§13)
+  echo: default
+  editor:
+    expected_act: 3
+
+# ---------------------------------------------------------------------------
+# FALSE RUMOR TOKENS — the town's own fictions; grist for the stance system
+# ---------------------------------------------------------------------------
+
+- id: mira_pharmacy_theft_rumor
+  truth: false
+  tags: [juicy, pharmacy, about_mira]
+  valence:
+    - {subject: mira, sign: "-"}
+  summary: "Mira ran because Rufat's books came up short"
+  wordings:
+    - "check the pharmacy ledgers, that's why she ran — the books are short"
+    - "money missing at Zarya, and the girl gone the same week? do the sums"
+  minted_by:
+    - scene: rumor_pharmacy_theft   # Lyudmila's evergreen; Rufat's corrections feed it (§10)
+  echo: default
+  editor:
+    expected_act: 2
+
+- id: mira_ran_off_with_man
+  truth: false
+  tags: [juicy, about_mira]
+  valence:
+    - {subject: mira, sign: "-"}
+  summary: "Mira ran off with a man — that's all this ever was"
+  wordings:
+    - "a man, obviously. it's always a man. the coat, the taxi, the lot"
+    - "she'll be back in spring with a ring or without one, mark me"
+  minted_by:
+    - scene: rumor_ran_off          # the town's comfortable story
+  echo: default
+  editor:
+    expected_act: 2

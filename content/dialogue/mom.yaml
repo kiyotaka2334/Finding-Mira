@@ -1,0 +1,408 @@
+# Finding Mira — Mom (Nina) dialogue blocks
+# Design §7 / §8.1 / §8.2 / §8.10 / §8.11 / §8.14 / §13.1; schema v2 §2.4 / §2.7.
+#
+# Format notes:
+# - NPC blocks per schema §2.4: same block schema as Dan, `text:` instead of
+#   tone skins, mostly linear `next:` chains. Scenes select blocks by ordered
+#   requires-queries (§2.6); `next:` is used only for hard linear flow.
+# - Voice (canon): triple messages and voice-note-length texts. Each line inside
+#   a `text:` block scalar renders as a SEPARATE message bubble. Stage
+#   directions in (parentheses) render as chat-app metadata, e.g. voice notes.
+# - Food is love. Mom never says "I love you"; she says "sit, eat."
+# - All conditions/events are typed per §2.7. Outcomes the rules table owns
+#   (trust deltas, standing swings) are signalled by `flag:` events; the flag →
+#   rules-event mapping lives engine-side, never here (schema principle 1).
+# - New non-canon token referenced here (define in content/tokens/):
+#     player_left_city_job   (truth: true, tags: [about_player, juicy]) — the
+#       "Only Galina" payload, §8.2. Mildly embarrassing, about the player.
+#     mira_rents_at_klenovaya (truth: true, tags: [about_mira, mundane]).
+#   Routine tokens (routine_barely_home etc.) are declared in tokens/ with
+#   minted_by: routine per schema §2.1; Mom's agent entry carries the note.
+
+# ---------------------------------------------------------------- Act 1 ----
+
+- id: mom_welcome_home
+  beat: act1
+  once: true
+  text: |
+    you're HOME. you're really home, I can hear the floor
+    don't move, I'm putting the kotleti on. did you eat on the bus? don't answer. nothing sold on that bus has ever been food
+    (voice message, 2:41 — mostly about the sour cream situation, ends with:) …and the whole town's upside down over the pharmacist girl, the one from Zarya, vanished like smoke. four days! sit, eat, I'll tell you everything, I know EVERYTHING
+  responses:
+    - text: "Tell me about the pharmacist."
+      next: mom_intel_mira
+    - text: "Who even still lives here? Catch me up."
+      next: mom_intel_lyudmila
+    - text: "First the kotleti. Then everything."
+      # no events; warmth is free
+
+- id: mom_intel_mira
+  beat: act1
+  text: |
+    Mira, Mirochka from the pharmacy. polite girl. weighed my valerian drops for four years and never once asked why I need them — which, sunshine, is not normal here, EVERYONE asks
+    no family ever visited. not one guest from away in four years. I used to think, a girl that quiet is resting from something
+    she rented the upstairs from Lyudmila Petrovna, Klenovaya 14, the blue gate. ask Lyudmila! no wait. don't ask Lyudmila anything, I'll explain about Lyudmila
+  responses:
+    - text: "Explain about Lyudmila."
+      events: [{mints: {token: mira_rents_at_klenovaya}}]
+      next: mom_intel_lyudmila
+    - text: "Resting from what, do you think?"
+      events: [{mints: {token: mira_rents_at_klenovaya}}]
+
+- id: mom_intel_lyudmila
+  beat: act1
+  text: |
+    Lyudmila Petrovna. sixty-eight, widowed twice, hears through walls that aren't hers
+    you tell Lyudmila good morning and by lunch the whole town knows what you dreamed. I'm not being unkind! she can't help it, it falls out of her like change from a torn pocket
+    but if you want to know something FAST, there's no faster woman alive. just remember the price, sunshine. the price is everyone.
+  responses:
+    - text: "Noted. Who else should I know about?"
+      next: mom_intel_rufat
+    - text: "Sounds like you two talk a lot."
+      # she does; the routine channel runs through Lyudmila (§13.1)
+
+- id: mom_intel_rufat
+  beat: act1
+  text: |
+    Rufat Aliyev owns the pharmacy. dry as last year's bread and twice as honest
+    him and Lyudmila have been at war since — I want to say 2019? over a receipt. a RECEIPT. he corrects her rumors in the chat, which of course only feeds them, the man has never understood this
+    don't bring him gossip. bring him a reason. he liked Mira, you could tell — he double-bagged her groceries once, that's Rufat for weeping
+  responses:
+    - text: "And Mira's friends? Did she have any?"
+      next: mom_intel_aziza
+    - text: "Good to know."
+
+- id: mom_intel_aziza
+  beat: act1
+  text: |
+    friends… one. Aziza, the flower kiosk by the market. Rakhimova
+    polite, closed like a fist. she and Mira drank tea in the kiosk on Thursdays, I've seen them, two cups on the ledge, laughing at nothing
+    she won't talk to you, sunshine, I'll say that now. she doesn't talk to me and I'm HARMLESS
+  responses:
+    - text: "Anyone else glued to this story?"
+      next: mom_intel_oleg
+    - text: "We'll see if she talks to me."
+
+- id: mom_intel_oleg
+  beat: act1
+  text: |
+    well if you go in the town chat you'll meet Oleg whether you want to or not. Samoilov. the fishing photo
+    no work since the depot closed, sits in that chat like it's a job. which — well.
+    he's not a bad man. he'd just sell his own fishing spot for somebody to say "well done, Oleg." nobody ever says it. remember I told you that
+  responses:
+    - text: "I'll remember."
+    - text: "That's actually useful, Mom."
+      # it is: the co-opt path in oleg.yaml turns on exactly this
+
+- id: mom_routine_ambient
+  beat: act1
+  text: |
+    Lyudmila asked me today why the light in your window burns till two
+    I said you WORK. important work! on the laptop! she says on the laptop till two, like it's a diagnosis
+    are you eating up there? blink the lamp twice if you want vareniki, I'll see it from the kitchen
+  responses:
+    - text: "Mom, maybe don't narrate my windows to Lyudmila."
+      # editor: this lands before the player can know why it matters. Dan's warm
+      # "long day?" questions run on exactly these routine tokens (§13.1, §14).
+    - text: "Vareniki. Obviously."
+
+- id: mom_market_police
+  beat: act1
+  once: true
+  requires:
+    knowledge: {agent: town_chat, has: [player_asking_questions]}
+  text: |
+    come home for dinner. also a small thing
+    Tamara at the market asked me today if you're POLICE. police! I said what police, you cried at your own graduation
+    then Galina heard at the bakery that you're "collecting information." sunshine. why is the market asking your mother if you're police. what did you write in that chat
+  responses:
+    - text: "I just asked when people last saw Mira. That's all it takes here?"
+      # yes. that's the lesson (§8.1): the network investigated the player back.
+    - text: "Tell Tamara I'm unemployed, not undercover."
+      # goes straight to Lyudmila as about_player material, naturally
+
+# --- Only Galina (§8.2) --------------------------------------------------
+
+- id: mom_only_galina_share
+  beat: act1
+  once: true
+  text: |
+    you've got the face. the same face as when you broke the greenhouse window and blamed a bird
+    out with it. I'm your mother, there is nothing you can tell me that I haven't imagined worse at 4am
+    (typing…) (typing…) is it money? it's money. eat first, then it's money
+  responses:
+    - text: "Between us? The real reason I'm back — the job ended. They let me go in the spring. There was no 'exciting new chapter.'"
+      events: [{tell: {agent: mom, token: player_left_city_job}}]
+      next: mom_vault_reply
+    - text: "It's nothing, Mom. Bird broke the window. History repeats."
+      # withholding is free; the network can't leak what Mom never held
+
+- id: mom_vault_reply
+  beat: act1
+  once: true
+  text: |
+    oh my sunshine. those IDIOTS. their loss, their enormous loss, you were the best one there, I don't need details to know it
+    and between us means between us! a vault. I am a VAULT
+    now eat. losing a job burns calories, that's medical, I heard it on the radio
+  responses:
+    - text: "Thanks, Mom. Just — keep it in the vault, yeah?"
+      # she means it. the vault has a bench at the bakery in it. tick runs at dawn.
+
+- id: mom_only_galina_confront
+  beat: act1
+  once: true
+  requires:
+    knowledge: {agent: town_chat, has: [player_left_city_job]}
+  text: |
+    good morning!! Galina's bringing poppy-seed rolls, she says you need feeding up after "everything"
+    (later, after the player has been condoled at by half the market:) what do you mean the whole town. what everything?
+    I don't understand. I only told Galina. Galina is not "the town," Galina is GALINA. we've shared a bench at that bakery for thirty years, sunshine, she's practically a wall — you tell things to a wall
+  responses:
+    - text: "Galina told three people before the rolls cooled, Mom. That's how walls work here."
+      # genuinely baffled, not sorry — trust and discretion are different stats.
+      # this is the lesson the game will re-teach at stakes (§8.2 → §13.1).
+    - text: "It's fine. It's… fine. Just — the vault has a door, apparently."
+    - text: "Forget it. Are there rolls left?"
+      # there are always rolls left. that's the whole point of Mom.
+
+# ---------------------------------------------------------------- Act 3 ----
+# Diary aftermath (§8.10). The diary_confrontation scene (scenes/act3) sets
+# flag diary_scene_done and routes its `aftermath:` ref here.
+
+- id: mom_diary_aftermath
+  beat: act3
+  once: true
+  requires:
+    flag: {id: diary_scene_done}
+  text: |
+    oh good, you're back! did you catch your friend? Dan, from the city — such a nice young man, so worried about you two
+    I put the kettle on and he waited in your room, I hope that's alright, I didn't want him standing in the hall like a debt collector
+    he left you a note? no? he was writing something. anyway there's tea still hot
+  responses:
+    - text: "You let a STRANGER into my ROOM? Mom, what were you thinking?!"
+      events:
+        - {flag: {id: mom_diary_blowup}}          # engine maps: Mom trust −1 (§8.10)
+        - {delay: {channel: mom_intel, days: 2}}  # her intel channel dims (§8.10)
+      next: mom_diary_blowup_reaction
+    - text: "Mom, sit with me a second. That man is not who he says he is. I need you to tell me everything about the visit — slowly."
+      next: mom_diary_calm_reaction
+
+- id: mom_diary_blowup_reaction
+  beat: act3
+  once: true
+  text: |
+    a stranger? he knew your name. he knew MY name. he brought lemon wafers, sunshine, the good ones
+    fine. FINE. I won't let anyone in, I won't tell anyone anything, I'll live like a spy in my own kitchen
+    (voice message, 1:47 — mostly the tap running. near the end, quieter:) …I was happy somebody came for you. that's all it was. I was happy somebody came.
+  responses:
+    - text: "…I'll call you tomorrow, Mom."
+      # the channel stays dim for two days; some costs are just paid
+
+- id: mom_diary_calm_reaction
+  beat: act3
+  once: true
+  text: |
+    not who he — sunshine, you're scaring me. alright. alright, slowly
+    he came at four, wafers, asked was your day long, I said you'd gone out to the pier — he was so easy to talk to, it was like pouring water downhill
+    wait. now that I'm saying it. he asked about your notebook BEFORE I let him in. "does she still keep everything written down in that notebook of hers" — I thought it was sweet that he knew you. that's not sweet, is it.
+  responses:
+    - text: "No. It's not. Mom — that detail might matter more than anything I've found. Thank you."
+      events:
+        - {mints: {token: dan_searched_room}}     # usable evidence card (§8.10)
+        - {flag: {id: early_warning_asset}}       # she becomes the early-warning asset
+      next: mom_early_warning_report
+    - text: "It's not sweet. Keep the door locked when I'm out. Please."
+      events:
+        - {mints: {token: dan_searched_room}}
+        - {flag: {id: early_warning_asset}}
+
+- id: mom_early_warning_report
+  beat: act3
+  requires:
+    flag: {id: early_warning_asset}
+  text: |
+    report from the front, as requested
+    he had coffee at Korzhik at nine. asked Galina which house on Klenovaya has the blue gate. Galina told him, obviously, before I could step on her foot
+    I said NOTHING. I know you don't believe your mother can say nothing but I smiled like a fool and counted his sugar cubes. three. who takes three? a person performing sweetness, that's who
+  responses:
+    - text: "You're a natural, Mom. Keep smiling at him. Never let him see the counting."
+      # promise-shaped moments like this feed the honesty arc when kept (§13.1)
+    - text: "Stay away from him when you can. I mean it."
+
+# --- Dan's beachhead (§8.11) ----------------------------------------------
+
+- id: mom_dan_fence
+  beat: act3
+  requires:
+    flag: {id: dan_in_town}
+  text: |
+    Dan fixed the fence today. the whole leaning part by the raspberries — two hours in the cold, wouldn't take money, wouldn't take gloves
+    such a lonely boy. he talks about his missing friend and his eyes go somewhere else entirely, somewhere old. you can't invent that, sunshine
+    I'm bringing him soup tomorrow. don't make that face. I can hear the face from here
+  responses:
+    - text: "Mom — be careful how much you tell him. About me. About anything."
+      # dissonant with her stance; she holds it as noise unless it comes with proof (§10.1)
+    - text: "(Say nothing. Note which way the wind is blowing.)"
+
+- id: mom_dan_pastries
+  beat: act3
+  requires:
+    stance: {agent: mom, subject: dan, at_least: 2}
+  text: |
+    he remembered Roza's name today. and Galina's. and that my knee goes bad before rain
+    sunshine, when did YOU last ask about my knee. I'm not comparing! I'm only saying. some people notice things
+    he asked what you were like as a child. I told him about the greenhouse window and the bird. he laughed so hard, the neighbors looked
+  responses:
+    - text: "Mom. Please stop giving him me."
+      # she can't hear it yet. everything he "notices" arrived through her.
+    - text: "What else did he ask about me?"
+      # the answer, if the player is listening: everything. only ever the player.
+
+# --- The repair beat & honesty arc (§13, §13.1) ---------------------------
+
+- id: mom_repair_honest_conversation
+  beat: act3
+  once: true
+  text: |
+    (the kitchen, evening. no phone between you for once. she puts down the fourth dish you didn't ask for and finally sits.)
+    you've been a ghost in my house, sunshine. worse than the city years, because now I can SEE you not telling me things
+    so. no chat, no Galina, no soup even. just tell your mother something true and I will sit here and hear it.
+  responses:
+    - text: "(Tell her the truth — the job, the leaks, being scared of what you started here. All of it, ugly parts first.)"
+      events:
+        - {flag: {id: mom_repair_done}}           # the repair beat: cheap; she's Mom (§13)
+        - {promise: {npc: mom, id: promise_hear_it_from_me}}
+        # the promise: whatever happens next, she hears it from the player
+        # before she hears it from the town.
+      next: mom_repair_response
+    - text: "There's nothing to tell, Mom. I'm just tired."
+      # the arc stays closed; the verdict will have to be won with paper instead
+
+- id: mom_repair_response
+  beat: act3
+  once: true
+  text: |
+    (voice message, 3:12) …you sat at my table and told me the truth like I'm a person and not only your mother. I'm not going to pretend I'm not crying, the soup is getting salty either way, it needed salt.
+    I know I talk, sunshine. I know. I've known since Galina — you think I didn't see your face that morning? I saw.
+    so we do it like this: you tell me what's a secret, and I will sit on it like a hen. I can't promise about the rest of me. but a hen, on the named things. deal?
+  responses:
+    - text: "Deal. And Mom — you'll hear the big things from me first. I promise."
+      # promise_hear_it_from_me is now live; resolution is mom_promise_kept
+
+- id: mom_promise_kept
+  beat: act3
+  once: true
+  requires:
+    flag: {id: mom_repair_done}
+  # scene-side trigger: the player told Mom something hard BEFORE the network
+  # delivered it (engine judges "before" from the ledger + tick history).
+  text: |
+    Galina came running today with your news, all out of breath, the whole performance
+    and I got to say "I know. my child told me." you understand? I KNEW. I heard it from YOU.
+    thirty years she's had everything first. not today. today I was the vault. (photo: two poppy-seed rolls) one of these is yours, victory tastes like poppy seed
+  responses:
+    - text: "It does. It really does."
+      events:
+        - {resolve_promise: {id: promise_hear_it_from_me, kept: true}}
+        - {flag: {id: honesty_arc_complete}}      # repair + one kept promise (§13.1)
+
+# ------------------------------------------------------------ Endgame ----
+# Mom's verdict (§8.14). The verdict scene selects an outcome block by ordered
+# requires-query: won_honesty > won_evidence > lost (fallback). Standing swing
+# (±1) and the teaching-Mom flip are rules-table consequences of the flags.
+
+- id: mom_verdict_open
+  beat: endgame
+  once: true
+  requires:
+    knowledge: {agent: player, has: [dan_is_artyom]}
+    flag: {id: dan_in_town}
+  text: |
+    sit down. eat first, whatever it is, it's better fed
+    now. Galina says you've been telling people that Dan is not Dan. that he's some person from the city with another name. Roza heard it in the CHOIR, sunshine
+    look at me. that boy shoveled Lyudmila's walk, he cried at the vigil, he fixed my fence with his bare cold hands. what exactly are you telling your mother?
+  responses:
+    - text: "(Show her the composite photos — the shadows that point two ways.)"
+      events: [{tell: {agent: mom, token: dan_photos_forged}}]
+      # critical + evidence card, presented firsthand: the §10.1 exception applies;
+      # believed, stance steps −1. She will still argue. Let her.
+    - text: "(Show her the restraining order. Katya Zimina. Artyom Krayev. Three years ago.)"
+      events: [{tell: {agent: mom, token: restraining_order_record}}]
+    - text: "(Remind her: he asked about my notebook before she ever let him in.)"
+      events: [{tell: {agent: mom, token: dan_searched_room}}]
+      # her own memory, handed back as evidence — the calm diary branch pays off here
+    - text: "Mom, I'm not showing you anything. I'm telling you. Plainly. Like we said — you hear it from me first."
+      # wins only through mom_verdict_won_honesty (requires the completed arc);
+      # otherwise the scene falls through her defenses to the loss block
+    - text: "…I can't prove it. Not to you. Forget it."
+      next: mom_verdict_lost
+
+- id: mom_verdict_defense
+  beat: endgame
+  requires:
+    stance: {agent: mom, subject: dan, at_least: 1}
+  # injected while she still believes him: her authored argue-back (§8.14).
+  # sibling lines live in agents/npcs.yaml defense_lines and fire on any
+  # disbelieved token; these are the scene-scale versions.
+  text: |
+    he fixed the fence, and you show me shadows in a photograph?
+    photographs! Zina's boy makes photographs of me riding a BEAR, it takes him five minutes on the computer, is Zina's boy also a criminal?
+    and a paper from three years ago, from a city I've never been to, about a woman whose name I'm hearing from you for the first time. people change, sunshine. papers just sit there.
+  responses:
+    - text: "(Keep going. Piece by piece. Let the evidence do the arguing.)"
+      # each firsthand critical token steps her stance; the scene re-queries
+    - text: "Why is it easier to believe I'm wrong than that he's lying?"
+      # because he was HERE, in her kitchen, being hungry. that's the whole system.
+
+- id: mom_verdict_won_honesty
+  beat: endgame
+  once: true
+  requires:
+    flag: {id: honesty_arc_complete}
+  # ordered BEFORE won_evidence: if the arc is complete, truth outweighs proof.
+  text: |
+    (she doesn't look at the photographs again. she looks at you. a long time. the kettle clicks off and she doesn't move.)
+    you told me the truth about the job when it was ugly. you told me the big things first, before Galina, before the chat. you don't bring me shadows, sunshine. you bring me your face, at my table.
+    so tell me plainly, yes or no. is that girl in danger from that boy? …then it's yes. (beat) and who would I even tell? Galina? no. no, not this one. this one stays in the house.
+  responses:
+    - text: "It stays in the house. Thank you, Mom."
+      events:
+        - {flag: {id: moms_verdict_won}}          # rules-table: standing +1 (§16)
+        - {flag: {id: teaching_mom_flip}}         # one-time; critical tokens only (§13.1)
+      # "this one stays in the house" — the player character's arc, made
+      # mechanical: they have taught their mother discretion. once. it holds.
+    - text: "And Mom — when he comes with soup questions, you know nothing. You're just a fool who counts sugar cubes."
+      events:
+        - {flag: {id: moms_verdict_won}}
+        - {flag: {id: teaching_mom_flip}}
+
+- id: mom_verdict_won_evidence
+  beat: endgame
+  once: true
+  requires:
+    stance: {agent: mom, subject: dan, at_most: -1}
+  text: |
+    (she reads the order again. and again. she puts it face-down on the table like covering a mirror.)
+    his name is Artyom.
+    I gave him soup. I told him about your window till two, about the greenhouse, about — oh. oh no. sunshine, what did I give him. sit down and tell me everything I told him, we're going to count it like spoons after a party
+  responses:
+    - text: "We'll count it together. And then you'll help me — he still thinks you're on his side."
+      events: [{flag: {id: moms_verdict_won}}]    # rules-table: standing +1 (§16)
+      # she flips from beachhead to double agent in one kitchen scene. the town
+      # watches whose side the player's own mother takes.
+    - text: "It's not your fault. He's done this before, to smarter towns than ours."
+      events: [{flag: {id: moms_verdict_won}}]
+
+- id: mom_verdict_lost
+  beat: endgame
+  once: true
+  # fallback: neither the honesty arc nor the evidence moved her.
+  text: |
+    I think you should go home and sleep, sunshine
+    you come back after all these years — and I thank God every day you came back — and the first thing you build here is a case against the one person who was kind to EVERYONE?
+    Galina says the chat is full of it already. I defended you. I will always, always defend you. but I don't believe you. now eat something before you go, I'm not sending you into the cold on an empty stomach even when you're wrong.
+  responses:
+    - text: "(Take the food. Go. The town will be watching whose side she took.)"
+      events: [{flag: {id: moms_verdict_lost}}]   # rules-table: standing −1 (§16)
+    - text: "You'll believe me when it's too late, Mom."
+      events: [{flag: {id: moms_verdict_lost}}]

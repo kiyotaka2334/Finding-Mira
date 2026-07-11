@@ -1,0 +1,302 @@
+# Finding Mira — @mira.ozerny curated feed (Prostor)
+# ---------------------------------------------------------------------------
+# Post schema (minimal, defined for this content set; see schema-v2 §2.1 for
+# tokens/cards — posts reference them, they don't define them):
+#   id:       unique post id (snake_case)
+#   network:  prostor | svoi
+#   author:   "@handle"
+#   date:     {day: <int>, display: "Mon D (Y-n)"}
+#             day = offset from game day 1 (negative = before). No day 0:
+#             day -1 is the day before day 1. Day 1 = Wednesday, Oct 14, Y0.
+#             display year marker: (Y0) = game year, (Y-1) = a year earlier, etc.
+#   time:     "HH:MM" posting time (part of the pattern forensics)
+#   text:     post body, verbatim as shown in game
+#   photo:    {ref: <card/photo id>, hotspots: [<hotspot ids>]}   (optional, §19)
+#   tags:     content tags (optional)
+#   mints:    [token ids] minted on discovery/inspection (optional)
+#   comments: [{author, text}] (optional)
+#   editor:   authoring notes, never shown in game (optional)
+# ---------------------------------------------------------------------------
+# VOICE: Mira Sokolova, the performance. Proper capitalization, tidy sentences,
+# dry wit rationed to about one joke per post, almost no emoji. Deliberately
+# pleasant, deliberately boring — but human. Posts almost exclusively between
+# 06:45 and 08:15 (morning person; her one honest habit).
+#
+# THE TELLS (for re-readers; never called out in text):
+#   1. Her face is never straight-on: photos are hands, back, objects, scarf.
+#   2. She never posts a place the same day she's there — everything is
+#      "yesterday's market", "last night's sunset", "late post from Sunday".
+#   3. There are no photos of her street (Klenovaya) or her building. Ever.
+#   4. The register is *flatter* than Katya's old posts (katya_archive.yaml)
+#      and *warmer* than @k_moroz (mira_real.yaml). Same person, sanded down.
+#
+# MIRRORS: every date shared with mira_real.yaml uses the identical day offset.
+# ---------------------------------------------------------------------------
+
+profile:
+  handle: "@mira.ozerny"
+  network: prostor
+  display_name: "Mira S."
+  bio: "Pharmacist. Tea enthusiast. The lake does most of the talking."
+  avatar: "a teacup on a windowsill, lake out of focus behind it"
+  editor: "No face in the avatar either. Account created day -1069, three days after arrival."
+
+posts:
+  - id: mc_arrival_kettle
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -1066, display: "Nov 12 (Y-3)"}
+    time: "07:58"
+    text: "New town, new kettle. It sounds different against these walls. Better, I think."
+    photo: {ref: card_mira_kettle, hotspots: []}
+    editor: "First post. Mirrored in mira_real.yaml (mr_night_one). The kettle recurs."
+
+  - id: mc_lake_indifference
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -1046, display: "Dec 2 (Y-3)"}
+    time: "07:31"
+    text: "The lake does not care that I'm new here. Refreshing attitude."
+    photo: {ref: card_mira_first_frost, hotspots: []}
+
+  - id: mc_first_week_pharmacy
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -1033, display: "Dec 15 (Y-3)"}
+    time: "07:22"
+    text: "First week at the pharmacy done. My feet have filed a formal complaint. Overruled."
+    tags: [routine_seed]
+    editor: "Establishes the Zarya job start. Mirrored (mr_five_days_of_mira)."
+
+  - id: mc_saturday_rule
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -998, display: "Jan 19 (Y-2)"}
+    time: "09:05"
+    text: "Saturday rule: the walk earns the bun. The lake was frozen. The bun was not. Systems working."
+    photo: {ref: card_mira_bun_mitten, hotspots: []}
+    tags: [routine_seed]
+    editor: "Saturday = Korzhik day. Photo is a mittened hand holding the bun; no face. Latest posting time on the whole feed — Saturdays she sleeps in one extra hour. Even her exceptions are regular."
+
+  - id: mc_market_honey
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -950, display: "Mar 8 (Y-2)"}
+    time: "07:12"
+    text: "Thursday's market haul, documented a day late: two jars of honey, both of them 'necessary.' The honey woman is a genius and knows it."
+    photo: {ref: card_mira_honey_jars, hotspots: []}
+    tags: [routine_seed]
+    editor: "Thursday market run, posted Friday — tell #2. Mirrored (mr_honey_hands): the private truth of the same purchase."
+
+  - id: mc_lake_showing_off
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -867, display: "May 30 (Y-2)"}
+    time: "06:58"
+    text: "Last night's sunset, submitted for the record. The lake is showing off again. Fine. Noted. Unbearable."
+    photo: {ref: card_mira_sunset_copper, hotspots: []}
+    editor: "Mirrored (mr_expired_paper) — the date is the restraining order's expiry anniversary. The public post is the performance at its smoothest."
+
+  - id: mc_tea_census
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -791, display: "Aug 14 (Y-2)"}
+    time: "07:19"
+    text: "Herbal tea census: the mint is winning. The chamomile is filing appeals."
+    photo: {ref: card_mira_tea_jars, hotspots: []}
+
+  - id: mc_mitten_season
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -714, display: "Oct 30 (Y-2)"}
+    time: "07:40"
+    text: "First proper frost. Mitten season opens early this year. The thermos approves."
+    photo: {ref: card_mira_mittens_thermos, hotspots: []}
+    editor: "Hands only, again. Mirrored (mr_counting_cars)."
+
+  - id: mc_one_year
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -701, display: "Nov 12 (Y-2)"}
+    time: "07:03"
+    text: "One year in this town. The bread van still wakes me at six and I still don't mind. That's how you know."
+    editor: "Quiet re-read bomb: echoes Katya's 'town small enough to hear the bread van' line (katya_archive ka_bread_van) without quoting it. Mirrored (mr_one_year_locks)."
+
+  - id: mc_january_hats
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -643, display: "Jan 9 (Y-1)"}
+    time: "07:26"
+    text: "January at the pharmacy: everyone wants something for a cold, and no one wants to wear a hat. I say this with love. Wear the hat."
+    tags: [routine_seed]
+    editor: "Mirrored (mr_four_am)."
+
+  - id: mc_february_market
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -593, display: "Feb 28 (Y-1)"}
+    time: "07:15"
+    text: "Yesterday's market: five brave stalls and one space heater. I bought dill out of solidarity."
+    tags: [routine_seed]
+    editor: "Thursday market again, posted Friday again. The pattern is the point."
+
+  - id: mc_ice_out
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -545, display: "Apr 17 (Y-1)"}
+    time: "06:47"
+    text: "The ice went out overnight. The lake sounds like itself again."
+
+  - id: mc_late_post_sunday
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -478, display: "Jun 23 (Y-1)"}
+    time: "07:21"
+    text: "Late post from Sunday's walk: the far shore path is all cow parsley and bees. Recommended, eventually, to everyone."
+    photo: {ref: card_mira_far_shore, hotspots: []}
+    editor: "Posted Monday about Sunday. Mirrored (mr_boring_rules) — the real account explains this exact post. 'Recommended, eventually' is her joke about her own delay rule; nobody catches it the first time."
+
+  - id: mc_cardamom_attempt
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -432, display: "Aug 8 (Y-1)"}
+    time: "08:02"
+    text: "Attempted Korzhik's cardamom knot at home. The result was humbling. Supporting local business forever."
+    photo: {ref: card_mira_failed_bake, hotspots: []}
+    tags: [routine_seed]
+
+  - id: mc_copper_lake
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -390, display: "Sep 19 (Y-1)"}
+    time: "07:07"
+    text: "Last night the lake did that thing where it goes copper. No filter. The lake doesn't need one."
+    photo: {ref: card_mira_copper_lake, hotspots: []}
+    editor: "Mirrored (mr_old_name_call)."
+
+  - id: mc_rowan_tree
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -345, display: "Nov 3 (Y-1)"}
+    time: "07:33"
+    text: "The pharmacy's rowan tree is down to its last four stubborn leaves. Respect."
+
+  - id: mc_two_years
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -336, display: "Nov 12 (Y-1)"}
+    time: "07:00"
+    text: "Two years. The kettle sounds right now."
+    editor: "Anniversary post, mirrors mc_arrival_kettle. Mirrored in the real feed (mr_two_years_report)."
+
+  - id: mc_shortest_day
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -297, display: "Dec 21 (Y-1)"}
+    time: "07:29"
+    text: "Shortest day. The pharmacy lamps hum, the snow squeaks, the tea holds. We proceed."
+
+  - id: mc_icicle_hat
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -253, display: "Feb 3 (Y0)"}
+    time: "07:45"
+    text: "Winter walker, north pier, an icicle situation on the hat. Photo credit: a friend who promised it was flattering. It is not."
+    photo: {ref: card_mira_icicle_hat, hotspots: []}
+    editor: "The friend is Aziza (never named on the feed — tell-adjacent). The photo is from behind, face turned to the lake. Closest the feed ever comes to showing her, which is not close."
+
+  - id: mc_frost_certainty
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -246, display: "Feb 10 (Y0)"}
+    time: "07:36"
+    text: "Ten degrees of frost and the lake has never looked more sure of itself."
+    photo: {ref: card_mira_frozen_lake, hotspots: []}
+    editor: "Mirrored (mr_trainee_questions)."
+
+  - id: mc_snowdrop
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -195, display: "Apr 2 (Y0)"}
+    time: "07:24"
+    text: "Spring inventory: one (1) snowdrop by the pharmacy steps. Guarded closely. Do not ask where."
+    editor: "'Do not ask where' — she makes her own rule into a joke. Tell hiding as whimsy."
+
+  - id: mc_first_radishes
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -145, display: "May 22 (Y0)"}
+    time: "07:18"
+    text: "Market report, one day late as tradition demands: first radishes. Spring is now legally binding."
+    tags: [routine_seed]
+
+  - id: mc_heron_hour
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -100, display: "Jul 6 (Y0)"}
+    time: "07:12"
+    text: "The lake at six a.m. belongs to me and one deeply judgmental heron. We don't speak. It's perfect."
+    editor: "Mirrored (mr_heron_arrangement) — the same hour, told honestly."
+
+  - id: mc_linden_square
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -74, display: "Aug 1 (Y0)"}
+    time: "07:27"
+    text: "Peak linden. The whole square smells like tea that hasn't happened yet."
+
+  - id: mc_korzhik_order
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -60, display: "Aug 15 (Y0)"}
+    time: "07:41"
+    text: "The girls at Korzhik know my order before I say it. This is the entire dream, honestly."
+    tags: [routine_seed]
+    editor: "Mirrored (mr_propane) — same date she winterizes the dacha. Public: 'the entire dream.' Private: stocking the bolt-hole. The starkest mirror pair in the set."
+
+  - id: mc_september_market
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -33, display: "Sep 11 (Y0)"}
+    time: "07:16"
+    text: "Thursday market, documented a day late: apples, dill, and one piece of gossip I did not ask for and will not be repeating."
+    tags: [routine_seed]
+
+  - id: mc_cardamom_treason
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -18, display: "Sep 26 (Y0)"}
+    time: "07:38"
+    text: "The new girl at Korzhik does a better cardamom knot than I have ever managed. Treason. Delicious treason."
+    tags: [routine_seed]
+    editor: "Mirrored (mr_three_drafts) — the real account describes drafting this exact post three times. Cardamom threads back to Katya's old café review (ka_cafe_review)."
+
+  - id: mc_golden_hour
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -11, display: "Oct 3 (Y0)"}
+    time: "07:04"
+    text: "Golden hour."
+    photo: {ref: card_mira_golden_hour, hotspots: []}
+    editor: "Shortest post on the feed. She already knows something is wrong (canon: signals noticed ~day -10/-11). The performance thinning is the content. Mirrored (mr_forwarded_message)."
+
+  - id: mc_last_post
+    network: prostor
+    author: "@mira.ozerny"
+    date: {day: -4, display: "Oct 10 (Y0)"}
+    time: "06:54"
+    text: "Fog on the lake this morning. Even the ducks filed in late. Tea, shift, repeat."
+    photo:
+      ref: card_mira_last_post
+      hotspots: [pier_bench_plaque, zarya_smock_cuff]
+    tags: [routine_seed, last_post]
+    mints: [mira_last_seen_photo]
+    editor: >-
+      THE last curated post — day -4, the morning of her last shift (Saturday),
+      per canon timeline. Photo: fog over the water shot from the old pier,
+      a thermos on the bench, the cuff of a Zarya pharmacy smock just entering
+      frame. Hotspots: pier_bench_plaque (places the photo at the old pier —
+      pinnable, §19), zarya_smock_cuff (she was dressed for a shift — fixes the
+      last-seen morning). Token mints when the card is collected/inspected.
+      No mirror in the real account: @k_moroz went silent at day -10.
+      The silence is the mirror.
