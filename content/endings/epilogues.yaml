@@ -1,0 +1,188 @@
+# content/endings/epilogues.yaml
+# The postcard mosaic (design §21): after every finale, one postcard per NPC,
+# in one of three tones selected by the player's trust/leak history with that
+# NPC — identical finales still feel personal. Selector conditions use the
+# closed vocabulary; first matching tone wins, `warm` requires the bar,
+# `cold` catches attributed leaks, `level` is the default middle.
+
+- npc: mom
+  variants:
+    - tone: warm
+      requires:
+        all:
+          - {trust: {npc: mom, at_least: 4}}
+          - {flag: {id: teaching_mom_flip}}
+      text: >-
+        Sunday. She sets three cups out of habit, catches it, laughs, puts one
+        back. Halfway through the honey cake she leans in, drops her voice to
+        the register the whole street can hear, and says: "Galina asked me
+        yesterday what really happened this autumn. And I said —" a pause, a
+        cup, a look over it — "I said, ask my child. Some things aren't mine
+        to hand around." She sits back like a woman who has just performed a
+        magic trick. She has. You clap. She deserves it.
+    - tone: cold
+      requires:
+        flag: {id: mom_verdict_lost}
+      text: >-
+        The food still arrives — pelmeni on Thursdays, the good jam — because
+        love was never the wound. But she serves it with the radio on now,
+        and when the autumn comes up she goes to the sink and runs water over
+        nothing. She defended a stranger against her own child in front of
+        the whole town, or her child against a kind man, and she still isn't
+        sure which, and you have both agreed, without one word, never to
+        count the votes at that table again.
+    - tone: level
+      requires: {}
+      text: >-
+        "You're thin," she says, which means I love you; "the fence held all
+        winter," she says, which means neither of you will ever say his name
+        in this kitchen. She tells Galina everything still — the market, the
+        choir, whose cabbage failed. But you notice, twice, a sentence begin
+        and then get folded away with the napkins. She's learning. Late, at
+        cost, in her own kitchen, on her own terms. It counts.
+
+- npc: timur
+  variants:
+    - tone: warm
+      requires:
+        all:
+          - {trust: {npc: timur, at_least: 3}}
+          - {flag: {id: timur_repair_done}}
+      text: >-
+        The podcast episode exists. One episode, names blurred, forty minutes,
+        and he sends it to exactly two people: you, and a Svoi handle that
+        doesn't search. The last line, delivered in his grown-up radio voice
+        with the household laptop rule audibly expiring around him: "the
+        lesson isn't trust no one. it's know what your telling costs before
+        you tell." Then, immediately, out of character: "ok but was the audio
+        good. be honest. ep 2 is about the roof."
+    - tone: cold
+      requires:
+        flag: {id: timur_benched_permanent}
+      text: >-
+        He nods at you outside the school now, the short nod boys give
+        teachers who once embarrassed them. The screenshots stopped —
+        entirely, everyone says; he's famous for it, "ask Timur, he keeps
+        nothing." You did that. It was the correct lesson and you taught it
+        the expensive way, and some Tuesday you'll pass the library window
+        and see him sitting where he can watch the door, checking his
+        sources, alone, and you'll know exactly whose habits those are.
+    - tone: level
+      requires: {}
+      text: >-
+        Two assists in the regional final. A four in chemistry, held. He DMs
+        you sometimes — a fact about lake ice, a podcast rec, once at 23:58
+        just "u ever think abt how the whole thing was basically molarity.
+        concentration and dilution" — and you type "go to sleep, Timur," and
+        he replies "the laptop is legally my mom's after eleven, this is her
+        typing," and that, you think, is a kid who came through it whole.
+
+- npc: aziza
+  variants:
+    - tone: warm
+      requires:
+        all:
+          - {trust: {npc: aziza, at_least: 4}}
+          - {flag: {id: aziza_burned, absent: true}}
+      text: >-
+        In spring the kiosk gets tulips from a supplier she won't name, a
+        variety nobody local grows. She sets one bunch aside every Thursday,
+        unsold, unlabeled. You asked once. "Standing order," she said, and
+        that was the entire conversation, and it was also — you understood
+        by the third Thursday — a letter, arriving weekly, addressed to
+        whoever knows how to read a flower held back from sale. You buy your
+        carnations. You never ask again. Some vouches are permanent.
+    - tone: cold
+      requires:
+        flag: {id: aziza_burned}
+      text: >-
+        Chrysanthemums are two hundred. Carnations one-fifty. She makes
+        change exactly, thanks you exactly, and looks through you with such
+        settled calm that new customers assume you're strangers. You gave
+        the only thing she ever handed you to the town's open mouth, and her
+        arithmetic on that has no appeals process. The one mercy: she still
+        won't discuss you with anyone. She spreads nothing. Ever. You know
+        better than anyone alive what that discipline is worth.
+    - tone: level
+      requires: {}
+      text: >-
+        You never got all the way in. That was never on offer, probably —
+        there was one slot for a person who doesn't ask questions, and it
+        was taken years ago by someone who needed it more. But now, ringing
+        up your flowers, she'll add a sentence. About frost. About the
+        market. Once — looking at the stems, not you — "you did more right
+        than wrong." From behind that kiosk, that is a medal. Wear it.
+
+- npc: rufat
+  variants:
+    - tone: warm
+      requires:
+        trust: {npc: rufat, at_least: 4}
+      text: >-
+        There is an apron with your name on it. Not embroidered — written on
+        the tag in marker, in the hand that initials the duty book — hanging
+        on the third hook, which is now, permanently, your hook. "Zoya's
+        knee is worse Tuesdays," is the whole job offer, and when you take
+        the counter he stands in the stockroom doorway for a moment counting
+        something that isn't stock. The plant that is technically his has a
+        new pot. He denies buying it. The receipt is in the drawer with the
+        candle stubs of every other thing he'll never say.
+    - tone: cold
+      requires:
+        flag: {id: rufat_leak_attributed}
+      text: >-
+        You are served at the left window now, with the courtesy he gives
+        tourists and inspectors: complete sentences, correct change, nothing
+        extra. The word 'propane' appeared in the chat once, dressed as
+        rumor, wearing your fingerprints, and he and you both watched it
+        walk past the counter. He never raised it. That's the punishment:
+        a man who corrects everything, declining to correct you. Some
+        ledgers, the pharmacy teaches, are kept by not being kept.
+    - tone: level
+      requires: {}
+      text: >-
+        Flu season ends. The ceiling gets fixed — eleven years, then one
+        quiet invoice, as if the town owed itself a repair after everything.
+        He nods when you come in, which Lyudmila will tell you is effusive.
+        Once, bagging your mother's prescription, he says, "You were less
+        careless than most," and rings it up before you can answer. On the
+        Rufat scale that is a speech. There is no change from a speech.
+
+- npc: lyudmila
+  variants:
+    - tone: warm
+      requires:
+        all:
+          - {trust: {npc: lyudmila, at_least: 3}}
+      text: >-
+        You are, she announces to the whole bench, HER journalist — "the one
+        who ASKED me things, dear, the others just LISTEN AT DOORS……" The
+        upstairs room stays hers to fuss over, plants watered, lock oiled
+        (the 1971 one and the tenant's own, which she polishes and never
+        opens). Every October she'll tell the story of this autumn, and
+        every year your part gets bigger and Dan's face gets vaguer, until
+        he is only "a smooth one, from the city" — and that, dear heart, is
+        the network doing at last what it was always for: forgetting the
+        right people, loudly, together, with tea.
+    - tone: cold
+      requires:
+        flag: {id: lyudmila_leak_attributed}
+      text: >-
+        The kettle is still offered — the kettle is constitutional — but you
+        get the guest cup now, the one with the gold rim for people she's
+        careful around. You said what she was, out loud, in the chat, with
+        reactions: an old radio. She has told everyone she's forgiven you,
+        which is how you know it's permanent; Lyudmila Petrovna broadcasts
+        her forgiveness the way she broadcasts everything, at full volume,
+        forever, on repeat. You taught the town's warmest room to watch its
+        words around you. It holds the record for pyrrhic, that victory.
+    - tone: level
+      requires: {}
+      text: >-
+        "SIT, the kettle's cross——" and the town pours in: the choir schism,
+        Galina's cousin's wedding, Marat's new car ("USED, dear, but new to
+        US"). Somewhere in the flood she'll lower her voice — her lowered
+        voice carries to the gate — and say, "That autumn, I said one or two
+        things I oughtn't. We all did. A town is a soup, dear, you can't
+        unstir it." Then, brightening, refilling: "MORE tea. And don't look
+        at me like that. Your mother does that look. I taught HER mother."

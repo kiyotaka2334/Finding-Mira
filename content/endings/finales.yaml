@@ -1,0 +1,178 @@
+# content/endings/finales.yaml
+# The five finales (design §21), evaluated in priority order at the endgame
+# beat — first matching condition fires; row 5 is the exhaustive default.
+# Conditions use the closed vocabulary (schema §2.7). Prose honors §22:
+# "Found" is restrained and off-screen; the horror is a door left open and
+# a feed gone silent.
+
+- id: found
+  priority: 1
+  condition:
+    all:
+      - {knowledge: {agent: dan, has: [dacha_location]}}
+      - {flag: {id: dead_drop_warning_delivered, absent: true}}
+  title: "Found"
+  prose: >-
+    The morning tick comes and the town chat is about firewood prices.
+
+    You check the dead-drop thread out of habit. Your last message sits there
+    with one gray check beside it, the way it has for two days. Then, because
+    you are good at this — you were always good at this — you check the other
+    things. @mira.ozerny: last post, October 10, the pier bench. @k_moroz:
+    last seen, and here you stop, because for one week that little line had
+    been alive under its stillness, and you had known, the way you know a
+    house by its noises, that she was there, reading, deciding about you.
+
+    It says: last seen 4 days ago.
+
+    Dan's account is gone. Not silent — gone, the handle freed up, the appeal
+    post and the lake photo and the vigil thank-you dissolved like they were
+    never load-bearing. Which they weren't, anymore.
+
+    Lyudmila Petrovna waters the plants in the upstairs room through November,
+    then stops mentioning it. The search fund buys the school a defibrillator;
+    the plaque says FROM THE FRIENDS OF M. SOKOLOVA. Rufat keeps her section
+    of the stockroom ordered exactly as she left it, which he would tell you
+    is simply good inventory practice, and would be lying.
+
+    You still have the map open some nights, the pin out past the Beryozka
+    turn. Seven kilometers. You knew the way. So, in the end, did he — and
+    the difference between the two of you was never the method. It was only
+    ever the day you each arrived at the same address.
+
+- id: vanishing_twice
+  priority: 2
+  condition:
+    all:
+      - {knowledge: {agent: dan, has: [mira_real_name]}}
+      - any:
+          - {flag: {id: dead_drop_dark}}
+          - {flag: {id: miras_test_failed}}
+  title: "Vanishing Twice"
+  prose: >-
+    The boathouse. It reached him inside two ticks — you can trace the path
+    now, hop by hop, the way you can trace all of it now that tracing is
+    useless. She watched her own test travel and drew the only conclusion
+    the evidence supported. You would have drawn it too. That's the part
+    that doesn't heal: she graded you fairly.
+
+    The dacha is empty by the time anyone thinks to look. Swept. The propane
+    bottles returned to the exchange, deposit collected — she left the co-op
+    tidier than the co-op has ever been. A person who has done this before,
+    doing it better.
+
+    Dan lingers nine more days. He is charming at the bakery and moved at
+    the second vigil, and then one morning he is a checked-out room and a
+    cold engine, because a man like him can read a town going stale the way
+    Oleg reads water. Somewhere there is a new city, a new census of
+    "Ekaterina, 34–36," a patience that has done three years standing on one
+    leg and can do ten. Somewhere else — smaller, further, colder, whichever
+    it is — there is a woman inventing her third kettle.
+
+    Aziza reopens the kiosk after a week. She sells you chrysanthemums and
+    does not sever you, which is worse. "She got out," she says, once,
+    wrapping the stems. "Again. You can carry that word however you like."
+
+    You carry it. Both ways. Every day.
+
+- id: closed_ranks
+  priority: 3
+  condition:
+    all:
+      - {flag: {id: artyom_exposed_publicly}}
+      - {standing: {at_least: 4}}
+      - {flag: {id: town_stance_dan_flipped}}
+      - {journal: {true_critical_count_at_least: 3}}
+      - {knowledge: {agent: player, has: [dan_photos_forged]}}
+  title: "Closed Ranks"
+  prose: >-
+    You post it at 07:10, because you have learned the town's clock: early
+    enough to beat the bakery line, late enough that the bakery line exists
+    to read it. Three cards. The account that predates its own memories. The
+    photograph with two suns. The court blotter with his name in it, and hers
+    — her real one, offered the way Aziza taught you: hers to take back, not
+    yours to spend.
+
+    The chat does what the chat does. You have hated this machine for eleven
+    days and now you stand back and watch it work for her: Galina to the
+    choir, the choir to the market, Marat pinning the hidden-number calls,
+    Timur — paper archive squared on his knees — posting the created-date
+    walkthrough "for sources." By 09:00 Dan's donation is returned to him in
+    an envelope at the guesthouse desk. By noon the guesthouse regrets it is
+    fully booked. The town does not shout. The town simply becomes a place
+    with no surface he can hold onto — every kindness withdrawn at once, like
+    ice going out.
+
+    Your mother stands on the square while he loads his car, arms folded,
+    fence at her back. He looks at her last of all — his best work here —
+    and she looks back the way she looks at weather.
+
+    Mira comes home on the Thursday bus. The town, which knows everything,
+    has already agreed to know nothing: at Zarya, Rufat has simply added
+    her shifts back to the duty book, initialed R.A., as if she had been
+    on leave. Which — the town has decided — she was.
+
+- id: the_long_game
+  priority: 4
+  condition:
+    all:
+      - {flag: {id: kept_dan_channel_open}}
+      - {knowledge: {agent: player, has: [dan_is_artyom]}}
+      - {flag: {id: artyom_exposed_publicly, absent: true}}
+  title: "The Long Game"
+  prose: >-
+    He still texts most evenings. Warm tier — you know the tiers now the way
+    Rufat knows his shelves. "How's your mom holding up? Cold snap coming."
+    You answer inside the hour, always inside the hour. A report that matches
+    his other channels, salted at the rate the two of you have silently
+    agreed the truth arrives: slowly, plausibly, pointing at nothing.
+
+    You are the best informant he has ever had. You have made sure of it —
+    fed the parallel channels, dulled Lyudmila's telephone, kept his map
+    beautiful and wrong. She is safe exactly as long as you are excellent,
+    and you are excellent every single day, and this is the shape of your
+    life now.
+
+    Aziza knows. Nobody else does. Once a month a line arrives through the
+    flower wrapping — never a location, never a name, sometimes only:
+    "still?" And you write back: still.
+
+    The case never closes; it just becomes a job. Some nights you catch
+    yourself drafting his goodnight message before he sends his, and you sit
+    with what that means: that you know him now, his rhythms, his patience,
+    his tells — that you have studied a man until you could wear him. It
+    works because he did the same thing once, to someone, for three years.
+
+    The kettle downstairs goes quiet. You type: nothing new today. Send.
+
+- id: the_quiet_save
+  priority: 5
+  condition: {}          # exhaustive default (§21 row 5)
+  title: "The Quiet Save"
+  prose: >-
+    Nothing happens. That is the ending: nothing, arranged.
+
+    Dan runs out of town before the town runs out of patience — the leads
+    went soft, the informant went vague, the chat moved on to the school
+    roof, and a man who lives on signal cannot stay where you starved the
+    noise. He leaves without a scene. Men like him always keep the exit
+    clean; it's the entrances they decorate.
+
+    You never learn which morning she decided about you. But in November,
+    Aziza hands you chrysanthemums you didn't order — "paid for," is all
+    she says — and inside the wrapping, in handwriting you know from a duty
+    book, one line: the bread van comes at seven. I hear it now.
+
+    She is gone. Not fled — gone the way she is owed: on her own schedule,
+    to her own address, under whichever name she wants, with the deposit
+    back on the propane bottles. The town never learns what almost happened
+    in it. The vigil candle stubs go into Lyudmila's drawer with the other
+    candle stubs. The story becomes "the pharmacist who moved on," and you
+    let it, and letting it is the hardest work you have ever done with your
+    mouth shut.
+
+    Only you know. You and one lurker account that isn't there anymore, and
+    a man on a highway somewhere, patient, wrong, and empty-handed.
+
+    Your mother asks if you're staying through winter. You say yes. Someone
+    should hear the bread van.

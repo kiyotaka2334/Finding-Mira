@@ -1,0 +1,161 @@
+# content/tokens/evidence_cards.yaml
+# Evidence cards (schema §2.1 field notes): id, kind (post|photo|screenshot|
+# document), source (where it comes from in the fiction), for photos the §19
+# hotspot annotations. Every card referenced by content/tokens/core.yaml has a
+# full entry here (§2.9: "every critical token has an evidence card, and the
+# card exists"). Decorative photo cards (feed texture, no hotspots) are listed
+# in the compact section at the bottom.
+
+# --- Firsthand proof cards (referenced by tokens) ------------------------------
+
+- id: card_propane_receipt
+  kind: photo
+  source: post mr_propane (@k_moroz, day -60)
+  description: "A till receipt on a plank table: two propane bottles, cash, stamped."
+  hotspots:
+    - {id: beryozka_exchange_stamp, note: "The exchange's round stamp — 'BERYOZKA CO-OP SERVICE POINT.' Pinnable to the map (§19): places the purchase 7 km out, past the turn."}
+    - {id: receipt_date, note: "Aug 15 — she winterized a place two months before anyone was looking for her. Preparation, not flight."}
+
+- id: card_composite_shadows
+  kind: photo
+  source: post dp_lake_montage (@dan.volkov); second composite dp_cafe_composite
+  description: "Dan's 'lake summer' photo with Mira, annotated at full zoom."
+  hotspots:
+    - {id: shadow_mismatch, note: "Sun falls on her from the left, on him from the right. One photo, two suns."}
+    - {id: horizon_seam, note: "The waterline stops behind her shoulder and resumes two pixels lower."}
+    - {id: reflection_absent, note: "(café composite) The window reflects his chair, the table, the street — and no one in hers."}
+
+- id: card_bakery_promo
+  kind: photo
+  source: post ta_korzhik_promo (@korzhik.ozerny, day -21)
+  description: "Korzhik's anniversary window-display promo shot, town square behind the glass."
+  hotspots:
+    - {id: window_reflection, note: "A woman reflected mid-step in the glass: market bag, gray coat, face a smear. Identifiable by posture and route, never by face."}
+    - {id: square_clock, note: "The square clock in the reflection reads 07:40 — fixes her morning route past the bakery."}
+
+- id: card_restraining_order
+  kind: document
+  source: 'news archive — Vetrogorsk court blotter (search: "Katya Zimina")'
+  description: "Court-blotter item: protective order granted to E. Zimina against A. Krayev; duration six months; expired without renewal."
+  hotspots: []
+
+- id: card_artyom_photo
+  kind: photo
+  source: news archive — Farmakor staff piece accompanying image
+  description: "Warehouse-systems staff photo, Vetrogorsk. Third row: A. Krayev. The face is Dan's, seven years younger, before the beard."
+  hotspots:
+    - {id: face_match, note: "Hold it next to @dan.volkov's avatar. The three-quarter turn was hiding the jawline, not the sun."}
+
+- id: card_dan_account_meta
+  kind: screenshot
+  source: "@dan.volkov profile metadata (one tap below the surface)"
+  description: "Profile info panel: account created Feb 13 (Y0) — 8 months ago. Oldest 'post' dated Oct (Y-2)."
+  hotspots:
+    - {id: created_vs_posted, note: "Posts can be backdated on Prostor; the account creation date cannot. 487 days of friendship posted by an account that didn't exist."}
+
+- id: card_katya_staff_photo
+  kind: photo
+  source: news archive — "Farmakor honors staff" (Timur's archive path endpoint)
+  description: "Group photo, break-room bunting. Third from left, hair different, unmistakable stance."
+  hotspots:
+    - {id: caption_name_zimina, note: "The caption: '…and pharmacist Ekaterina Zimina (5 yrs of service).' Captions have names."}
+
+- id: card_katya_old_posts
+  kind: screenshot
+  source: "@katya.zimina public feed (katya_archive.yaml), captured as one scroll"
+  description: "Katya's old public posts — the pencil shavings, the cinnamon, the lake, the librarians, the bread van."
+  hotspots: []
+
+- id: card_dan_dm_verbatim
+  kind: screenshot
+  source: player's own DM thread with Dan, side-by-side with card_katya_old_posts
+  description: "Dan's 'memories' aligned against her old posts. Five phrases, word-for-word. He wasn't remembering; he was quoting."
+  hotspots: []
+
+- id: card_kmoroz_feed
+  kind: screenshot
+  source: "@k_moroz feed after access is granted (scene second_account_readthrough)"
+  description: "The real account: same dates, opposite truth. The kettle that knew her old name; the ninety-second audits; 1,054 days of nothing, counted."
+  hotspots: []
+
+- id: card_pharmacy_schedule
+  kind: document
+  source: Rufat's duty-book photocopies (scene rufat_artifact_handover)
+  description: "October duty book: her own hand moving herself off the evening shifts, twice, initialed M.S."
+  hotspots: []
+
+- id: card_last_seen
+  kind: photo
+  source: post mc_last_post (@mira.ozerny, day -4)
+  description: "Her final curated post — the last confirmed image before the feed went silent."
+  hotspots:
+    - {id: pier_bench_plaque, note: "The bench plaque places it at the old pier (pinnable, §19)."}
+    - {id: zarya_smock_cuff, note: "The smock cuff in frame: dressed for a shift. It was a workday morning like any other — by design."}
+
+- id: card_final_post_meta
+  kind: screenshot
+  source: "@dan.volkov post dp_worried_pivot metadata vs @mira.ozerny post dates"
+  description: "His 'something feels wrong, headed to keep a promise' — timestamped two days BEFORE her last post. He announced the search before there was a disappearance."
+  hotspots: []
+
+- id: card_lastseen_status
+  kind: screenshot
+  source: "@k_moroz profile header, endgame"
+  description: "'online 2 min ago' on an account dead for a year. She's reading. There is still someone to reach."
+  hotspots: []
+
+- id: card_chat_timestamps
+  kind: screenshot
+  source: town_chat message log, assembled by the player
+  description: "The relay pattern: what enters the chat by evening reaches Dan by morning, every time, regardless of who posted it."
+  hotspots: []
+
+- id: card_echo_compilation
+  kind: screenshot
+  source: player's DM thread with Dan, annotated
+  description: "Every line where Dan knew what he was never told — 'someone mentioned…' — dated against when the network learned it. The invisible informant, made visible."
+  hotspots: []
+
+- id: card_forum_thread
+  kind: document
+  source: 'news archive — regional forum thread (search: "Katya Zimina", Act 3)'
+  description: "A dead forum thread, (Y-3): friends asking if anyone had heard from Katya; one reply — 'she's fine, she just needs everyone to stop asking. especially one person. she knows he reads this.' Thread locked."
+  hotspots: []
+
+- id: card_dead_drop_note
+  kind: document
+  source: scene aziza_dead_drop (via Aziza) or dead_drop_direct_route
+  description: "A folded paper in Aziza's flower wrapping: a Svoi handle that doesn't search, and one line — 'tell them what you want them to know. i decide what's true.'"
+  hotspots: []
+
+- id: card_mom_account
+  kind: screenshot
+  source: Mom's Prostor profile, seen with fresh eyes
+  description: "Mom's public feed: your arrival, your habits, your late nights on the laptop — posted with love, readable by anyone. The proxy window Dan has been standing at since day one."
+  hotspots: []
+
+# --- Decorative photo cards (feed texture; no hotspots, no token gates) ----------
+
+- {id: card_mira_kettle,         kind: photo, source: mc_arrival_kettle,   description: "A new kettle against unfamiliar wallpaper."}
+- {id: card_mira_first_frost,    kind: photo, source: mc_lake_indifference, description: "Frost margin on gray water."}
+- {id: card_mira_bun_mitten,     kind: photo, source: mc_saturday_rule,    description: "A bun held in a mitten. Elbow visible. Face not."}
+- {id: card_mira_honey_jars,     kind: photo, source: mc_market_honey,     description: "Six jars of honey on the market table, backlit."}
+- {id: card_mira_sunset_copper,  kind: photo, source: mc_lake_showing_off, description: "The lake doing its copper thing."}
+- {id: card_mira_tea_jars,       kind: photo, source: mc_tea_census,       description: "Labeled tea jars in a ruthless grid."}
+- {id: card_mira_mittens_thermos, kind: photo, source: mc_mitten_season,   description: "Mittens and a thermos on a bench slat."}
+- {id: card_mira_far_shore,      kind: photo, source: mc_late_post_sunday, description: "The far shore, hazy, no people."}
+- {id: card_mira_failed_bake,    kind: photo, source: mc_cardamom_attempt, description: "A sunken cake, photographed without mercy."}
+- {id: card_mira_copper_lake,    kind: photo, source: mc_copper_lake,      description: "September light on the water, again. She liked it. Let her."}
+- {id: card_mira_icicle_hat,     kind: photo, source: mc_icicle_hat,       description: "An icicle wearing a knitted doll's hat. The town did not explain."}
+- {id: card_mira_frozen_lake,    kind: photo, source: mc_frost_certainty,  description: "The lake, sealed white to the far shore."}
+- {id: card_mira_golden_hour,    kind: photo, source: mc_golden_hour,      description: "Golden hour on the square, long shadows, none of them hers."}
+- {id: card_mira_last_post,      kind: photo, source: mc_last_post,        description: "See card_last_seen — same image; this is the feed-side reference."}
+- {id: card_katya_lake_photo,    kind: photo, source: ka_lake_cried,       description: "Katya, younger, laughing at grandma's village lake. The figure Dan lifted for his composite."}
+- {id: photo_dan_mira_lake,      kind: photo, source: dp_lake_montage,     description: "The composite itself (annotations live on card_composite_shadows)."}
+- {id: photo_dan_mira_cafe,      kind: photo, source: dp_cafe_composite,   description: "The café composite (annotations live on card_composite_shadows)."}
+- {id: photo_dan_gym_mirror,     kind: photo, source: dp_generic_grid_1,   description: "A gym mirror selfie that could be anyone. That's the point."}
+- {id: photo_oleg_pike,          kind: photo, source: ta_oleg_pike,        description: "4.2 kilos of vindication."}
+- {id: photo_kolyan_solyanka,    kind: photo, source: ta_kolyan_menu,      description: "Soup, in the dark. Trust the soup."}
+- {id: photo_vera_dahlias,       kind: photo, source: ta_vera_dahlias,     description: "Dahlia tubers, labeled, superior."}
+- {id: photo_sema_scarf,         kind: photo, source: ta_dogs_sema_election, description: "A large dog in a small scarf, mid-landslide."}
+- {id: photo_pavlik_boots,       kind: photo, source: ta_dogs_pavlik_boots, description: "A small dog beside four refused boots."}
