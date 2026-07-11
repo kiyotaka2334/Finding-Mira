@@ -1,0 +1,170 @@
+# content/dialogue/lyudmila.yaml
+# Lyudmila Petrovna, 68 — Mira's landlady, Klenovaya St. 14. The gossip superconductor.
+#
+# Voice: ALL CAPS fragments with ellipses…… tea-fueled, warm, relentless.
+# She is not malicious. She is a broadcast tower with doilies.
+# Agent facts (content/agents/npcs.yaml): spreads any `juicy` token to Mom,
+# the town chat, and (if informant) Dan, next tick. Suppression ("between us")
+# costs 2 trust and bursts after 3 ticks — she says so herself, in character.
+# Stance prior dan: +1 ("charming men"). Possible second informant if her
+# trust <= 1 at Act 2 start (flag: informant_is_lyudmila).
+#
+# DESIGN NOTE: she is the best intel in town at the worst exposure price.
+# Every volunteer block below hands the player something real. The cost is
+# that talking to her at all mints/updates what SHE knows about the PLAYER.
+
+# --- Act 1: the open door -------------------------------------------------------
+
+- id: lyudmila_first_tea
+  beat: act1
+  deep: true
+  text: "IN, in, off with the shoes, the kettle's already cross with me…… You're Nina's! Back from the city! And ALREADY asking about my Mirochka — no no, sit, everyone's asking, but you I'll actually TELL. Three years upstairs and never one man, never one party, never one broken glass. A SAINT. Which believe me…… is its own kind of strange."
+  responses:
+    - text: "Strange how? Saints don't usually worry people."
+      next: lyudmila_strange_how
+    - text: "When did you last see her?"
+      next: lyudmila_last_saw
+
+- id: lyudmila_strange_how
+  beat: act1
+  text: "A woman of thirty-four with a face like that and NOTHING?? No mother calling, no friend visiting, no past AT ALL…… like she was ironed flat before she got here. I said to Galina — I said, that girl is either a saint or a witness, and Galina said WITNESS TO WHAT, and I said THAT'S THE QUESTION ISN'T IT……"
+  responses:
+    - text: "(Note: no visitors, no calls, no past. Say nothing loud.)"
+      events: [{mints: {token: mira_estranged_family}}]
+    - text: "Maybe she just liked quiet."
+      events: []
+
+- id: lyudmila_last_saw
+  beat: act1
+  text: "Friday morning! Coat, market bag, 'good morning Lyudmila Petrovna' like every day of her LIFE…… and then nothing. Saturday no kettle upstairs. You learn a house's noises, dear. Her floor CREAKS at 6:40 and it hasn't creaked in DAYS."
+  responses:
+    - text: "Did she take anything? Bags, boxes?"
+      next: lyudmila_second_phone
+    - text: "Have you told the police the exact morning?"
+      events: []
+
+- id: lyudmila_second_phone
+  beat: act1
+  text: "Nothing that shows! Room's paid to the new year, plants watered — I checked, I have the key, I'm the LANDLADY, it's not snooping…… Though — one thing. Once, last spring, I brought up her post and she was on a phone. A LITTLE phone. Old, with buttons. And her nice phone was RIGHT THERE on the sill. Two phones! I never said anything because what is it to me…… but you asked what she took. The little one isn't in that room."
+  responses:
+    - text: "(Two phones. That's real. Note it.)"
+      events: [{mints: {token: mira_had_second_phone}}]
+    - text: "Lyudmila Petrovna — please don't mention the little phone to anyone else."
+      events: [{mints: {token: mira_had_second_phone}}]
+      next: lyudmila_secret_warning
+
+# --- The disclaimer she gives for free (the "between us" rules, in character) ----
+
+- id: lyudmila_secret_warning
+  beat: act1
+  text: "Oh dear heart. I will TRY. I'm telling you honestly, as I told Father Sergei: a secret sits in me like a hot pirozhok…… three days, MAYBE, if I bite my tongue and don't see Galina. After that it comes out on its OWN, I'm not a safe, I'm a SIEVE with opinions. So think about what you put in me. That's fair warning, and it's more than most people in this town give you."
+  responses:
+    - text: "Three days. I'll remember that."
+      events: []
+    - text: "Then let's stick to what everyone already knows."
+      events: []
+
+# --- Act 2: the room, the intel firehose -----------------------------------------
+
+- id: lyudmila_room_showing
+  beat: act2
+  requires:
+    trust: {npc: lyudmila, at_least: 1}
+  deep: true
+  text: "Quick, while the soup settles — you can LOOK, from the doorway, I'm not having fingerprints…… See? Tidy as a chemist's shelf. Books nobody reads twice. And the one photograph — face DOWN, always face down, three years. I turned it over once when I dusted. Two women at some city fountain. She came home, said nothing, and it was face down again by supper. We never spoke of it. THAT, dear, is the whole tenant in one furniture arrangement."
+  responses:
+    - text: "Which city? Did you recognize the fountain?"
+      next: lyudmila_fountain
+    - text: "(The doorway is enough. Photograph nothing.)"
+      events: []
+
+- id: lyudmila_fountain
+  beat: act2
+  text: "Do I look like an atlas?? Big fountain, ugly civic sort, pigeons…… Galina's cousin thought Vetrogorsk when I described it, she did the LOOK, you know, the cousin worked out that way. But that's Galina's cousin, dear, I'd sooner trust the pigeons."
+  responses:
+    - text: "(Vetrogorsk. Via Galina's cousin. Worth checking anyway.)"
+      events: [{flag: {id: heard_vetrogorsk_hint}}]
+    - text: "Pigeons are more reliable than most sources in this town."
+      events: []
+
+- id: lyudmila_on_dan_charmed
+  beat: act2
+  requires:
+    knowledge: {agent: lyudmila, has: [dan_devoted_friend_story]}
+  text: "And that DAN, the city friend — we spoke on the telephone, he found my number through the chat, SUCH manners…… asked about my hip! Asked about the ROOF, because Mira mentioned it leaked once, imagine remembering a leak from a friend's story…… A man who listens, dear. They stopped making them. If my Vera were alive and forty years younger……"
+  responses:
+    - text: "He remembers an awful lot of very small things, doesn't he."
+      events: []
+    - text: "What exactly did he ask about, besides the hip and the roof?"
+      next: lyudmila_dan_questions
+
+- id: lyudmila_dan_questions
+  beat: act2
+  text: "Oh, this and that…… where she bought her groceries, did she walk or take the bus, was her window the one on the street side or the yard side…… CONCERNED questions! The questions of a man who wants to picture his friend SAFE. Why are you making the face? Your mother makes that face."
+  responses:
+    - text: "(Window side. Bus route. Groceries. Those aren't a griever's questions — they're a map.)"
+      events: [{mints: {token: player_suspects_dan}}]
+    - text: "No face. Thank you, Lyudmila Petrovna. Don't tell him I asked what he asked."
+      events: [{promise: {npc: lyudmila, id: promise_quiet_about_asking}}]
+
+# --- Defensive lines: dissonant evidence about Dan --------------------------------
+
+- id: lyudmila_defense_photos
+  beat: act3
+  requires:
+    knowledge: {agent: player, has: [dan_photos_forged]}
+    stance: {agent: lyudmila, subject: dan, at_least: 1}
+  text: "SHADOWS?? You come to my kitchen about SHADOWS in a photograph…… He carried my groceries up BOTH flights, dear. The photograph can say what it likes. I have a HIP, and I know who asked about it, and it wasn't the shadows."
+  responses:
+    - text: "(Not tonight, then. She'll need to hear it from more than you.)"
+      events: []
+    - text: "Lyudmila Petrovna. Look at the beach photo. Just look at where the sun would have to be."
+      events: [{claim: {agent: lyudmila, token: dan_photos_forged, verdict: denied}}]
+
+- id: lyudmila_informant_tell
+  beat: act2
+  requires:
+    flag: {id: informant_is_lyudmila}
+    knowledge: {agent: lyudmila, has: [search_party_forming]}
+  text: "…And I keep Dan abreast, of course. He ASKED me to, practically begged — 'Lyudmila Petrovna, you're my eyes there' — his EYES, at my age…… so when the chat decided about the search party I telephoned him before the kettle boiled. A man shouldn't learn about his best friend from a CHAT."
+  responses:
+    - text: "(There it is. His eyes. Everything she hears, he hears.)"
+      events: [{mints: {token: informant_identity}}]
+    - text: "You telephone him. Every day?"
+      events: [{mints: {token: informant_identity}}]
+
+# --- Repair beat: the harmless exclusive -------------------------------------------
+
+- id: lyudmila_repair_exclusive
+  beat: act2
+  requires:
+    trust: {npc: lyudmila, at_most: 1}
+    flag: {id: lyudmila_repair_available}
+  text: "Oh. It's YOU. The chat says you called me an old radio…… no no, don't explain, Galina kept the screenshot, everyone keeps SCREENSHOTS now——"
+  responses:
+    - text: "I brought you something instead of an apology. You'll be the first to know it: I'm the one who ordered the bakery's anniversary cake. Three tiers. It arrives Thursday and NO ONE knows."
+      events: [{tell: {agent: lyudmila, token: player_city_breakup}, flag: {id: lyudmila_repair_done}}]
+      next: lyudmila_repair_accepted
+    - text: "(Apologize plainly and leave.)"
+      events: []
+
+- id: lyudmila_repair_accepted
+  beat: act2
+  text: "……THREE TIERS. And I know it FIRST?? Sit DOWN, the kettle — dear heart, people say things in anger, I said things about Galina's perm in 1994 that follow me STILL. We're past it. Now: butter or jam, and start from the beginning, and speak up, the good ear's on this side."
+  responses:
+    - text: "Butter. And Lyudmila Petrovna — it's good to be back at this table."
+      events: []
+
+# --- Act 3: the vigil, the wobble ----------------------------------------------------
+
+- id: lyudmila_vigil_wobble
+  beat: act3
+  requires:
+    knowledge: {agent: lyudmila, has: [dan_cried_at_vigil]}
+    stance: {agent: lyudmila, subject: dan, at_least: 1}
+  text: "He wept at the vigil. Real tears, I was TWO METERS away…… and yet. Dear. One strange little thing and I can't get it out from under my tongue: he wept facing US. Not the photograph. My Vera wept at funerals like a burst pipe, wall, corner, didn't matter who saw…… This one checked who saw. There. I've said it. Probably it's nothing. Probably……"
+  responses:
+    - text: "It's not nothing. Hold onto that, exactly as you said it."
+      events: [{defend: {npc: lyudmila, public: false}}]
+    - text: "(Say nothing. Let it work in her on its own. Some yeast needs dark.)"
+      events: []

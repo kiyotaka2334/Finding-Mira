@@ -1,0 +1,159 @@
+# content/dialogue/timur.yaml
+# Timur Ganiev, 16 — Mira tutored him in chemistry. Screenshots everything.
+#
+# Voice: lowercase, abbreviations, message-burst rhythm. true-crime podcast
+# brain. earnest underneath — Mira is the one adult who never talked down to him.
+# Agent facts (content/agents/npcs.yaml): spreads `juicy` tokens to the class
+# chat ("9B о главном"); class chat leaks to town chat after one further tick.
+# Trust gates per engine/rules.yaml. Tier 3+ = archive digging; the lookout
+# beat (scene dacha_trip) requires trust >= 2.
+#
+# Engine-set flags this file depends on:
+#   timur_screenshot_out   — set with token timur_screenshot_circulating (8.9)
+#   timur_repair_done      — set by scene timur_repair_blame (public blame taken)
+#   aziza_burned           — routes the old name through his slow archive path
+#                            (scene timur_archive_path; delay: +2 days per §2.6)
+
+# --- Act 1-2: recruiting the sidekick -------------------------------------------
+
+- id: timur_first_dm
+  beat: act1
+  requires:
+    trust: {npc: timur, at_most: 1}
+  text: "ok so ur the one asking about miss sokolova in the chat. everyone in 9B has a theory btw. mine: she saw something. thats always what it is. ep 340 of 'cold trail' literally this exact setup. anyway why r u asking, ur not police, my mom checked"
+  responses:
+    - text: "Not police. She tutored you, right? Chemistry? I want the version of her the chat doesn't have."
+      next: timur_the_real_mira
+    - text: "Your mom checked?"
+      events: []
+
+- id: timur_the_real_mira
+  beat: act1
+  text: "yeah tuesdays. she explained molarity with pirozhki fillings and it WORKED, i got a four. she never did the adult thing where they ask about ur plans in a disappointed voice. one time i said i want to do podcasts and she just said 'then learn to check sources' and that was it. that was the whole lecture. best teacher i ever had honestly"
+  responses:
+    - text: "'Learn to check sources.' She'd want us doing this properly, then."
+      events: [{promise: {npc: timur, id: promise_do_it_properly}}]
+      next: timur_signs_on
+    - text: "Did she ever seem scared to you?"
+      next: timur_scared_q
+
+- id: timur_scared_q
+  beat: act1
+  text: "scared no. careful yes. like. she always sat where she could see the door at the library? i clocked it bc thats literally a thing from ep 212. and she covered her cup when anyone walked past which is either a pharmacist thing or a Thing thing. i have screenshots of my notes abt it if u want. i keep everything"
+  responses:
+    - text: "You keep everything. That's useful and also slightly terrifying."
+      next: timur_signs_on
+    - text: "(He keeps everything. Remember that before you tell him anything.)"
+      events: []
+
+- id: timur_signs_on
+  beat: act1
+  text: "ok real talk. u actually listen which is rare for an adult, no offense. i want in. i can do archive stuff, old newspaper site, school network is unfiltered lol. one condition: when this is over and she's ok, i get to make the podcast ep. blurred names obviously. im not a monster"
+  responses:
+    - text: "Deal. Blurred names. And nothing goes to your class chat — that's the other condition."
+      events: [{promise: {npc: timur, id: promise_no_class_chat}}]
+    - text: "No podcast. People's lives aren't content, Timur."
+      events: []
+
+# --- The screenshot fallout (8.9) --------------------------------------------------
+
+- id: timur_screenshot_busted
+  beat: act2
+  requires:
+    knowledge: {agent: player, has: [timur_screenshot_circulating]}
+  deep: true
+  text: "ok before u say anything. yes it was me. i sent ONE screenshot to arseny bc he said i was making it up and then he. ok he sent it to the chat. and then someone's sister. i know. I KNOW. rufat looked at me today like i stole from the till. u can yell. everyone else did"
+  responses:
+    - text: "I'm not going to yell. I gave a 16-year-old case material — that one's mine. I'll say so publicly."
+      events: [{flag: {id: timur_repair_offered}}]
+      next: timur_repair_reaction
+    - text: "One screenshot, Timur. That's all it ever takes. You're out of the archive work."
+      events: []
+      next: timur_benched
+
+- id: timur_repair_reaction
+  beat: act2
+  text: "wait what. adults dont do that. adults do the speech abt disappointment and then tell ur mom. …ur actually gonna post that it was ur fault? in THE chat? ok. ok ok ok. then i owe u and i pay debts: no more screenshots, i archive everything to paper like its 1995, and whatever u need dug up, i dig. deadass. this is my villain-arc-averted moment i can feel it"
+  responses:
+    - text: "Paper like it's 1995. Welcome back to the case."
+      events: []
+
+- id: timur_benched
+  beat: act2
+  text: "…yeah. fair. for the record i deleted it off my phone and arseny's, i literally watched him do it. doesnt unring the bell i know. ep 178 is abt exactly this. 'the leak isnt the disaster. the disaster is what it teaches people abt telling u things.' i get it now. im sorry"
+  responses:
+    - text: "(He gets it. Maybe more than most adults in that chat.)"
+      events: []
+
+# --- The slow archive path (Aziza-burned route to the old name) ----------------------
+
+- id: timur_archive_start
+  beat: act2
+  requires:
+    flag: {id: aziza_burned}
+    trust: {npc: timur, at_least: 3}
+  deep: true
+  text: "ok so the flower lady wont talk to u anymore (whole chat knows, sorry) which means we do this the LONG way. regional newspaper archive. its digitized back to forever but the search is garbage, u have to go issue by issue. im looking for what exactly — pharmacy stuff, staff photos, anything with her face from Before?"
+  responses:
+    - text: "Staff photos. Pharmacy award pieces, 'local specialist' fluff. Faces with captions — captions have names."
+      events: [{delay: {channel: timur_archive, days: 2}}]
+      next: timur_archive_grind
+    - text: "Anything from Vetrogorsk direction. Start there."
+      events: [{delay: {channel: timur_archive, days: 2}, flag: {id: timur_archive_vetrogorsk}}]
+      next: timur_archive_grind
+
+- id: timur_archive_grind
+  beat: act2
+  text: "on it. warning: this is gonna take me like two days bc i also have actual school and my mom confiscates the laptop at eleven. ill ping u the SECOND i find anything. do not solve it without me i will literally never recover"
+  responses:
+    - text: "Two days. Go. And Timur — thank you."
+      events: []
+
+- id: timur_archive_payoff
+  beat: act2
+  requires:
+    flag: {id: timur_archive_complete}
+  text: "FOUND HER. ok breathe. 'farmakor honors staff' — some corporate puff piece, vetrogorsk paper, years old. group photo. third from left. its HER. hair's different but the way she stands?? and the caption. the caption has a name and its not sokolova. u ready? ekaterina zimina. katya. our mira used to be someone called katya zimina"
+  responses:
+    - text: "Katya Zimina. (Type it into the search bar. Everything changes now.)"
+      events: [{mints: {token: mira_real_name}}]
+    - text: "Third from left. You're sure?"
+      events: [{mints: {token: mira_real_name}}]
+
+# --- Act 3: the lookout beat -----------------------------------------------------------
+
+- id: timur_lookout_offer
+  beat: act3
+  requires:
+    trust: {npc: timur, at_least: 2}
+    knowledge: {agent: player, has: [dacha_location]}
+  deep: true
+  text: "ur going out there. to beryozka. i can tell bc u went quiet the way podcast hosts go quiet before the ad break. take me. NOT to the place — i stay at the propane exchange with my bike and my phone and if ANYONE takes the turn after u, u get three rings and nothing else. thats the whole job. ep 290, the lookout is why the witness made it out. im ur three rings"
+  responses:
+    - text: "Propane exchange. Three rings. If a black car takes the turn, you ride HOME, not after it."
+      events: [{promise: {npc: timur, id: promise_lookout_stays_put}, flag: {id: lookout_arranged}}]
+    - text: "No. If this goes wrong I'm not explaining to your mother why you were there."
+      events: []
+      next: timur_lookout_refused
+
+- id: timur_lookout_refused
+  beat: act3
+  text: "…ok counterpoint: if it goes wrong and im NOT there, nobody even knows which road u took. u taught me the leak lesson. here's mine back: nobody should be a single point of failure. thats not podcast stuff thats just true"
+  responses:
+    - text: "(He's right and you hate it.) Fine. Propane exchange. You don't move from it."
+      events: [{promise: {npc: timur, id: promise_lookout_stays_put}, flag: {id: lookout_arranged}}]
+    - text: "I'll take the dead-drop route instead. Nobody goes to any road."
+      events: []
+
+# --- Act 3: on Dan -----------------------------------------------------------------------
+
+- id: timur_on_dan
+  beat: act3
+  requires:
+    knowledge: {agent: timur, has: [dan_donated_search_fund]}
+  text: "ok unpopular opinion abt the city friend guy and im only saying it to u. everyone's like 'he cried, he donated' — cool. but i checked his account bc checking sources is literally my whole thing now. 8 months old. posts going back 2 years tho?? u can just DO that, the app doesnt show created-date unless u know where to look. either he nuked an old account for Reasons or the account was built. like a set"
+  responses:
+    - text: "Show me where to look. Exactly where."
+      events: [{mints: {token: dan_account_is_8mo_old}}]
+    - text: "Keep that off the class chat, Timur. I mean it. He reads everything."
+      events: [{promise: {npc: timur, id: promise_dan_theory_quiet}}]

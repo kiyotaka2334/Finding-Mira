@@ -1,0 +1,42 @@
+# content/agents/principals.yaml
+# The three principals (schema §2.5). Dan and Mira are agents in the same
+# network as everyone else — that symmetry is the game.
+
+- id: dan
+  kind: principal
+  edges: [player, lyudmila, oleg, mom]                 # mom edge activates in Act 3 (the beachhead)
+  spread: []                                           # Dan never leaks; he only accumulates
+  # Holdings arrive via: player tells (claims ledger), informant relay
+  # (lyudmila/oleg rules), public-channel lurking (town_chat tick_delay 1,
+  # search_party_chat tick_delay 0 — see channels.yaml), and the diary
+  # journal_transfer engine op (scene diary_confrontation).
+  suspicion_meter: true                                # §12; tiers warm/clipped/auditing/cut in rules.yaml
+  stance_priors: {}                                    # he has no beliefs to move; he has a project
+  in_town_from: {flag: {id: dan_in_town}}              # Act 3; enables daily standing/stance accrual (§16)
+  daily_when_in_town:
+    - {standing: {delta: +1, cap: 4}}
+    - {stance_reinforce: {agents: [mom, lyudmila, town_chat], subject: dan, toward: +1}}
+
+- id: mira
+  kind: principal
+  edges: [aziza]
+  spread: []
+  # She is present as data, not dialogue, until the dead-drop: two feeds
+  # (@mira.ozerny curated, @k_moroz real/abandoned) and the lurker account
+  # @ptichka_o reading town_chat (never confirmed in text).
+  lurker_reads: [town_chat, search_party_chat]
+  dead_drop:
+    opens_when:
+      any:
+        - {trust: {npc: aziza, at_least: 4}}           # the trusted path (scene aziza_dead_drop)
+        - {flag: {id: dead_drop_direct_route}}         # the riskier route if Aziza is burned
+    first_message_token: boathouse_false_location      # Mira's test (8.12): truth: false
+    test: {token: boathouse_false_location, fails_if_reaches: [town_chat, dan], within_ticks: 2,
+           on_fail: {flag: {id: dead_drop_dark}}}      # channel goes dark; she-runs-again outcomes lock in
+  stance_priors: {player: 0}                           # she watches; the test IS her first impression
+
+- id: player
+  kind: principal
+  edges: [dan, mom, lyudmila, rufat, aziza, timur, oleg, town_chat, search_party_chat]
+  spread: []                                           # the player's leaks are chosen, never automatic
+  # Standing (§16) and the journal (§15) are engine state keyed to this agent.

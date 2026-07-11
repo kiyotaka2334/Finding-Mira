@@ -1,0 +1,21 @@
+# content/agents/channels.yaml
+# Channel agents (schema §2.5 worked examples, completed with class_chat).
+
+- id: town_chat
+  kind: channel
+  spread:
+    - {match: any, to: all_town_agents, tick_delay: 1}
+    - {match: any, to: [dan], tick_delay: 1}           # via informant or lurking (§10)
+  town_stance_subjects: [dan, player]                  # the town stance lives here (§10.1)
+
+- id: search_party_chat
+  kind: channel
+  active_when: {knowledge: {agent: town_chat, has: [search_party_forming]}}
+  spread:
+    - {match: any, to: all_town_agents, tick_delay: 1}
+    - {match: any, to: [dan], tick_delay: 0}           # he reads it directly, same tick (§10)
+
+- id: class_chat                                        # "9B о главном"; player reads via Timur's screenshots
+  kind: channel
+  spread:
+    - {match: {tags: [juicy]}, to: [town_chat], tick_delay: 1}   # leaks one tick later (§10)

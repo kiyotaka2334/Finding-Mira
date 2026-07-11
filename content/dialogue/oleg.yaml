@@ -1,0 +1,97 @@
+# content/dialogue/oleg.yaml
+# Oleg Samoilov, 41 — unemployed, chronically in the town chat. Fishing avatar.
+#
+# Voice: quotes people before replying (his chat habit leaks into speech),
+# aggrieved dignity, always slightly owed something by the world.
+# Agent facts (content/agents/npcs.yaml): if informant (flag informant_is_oleg),
+# relays everything in the town chat to Dan each tick, motivated by Dan's
+# "reward for information leading to". Minor NPC: one short tree (§23).
+#
+# The 8.7 verbs: feed him (misinformation that doesn't contradict town chat),
+# co-opt him (buy him out with standing/keeping his dignity), or discredit him
+# (a stance attack — costs nothing but sets him against the player for good).
+
+- id: oleg_first_contact
+  beat: act2
+  text: "'Who knows the town better than anyone' — that's what you wrote in the chat, and Petya tagged me, which, correct. Twenty years on that lake, I know which dock creaks. So. You're the one playing detective. What's it worth to you?"
+  responses:
+    - text: "Worth? A beer at Kolyan's and you get to be right in public. That's the going rate."
+      next: oleg_beer_accepted
+    - text: "It's worth Mira being found. That should be enough."
+      next: oleg_dignity
+
+- id: oleg_beer_accepted
+  beat: act2
+  text: "…See, THAT'S a negotiation. Not like some people. 'Volunteer search party' — volunteer, from the Latin for 'work for free while the pharmacist owner sits warm'. Fine. Kolyan's, seven. I talk, you listen, you buy."
+  responses:
+    - text: "Seven it is."
+      events: [{promise: {npc: oleg, id: promise_kolyans_seven}}]
+
+- id: oleg_dignity
+  beat: act2
+  text: "'Should be enough.' You sound like the employment office. Everything 'should be enough' for Oleg, nothing ever pays Oleg. You know who talks to me like I'm worth the minute? The city fella. Dan. 'Your eyes on the ground, Oleg.' A reward posted, black on white. THAT's respect."
+  responses:
+    - text: "(There it is. The reward. He's already Dan's.)"
+      events: [{mints: {token: informant_identity}}]
+    - text: "A reward. For information leading to — what, exactly? Read me his wording."
+      next: oleg_reward_wording
+
+- id: oleg_reward_wording
+  beat: act2
+  text: "'For information leading to confirming Mira's current whereabouts, discretion assured.' Screenshot it if you want. …What. Why the face. A worried friend puts up money, that's normal, that's AMERICAN even. You'd rather he did nothing, like the police?"
+  responses:
+    - text: "'Whereabouts. Discretion assured.' Missing-person appeals say CALL THE POLICE, Oleg. This one says tell only me."
+      events: [{mints: {token: informant_identity}}]
+    - text: "(Screenshot it yourself. Evidence card, not an argument.)"
+      events: [{mints: {token: informant_identity}}]
+
+# --- Feeding the parallel channel (misinformation that must match the chat) ---------
+
+- id: oleg_feed_channel
+  beat: act3
+  requires:
+    flag: {id: informant_is_oleg}
+    knowledge: {agent: player, has: [informant_identity]}
+  deep: true
+  text: "'Any news' — he asks every evening, like clockwork, and lately I've got nothing, and a man with nothing gets no reward. The chat's gone quiet on the Mira thing. YOU'RE the one out asking questions all day. Give Oleg something. Anything with meat on it."
+  responses:
+    - text: "Between us? People are saying she was seen at the boathouse. Take that to him — you heard it same as everyone."
+      events: [{tell: {agent: oleg, token: boathouse_false_location}}]
+    - text: "Nothing worth a reward yet. When there is, you'll hear it in the chat like everyone."
+      events: []
+
+# --- Co-opting him -----------------------------------------------------------------
+
+- id: oleg_coopt
+  beat: act3
+  requires:
+    flag: {id: informant_is_oleg}
+    trust: {npc: oleg, at_least: 2}
+  deep: true
+  text: "…You're the only one who didn't laugh at the drone thing. So I'll say it plain: the reward money smells funny to me too, some nights. But funny-smelling money is still money, and my boiler's twelve years old. Give me a reason that isn't a sermon, and maybe Dan's eyes on the ground go a bit blurry."
+  responses:
+    - text: "Here's the reason: if this goes the way I think, 'the man who fed information to him' is a sentence with your name in it, in this town, forever. Blurry eyes, Oleg. I'll cover the boiler — quietly, and not as a bribe: as neighbors."
+      events: [{promise: {npc: oleg, id: promise_boiler}, flag: {id: oleg_coopted}}]
+    - text: "The reason is Mira. She fixed your prescription mess in '24 and never told the chat. I checked."
+      events: [{flag: {id: oleg_coopted}}]
+      next: oleg_prescription_shame
+
+- id: oleg_prescription_shame
+  beat: act3
+  text: "……She told you that? No. No, you said it right — she DIDN'T tell. Three years and it never once came back to me through the chat, and everything comes back through the chat. …'Discretion assured.' Hers actually was. Fine. FINE. His evenings just got very boring. You never heard me say that."
+  responses:
+    - text: "Never heard a thing. Tight lines, Oleg."
+      events: []
+
+# --- Discrediting him (the stance attack; cheap and cruel) ---------------------------
+
+- id: oleg_discredited_aftermath
+  beat: act3
+  requires:
+    flag: {id: oleg_discredited}
+  text: "'Don't mind Oleg, he once reported a UFO over the pumping station' — yeah. I saw what you posted. Big laugh, forty-one reactions. It was a WEATHER BALLOON and I SAID so in the follow-up, which nobody screenshots, funny thing. …Dan never laughed at me. Remember that when you're wondering why my eyes work better for him than for you."
+  responses:
+    - text: "(Forty-one reactions. It worked, and it cost exactly what it looks like.)"
+      events: []
+    - text: "Oleg — that was low, and it was me, and I'm sorry."
+      events: []

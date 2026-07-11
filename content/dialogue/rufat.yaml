@@ -1,0 +1,200 @@
+# content/dialogue/rufat.yaml
+# Rufat Aliyev, 55 — owns the Zarya pharmacy. Mira's boss. Dry, exact, allergic to drama.
+#
+# Voice: complete sentences, no emoji, no exclamation marks. He answers the
+# question asked and not one word more. Warmth shows as precision — he
+# remembers dosages, shift times, who paid and who didn't.
+# Agent facts (content/agents/npcs.yaml): spreads nothing except `pharmacy`
+# tokens, which go to Lyudmila (the feud: he corrects her rumors and thereby
+# feeds them). Trust gates per engine/rules.yaml: dm >=1, volunteer >=3,
+# artifact >=4 (the schedule records).
+#
+# Engine-set flags this file depends on:
+#   rufat_repair_done  — set by resolve_promise on the shift-cover promise below.
+#   search_party_forming — token; he disapproves of the circus, quietly.
+#
+# The dacha mention (rufat_dacha_mention) is deliberately buried mid-answer in
+# a volunteer-tier block. It must never read as a clue being handed over.
+
+# --- Act 1: the counter -------------------------------------------------------
+
+- id: rufat_counter_first
+  beat: act1
+  requires:
+    trust: {npc: rufat, at_most: 2}
+  text: "If it's a prescription, the window on the left. If it's about Mira Sokolova, the answer is that I don't discuss my staff, present or absent. Which is it?"
+  responses:
+    - text: "A prescription. And — one question, off the record."
+      next: rufat_off_the_record
+    - text: "I'm trying to help find her. People are worried."
+      next: rufat_worried_people
+
+- id: rufat_off_the_record
+  beat: act1
+  text: "There is no such thing as off the record in this town. There is only the record, and Lyudmila Petrovna. Ask your question and I will decide whether it deserves an answer."
+  responses:
+    - text: "Was she at work on the Friday? The day before she stopped posting."
+      events: [{tell: {agent: rufat, token: player_asking_questions}}]
+      next: rufat_last_shift_flat
+    - text: "Never mind. The prescription's under my mother's name."
+      events: []
+
+- id: rufat_worried_people
+  beat: act1
+  text: "People were worried about the pharmacy's ceiling for eleven years and nobody brought a ladder. Worry is a hobby here. If you want to be useful, be exact. What do you actually want to know?"
+  responses:
+    - text: "Whether anything was wrong. At work. Before she left."
+      next: rufat_last_shift_flat
+    - text: "Honestly? Whether YOU'RE worried."
+      next: rufat_am_i_worried
+
+- id: rufat_last_shift_flat
+  beat: act1
+  text: "She worked her full shift on the Friday. Counted the till, signed the book, watered the plant that is technically mine. Nothing was wrong that she allowed anyone to see. That is all you get at the counter."
+  responses:
+    - text: "Thank you. That's more than the chat has."
+      events: []
+    - text: "'Allowed anyone to see.' You noticed something."
+      events: [{promise: {npc: rufat, id: promise_no_gossip}}]
+      next: rufat_noticed_something
+
+- id: rufat_am_i_worried
+  beat: act1
+  text: "…I have re-ordered her section of the stockroom twice this week. It did not need it either time. Draw your own conclusion and keep it to yourself."
+  responses:
+    - text: "(Nod. Leave it there.)"
+      events: []
+
+- id: rufat_noticed_something
+  beat: act1
+  text: "I notice everything; it is the job. A pharmacist who misses details kills someone eventually. What I noticed is not evidence and I will not have it in the chat by supper dressed up as fact. If you can hold your tongue, come back when you've shown me you can."
+  responses:
+    - text: "Understood. I'll hold it."
+      events: []
+
+# --- Act 2, volunteer tier (trust >= 3): the schedule, the swap, the dacha ----
+
+- id: rufat_volunteer_swap
+  beat: act2
+  requires:
+    trust: {npc: rufat, at_least: 3}
+  deep: true
+  text: "Sit. The kettle in the back works, unlike the ceiling. Two things, since you've kept your mouth shut where others didn't. First: three weeks ago she asked to swap off the evening shifts. No reason given, and I don't require reasons, but Mira never asked for anything in three years. Second: she took her holiday pay early. In cash. I signed it and said nothing."
+  responses:
+    - text: "Evening shifts. She didn't want to walk home in the dark."
+      events: [{mints: {token: mira_left_deliberately}}]
+      next: rufat_volunteer_dacha
+    - text: "Cash. She was planning to be somewhere card machines aren't."
+      events: [{mints: {token: mira_left_deliberately}}]
+      next: rufat_volunteer_dacha
+
+- id: rufat_volunteer_dacha
+  beat: act2
+  text: "Possibly. She was not a person who explained herself. Last month she asked me an odd small thing — what hours the propane exchange keeps out past the Beryozka turn. Said it was for her coworker's aunt's old place. We don't have a coworker with an aunt out there, but people say 'aunt' when they mean any number of things, and I dispense medicine, not questions. That is everything I know, and I am already regretting the second half of it."
+  responses:
+    - text: "(Note it quietly: propane, Beryozka. Say nothing.)"
+      events: [{mints: {token: rufat_dacha_mention}}]
+    - text: "Why regret it? It could matter."
+      events: [{mints: {token: rufat_dacha_mention}}]
+      next: rufat_regret
+
+- id: rufat_regret
+  beat: act2
+  text: "Because everything that matters in this town gets repeated until it stops being true. If I hear the word 'propane' in the chat this week, you and I are finished. Am I understood?"
+  responses:
+    - text: "Understood. It stays with me."
+      events: [{promise: {npc: rufat, id: promise_propane_quiet}}]
+
+# --- Act 2, artifact tier (trust >= 4): the schedule records -------------------
+
+- id: rufat_artifact_handover
+  beat: act2
+  requires:
+    trust: {npc: rufat, at_least: 4}
+  deep: true
+  text: "The duty book, October through this month. I photocopied the pages myself so you are not touching the original. You will notice she rearranged her own shifts twice in her final fortnight, both times off the evenings, both times initialed 'M.S.' in a steadier hand than mine would be. Return the copies or burn them. Do not photograph them for that journal of yours if the journal ever leaves your bag."
+  responses:
+    - text: "Thank you, Rufat. I mean it."
+      events: [{mints: {token: pharmacy_schedule_records}}]
+    - text: "Why give me this now?"
+      events: [{mints: {token: pharmacy_schedule_records}}]
+      next: rufat_why_now
+
+- id: rufat_why_now
+  beat: act2
+  text: "Because the alternative custodians of the truth are a group chat, a landlady, and a volunteer search party with a drone it doesn't know how to land. You are merely the least bad option. Don't be flattered."
+  responses:
+    - text: "(Take the copies. Don't be flattered.)"
+      events: []
+
+# --- The feud: rumor correction (pharmacy tokens feed Lyudmila) ----------------
+
+- id: rufat_rumor_correction
+  beat: act2
+  requires:
+    knowledge: {agent: rufat, has: [mira_pharmacy_theft_rumor]}
+  text: "Before you ask: no, nothing is missing from my stock. Not one blister strip. I count it Mondays and Thursdays and I have counted it twice extra this week for the pleasure of being right. Whoever fed the chat that 'shortage' story may direct further questions to the inventory ledger, which unlike them is capable of shame."
+  responses:
+    - text: "For what it's worth, I never believed it."
+      events: [{defend: {npc: rufat, public: false}}]
+    - text: "You know correcting Lyudmila just keeps the story alive."
+      next: rufat_feud_wisdom
+
+- id: rufat_feud_wisdom
+  beat: act2
+  text: "…My wife used to say the same thing. 'Rufat, you argue with the radio.' She was right and so are you, and I will continue to do it, because the alternative is letting the radio win."
+  responses:
+    - text: "(Let him have this one.)"
+      events: []
+
+# --- Repair beat: cover a shift, correct the rumor -----------------------------
+
+- id: rufat_repair_offer
+  beat: act2
+  requires:
+    trust: {npc: rufat, at_most: 1}
+    flag: {id: rufat_repair_available}
+  text: "You have some nerve coming back to this counter. …However. Zoya is at her daughter's until Thursday, the courier comes at two, and I cannot be in two rooms. You want back in my good graces, they are behind that counter, wearing an apron, from one till six. And you will post one sentence in that chat of yours saying the shortage story was false. One sentence. No editorial."
+  responses:
+    - text: "Apron. One till six. One sentence. Done."
+      events: [{promise: {npc: rufat, id: promise_repair_shift}}]
+    - text: "I can't lose the afternoon right now."
+      events: []
+
+- id: rufat_repair_resolved
+  beat: act2
+  requires:
+    flag: {id: rufat_repair_done}
+  text: "You rang up cough syrup for four hours and only voided one receipt. Zoya voids three. The sentence in the chat was seen, including by the person who started the story, which is the part I enjoyed. We are — level. Don't make me regret the word."
+  responses:
+    - text: "Level is all I wanted."
+      events: [{resolve_promise: {id: promise_repair_shift, kept: true}}]
+
+# --- Act 3: Dan in town ---------------------------------------------------------
+
+- id: rufat_on_dan_donation
+  beat: act3
+  requires:
+    knowledge: {agent: rufat, has: [dan_donated_search_fund]}
+  text: "The city friend put money in the search fund jar. Everyone saw, which I imagine was the point of doing it at the market and not at the bank. I have met many generous men. The ones who check who's watching first are a separate genus."
+  responses:
+    - text: "You don't like him."
+      next: rufat_on_dan_verdict
+    - text: "He's grieving. People perform grief differently."
+      events: []
+
+- id: rufat_on_dan_verdict
+  beat: act3
+  text: "I neither like nor dislike him; I observe that he asks questions the way I count stock. Systematically. Working outward from what he already has. Nobody grieves in a grid pattern. Now buy something or leave, we're closing."
+  responses:
+    - text: "(Buy the throat lozenges. Think about grids.)"
+      events: [{mints: {token: player_suspects_dan}}]
+    - text: "Would you say that to anyone but me?"
+      next: rufat_never_public
+
+- id: rufat_never_public
+  beat: act3
+  text: "No. And if it appears in the chat I will deny it in language that embarrasses us both. I sell certainty in labeled boxes; I don't post suspicion in public. That discipline is why you're still welcome at this counter. Learn it."
+  responses:
+    - text: "(Learn it.)"
+      events: []

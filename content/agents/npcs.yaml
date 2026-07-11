@@ -1,0 +1,157 @@
+# content/agents/npcs.yaml
+# The gossip network, as data (schema §2.5). Spread rules use the closed
+# vocabulary: {match: {tags | valence | subject | any}, to: [...], tick_delay,
+# when: <condition>}. Stance priors are compiled constants (§2.5 notes).
+# Defense lines cover every (agent, subject) pair reachable in a disbelieved
+# state (§2.9): each town NPC × dan, plus town-side lines about the player.
+
+- id: lyudmila
+  kind: npc
+  edges: [mom, town_chat, dan]
+  spread:
+    - match: {tags: [juicy]}
+      to: [mom, town_chat]
+      tick_delay: 1
+    - match: {tags: [juicy]}
+      to: [dan]
+      tick_delay: 1
+      when: {flag: {id: informant_is_lyudmila}}
+  suppression: {cost: 2, bursts_after_ticks: 3}      # the §13 exception
+  informant_if: {trust: {npc: lyudmila, at_most: 1, checked_at: act2_start}}
+  stance_priors: {dan: +1}                            # "charming men"
+  defense_lines:
+    dan:
+      - "he carried my groceries, and you show me shadows in a photograph?"
+      - "a man who asks after my hip does not need YOUR permission to grieve……"
+    player:
+      - "Nina's child, playing police…… the city does that to them, you know."
+  repair_scene: repair_lyudmila_exclusive
+
+- id: mom
+  kind: npc
+  edges: [lyudmila, galina, roza]
+  spread:
+    - match: {tags: [about_player]}
+      to: [lyudmila, galina, roza]
+      tick_delay: 1
+    - match: {tags: [juicy]}
+      to: [lyudmila, galina, roza]
+      tick_delay: 1
+    # Never to strangers — but Dan-in-person doesn't read as a stranger to her
+    # (§10): once dan_in_town, he sits at her table inside the galina/roza rule.
+    - match: {tags: [juicy]}
+      to: [dan]
+      tick_delay: 1
+      when: {flag: {id: dan_in_town}}
+  suppression: {cost: 1}
+  # Teaching-Mom flip (§13.1): engine flag teaching_mom_flip disables her spread
+  # rules for `critical`-tagged tokens only. Never generalized, never retroactive.
+  suppression_overrides:
+    - when: {flag: {id: teaching_mom_flip}}
+      match: {tags: [critical]}
+      effect: no_spread
+  routine_reporting: {mints_from: slot_pattern, to: lyudmila, each_morning: true}
+  stance_priors: {dan: +1}                            # "anyone polite to her"
+  defense_lines:
+    dan:
+      - "he fixed the fence, and you show me shadows in a photograph?"
+      - "such a lonely boy. You were lonely in the city too — did anyone call YOU a liar for it?"
+    player: []                                        # she never disbelieves ABOUT the player; she defends them
+  repair_scene: repair_mom_honest_conversation
+
+- id: rufat
+  kind: npc
+  edges: [lyudmila]
+  spread:
+    - match: {tags: [pharmacy]}
+      to: [lyudmila]                                   # the feud: corrections feed her
+      tick_delay: 1
+  suppression: {cost: 1}
+  stance_priors: {}                                    # no prior; first impressions apply
+  defense_lines:
+    dan:
+      - "I have no opinion of the man that I would repeat, which is itself my opinion."
+    player:
+      - "The chat has decided what you are. The chat once decided my ceiling was asbestos. It is plaster."
+  repair_scene: repair_rufat_shift_and_correction
+
+- id: aziza
+  kind: npc
+  edges: []
+  spread: []                                           # "spreads nothing, ever" — literally checkable (§2.5)
+  suppression: {cost: 0}                               # nothing to suppress
+  stance_priors: {player: -1}                          # "anyone asking about Mira"
+  defense_lines:
+    dan:
+      - "I don't argue about him. I count what he knows against what he was told. You should try it."
+    player:
+      - "The town talks. I water flowers."
+  repair_scene: repair_aziza_public_admission          # + mira_vouches_player via dead-drop (§13)
+
+- id: timur
+  kind: npc
+  edges: [class_chat]
+  spread:
+    - match: {tags: [juicy]}
+      to: [class_chat]
+      tick_delay: 1
+      when: {flag: {id: timur_repair_done, absent: true}}   # post-repair: paper like it's 1995
+  suppression: {cost: 1}
+  stance_priors: {}
+  defense_lines:
+    dan:
+      - "counterpoint: 8 month old account. thats not a vibe thats metadata"
+    player:
+      - "u guys said the same thing abt me and the weather balloon. sorry, the UFO. exactly."
+  repair_scene: repair_timur_public_blame
+
+- id: oleg
+  kind: npc
+  edges: [town_chat, dan]
+  spread:
+    - match: any
+      to: [dan]
+      tick_delay: 1
+      when: {flag: {id: informant_is_oleg}}
+    - match: {tags: [juicy]}
+      to: [town_chat]
+      tick_delay: 1
+  suppression: {cost: 1}
+  informant_if: {flag: {id: informant_is_lyudmila, absent: true}}   # the 8.7 fallback selection
+  stance_priors: {dan: +1}                             # "the reward is respect"
+  defense_lines:
+    dan:
+      - "'shady' — a man posts a reward, black on white, and he's shady. The police posted NOTHING."
+    player:
+      - "quoting: 'don't mind Oleg'. Forty-one reactions. I mind, though."
+  repair_scene: repair_oleg_apology
+
+- id: galina
+  kind: npc
+  edges: [mom, town_chat]
+  spread:
+    - match: {tags: [juicy]}
+      to: [town_chat]
+      tick_delay: 1
+    - match: {tags: [about_player]}
+      to: [town_chat]
+      tick_delay: 1
+  suppression: {cost: 1}
+  stance_priors: {}
+  defense_lines:
+    dan:
+      - "Nina trusts him, and Nina raised YOU, so which is it?"
+  # "I only told Galina." Galina told three people. (8.2)
+
+- id: roza
+  kind: npc
+  edges: [mom, town_chat]
+  spread:
+    - match: {tags: [juicy]}
+      to: [town_chat]
+      tick_delay: 2                                    # slower than Galina; choir on Tuesdays
+  suppression: {cost: 1}
+  stance_priors: {}
+  defense_lines:
+    dan:
+      - "He sang the second verse at the vigil from memory. Wicked men don't know second verses."
